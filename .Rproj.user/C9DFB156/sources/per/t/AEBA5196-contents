@@ -1,0 +1,136 @@
+#' Variable Table Function
+#'
+#' This function will output a descriptive variable table either to the console or as a Help file that can be viewed continuously while working with data.
+#'
+#' Outputting the variable table as a help file will make it easy to search through variable names or labels, or to refer to information about the variables easily.
+#'
+#' This function is in a similar spirit to promptData(), but focuses on variable documentation rather than dataset documentation.
+#'
+#' @param data Data frame or tibble. If this is a labeled tibble and the labels parameter is not set, vtable will extract variable labels directly.
+#' @param labels Vector of variable labels of the same length as the number of variables in the table.
+#' @param window Set to TRUE to output the variable table as a help file, and open that help file. Set to FALSE to return the variable table as a data frame. Defaults to TRUE.
+#' @param class Set to TRUE to include variable classes in the variable table. Defaults to TRUE.
+#' @param values Set to TRUE to include the range of values of each variable: min and max for numeric variables, list of factors for factor variables, and 'TRUE FALSE' for logicals. Defaults to FALSE.
+#' @param factor.limit Sets maximum number of factors that will be included if values = TRUE. Set to 0 for no limit. Defaults to 0.
+#' @param select Variable selection vector. Accepts a vector of column indices or a vector of variable names.
+#' @param horiz Set to TRUE to transpose the variable table such that each variable is one column rather than one row. Defaults to FALSE.
+#' @export
+#' @examples
+#' df <- data.frame(var1 = 1:4,var2=5:8,var3=c("A","B","C","D"),var4=as.factor(c("A","B","C","C")),var5=c(T,T,F,F))
+#' vtable(df,labels=c("Number 1","Number 2","Some Letters","Some Labels","You Good?"))
+#' vtable(df,labels=c("Number 1","Number 2","You Good?"),class=FALSE,select=c(1,2,5))
+#' vtable(df,labels=c("Number 1","Some Labels"),values=TRUE,factor.limit=1,select=c("var1","var4"))
+
+# You can learn more about package authoring with RStudio at:
+#
+#   http://r-pkgs.had.co.nz/
+#
+# Some useful keyboard shortcuts for package authoring:
+#
+#   Build and Reload Package:  'Ctrl + Shift + B'
+#   Check Package:             'Ctrl + Shift + E'
+#   Test Package:              'Ctrl + Shift + T'
+
+
+vtable <- function(data,labels=NA,window=FALSE,class=TRUE,values=FALSE,factor.limit=0,select=NA,horiz=FALSE) {
+
+  #TO DO STILL:
+  #Incorporate pre-labeled tibbles from haven or sjmisc
+  #Write out to a help file to be loaded
+  #Write out to actual file
+
+  ####### APPLICATION OF SELECT OPTION
+  #Selects only the desired range of variables
+  if (!is.na(select[1])) {
+    data <- subset(data,select=select)
+  }
+
+  #Start table with variable names
+  out <- data.frame(Name = names(data))
+
+
+  #If user asks for variable classes, add them to the variable table
+  if (class == TRUE) {
+    out$Class <- sapply(data,class)
+  }
+
+  #If labels are not included, don't include them
+  #Otherwise, add them to the variable table
+  if (!is.na(labels[1])){
+    out$Label <- labels
+  }
+
+  #If user wants values, show the possible values the variable can take
+  if (values == TRUE) {
+    #Create variable to hold ranges
+    out$Values <- ""
+
+    #If there are any factors:
+    if (sum(sapply(data,is.factor)) > 0) {
+      #Fill in description of factor levels for factor
+      factorlevels <- lapply(subset(data,select=sapply(data,is.factor)),levels)
+
+      #If there's not a limit on the number of factors requested
+      toomany <- rep(FALSE,length(factorlevels))
+
+      #if there's a limit on the number of factors requested
+      if (factor.limit > 0) {
+        #Find out which variables have too many factors
+        toomany <- sapply(factorlevels,function(x) length(x) > factor.limit)
+
+        #Cut back to the limit
+        factorlevels <- lapply(factorlevels,function(x) x[1:min(factor.limit,length(x))])
+      }
+
+      #Make sure each factor surrounded by '
+      factorlevels <- paste('\'',
+                            lapply(factorlevels,paste,collapse='\' \''),
+                            '\'',sep="")
+
+      #If some were cut, indicate that
+      factorlevels <- ifelse(toomany,paste(factorlevels,"and more"),factorlevels)
+
+      #And fill in for output table
+      out[sapply(data,is.factor),]$Values <- factorlevels
+    }
+
+
+    #If there are any numeric variables:
+    if (sum(sapply(data,is.numeric)) > 0) {
+      #Get minimums
+      min <- lapply(subset(data,select=sapply(data,is.numeric)),min)
+
+      #Get maximums
+      max <- lapply(subset(data,select=sapply(data,is.numeric)),max)
+
+      #Range description
+      range <- paste("Num:",min,"to",max)
+
+      print(range)
+
+      #Fill in for output table
+      out[sapply(data,is.numeric),]$Values <- range
+    }
+
+    #Binary variables
+    if (sum(sapply(data,is.logical))>0) {
+      #Fill in for output table
+      out[sapply(data,is.logical),]$Values <- 'TRUE FALSE'
+    }
+  }
+
+  #If user wants the table to be horizontally oriented,
+  #transpose the variable table.
+  if (horiz==TRUE) {
+    out <- as.data.frame(t(out))
+  }
+
+  #Either print the variable table to the help window
+  #or return a variable table to the screen, as desired
+  if (window == TRUE) {
+    print(help(summary))
+  }
+  else {
+    return(out)
+  }
+}

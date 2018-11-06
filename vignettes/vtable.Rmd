@@ -1,0 +1,336 @@
+---
+title: "Variable Table"
+author: "Nick Huntington-Klein"
+date: "`r Sys.Date()`"
+output: pdf_document
+<!-- output: rmarkdown::html_vignette -->
+vignette: >
+  %\VignetteIndexEntry{Variable Table (vtable)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The `vtable` package serves the purpose of outputting automatic variable documentation that can be easily viewed while continuing to work with data.
+
+`vtable` contains two functions: `vtable()` and `dftoHTML()`. `vtable()` takes a dataset and outputs a formatted variable documentation file. This serves several purposes. First, it allows for an easy generation of a variable documentation file. Second, it produces a list of variables (and, if provided, their labels) that can be easily viewed while working with the data, preventing repeated calls to `head()`, and making it much easier to work with confusingly-named variables. Third, the variable documentation file can be easily searched with standard Find-in-Page functions like Ctrl/Cmd-F, allowsing you to search for the variable or variable label you want.
+
+`dftoHTML()`, which is used by `vtable()` to create variable documentaiton files, is more flexible, and takes any data frame or matrix with column names and outputs HTML table code.
+
+-----
+
+# The `vtable()` function
+
+`vtable()` syntax follows the following outline:
+
+`vtable(data, out=NA, file=NA, labels=NA, class=TRUE, values=FALSE, factor.limit=5, data.title=NA, desc=NA, col.width=NA)`
+
+The goal of `vtable()` is to take a data set `data` and output an HTML file with documentation concerning each of the variables in `data'. There are several options as to what will be included in the documentation file, and each of these options are explained below. Throughout, most code will be included without output because output is typically rendered in a browser or in the Viewer pane of RStudio, not the console:
+
+## `data`
+
+The `data` argument can take any data frame, data table, tibble, or matrix, as long as it has a valid set of variable names stored in the `colnames()` attribute. The goals of `vtable()` is to produce documentation of each of the variables in this data set and display that documentation, one variable per row on the output `vtable`.
+
+If `data` has embedded variable or value labels, as the data set `efc` does below, `vtable()` will extract and use them automatically.
+                   
+```
+library(vtable)
+
+#Example 1, using base data LifeCycleSavings
+data(LifeCycleSavings)
+vtable(LifeCycleSavings)
+
+#Example 2, using constructed data frame
+df <- data.frame(var1 = 1:4, var2 = c("A","B","C","D"))
+vtable(df)
+
+#Example 3, using matrix with column names
+matrix <- as.matrix(df)
+vtable(df)
+
+#Example 4, using efc data with embedded variable labels
+library(sjlabelled)
+data(efc)
+vtable(efc)
+```
+
+## `out`
+
+The `out` option determines what will be done with the resulting variable documentation file. There are several options for `out`:
+
+| Option     | Result |
+|------------| -----------------------------------------|
+| browser    | Loads variable documentation in web browser. |
+| viewer     | Loads variable documentation in Viewer pane (RStudio only). |
+| htmlreturn | Returns HTML code for variable documentation file. |
+| return     | Returns variable documentation table in data frame format. |
+
+By default, `vtable` will select "viewer" if running in RStudio, and "browser" otherwise.
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+vtable(LifeCycleSavings)
+vtable(LifeCycleSavings,out="browser")
+vtable(LifeCycleSavings,out="viewer")
+htmlcode <- vtable(LifeCycleSavings,out="htmlreturn")
+vartable <- vtable(LifeCycleSavings,out="return")
+```
+
+
+## `file`
+
+The `file` argument will write the variable documentation file to an HTML file and save it. Will automatically append "html" filetype if the filename does not include a period.
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+vtable(LifeCycleSavings,file="lifecycle_variabledocumentation")
+```
+
+## `labels`
+
+The `labels` argument will attach variable labels to the variables in `data`. If variable labels are embedded in `data` and those labels are what you want, the `labels` argument is unnecessary. Set `labels="omit"` if there are embedded labels but you do not want them in the table.
+
+`labels` can be used in any one of three formats.
+
+### `labels` as a vector
+
+`labels` can be set to be a vector of equal length to the number of variables in `data`, and in the same order. `NA` values can be used for padding if some variables do not have labels.
+
+```
+library(vtable)
+
+#Note that LifeCycleSavings has five variables
+data(LifeCycleSavings)
+#These variable labels are taken from help(LifeCycleSavings)
+labs <- c("numeric aggregate personal savings",
+    "numeric % of population under 15",
+    "numeric % of population over 75",
+    "numeric real per-capita disposable income",
+    "numeric % growth rate of dpi")
+vtable(LifeCycleSavings,labels=labs)
+
+labs <- c("numeric aggregate personal savings",NA,NA,NA,NA)
+vtable(LifeCycleSavings,labels=labs)
+```
+### `labels` as a two-column data set
+
+`labels` can be set to a two-column data set (any type will do) where the first column has the variable names, and the second column has the labels. The column names don't matter.
+
+This approach does __not__ require that every variable name in `data` has a matching label.
+
+```
+library(vtable)
+
+#Note that LifeCycleSavings has five variables
+#with names "sr", "pop15", "pop75", "dpi", and "ddpi"
+data(LifeCycleSavings)
+#These variable labels are taken from help(LifeCycleSavings)
+labs <- data.frame(nonsensename1 = c("sr", "pop15", "pop75"),
+nonsensename2 = c("numeric aggregate personal savings",
+    "numeric % of population under 15",
+    "numeric % of population over 75"))
+vtable(LifeCycleSavings,labels=labs)
+
+labs <- as.matrix(labs)
+vtable(LifeCycleSavings,labels=labs)
+```
+
+### `labels` as a one-row data set
+
+`labels` can be set to a one-row data set in which the column names are the variable names in `data` and the first row is the variable names. The `labels` argument can take any data type including data frame, data table, tibble, or matrix, as long as it has a valid set of variable names stored in the `colnames()` attribute.
+
+This approach does __not__ require that every variable name in `data` has a matching label.
+
+```
+library(vtable)
+
+#Note that LifeCycleSavings has five variables
+#with names "sr", "pop15", "pop75", "dpi", and "ddpi"
+data(LifeCycleSavings)
+#These variable labels are taken from help(LifeCycleSavings)
+labs <- data.frame(sr = "numeric aggregate personal savings",
+    pop15 = "numeric % of population under 15",
+    pop75 = "numeric % of population over 75")
+vtable(LifeCycleSavings,labels=labs)
+
+labs <- as.matrix(labs)
+vtable(LifeCycleSavings,labels=labs)
+```
+
+## `class`
+
+The `class` flag will either report or not report the class of each variable in the resulting variable table. By default this is set to `TRUE`.
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+vtable(LifeCycleSavings)
+vtable(LifeCycleSavings,class=FALSE)
+```
+
+## `values`
+
+The `values` flag will either report or not report the values that each variable takes. Numeric variables will report a range, logicals will report 'TRUE FALSE', and factor variables will report the first `factor.limit` (default 5) factors listed.
+
+If the variable is numeric but has value labels applied by the `sjlabelled` package, `vtable()` will find them and report the numeric-label crosswalk.
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+vtable(LifeCycleSavings,values=TRUE)
+
+#CO2 contains factor variables
+data(CO2)
+vtable(CO2,values=TRUE)
+
+#efc contains labeled values
+#Note that the original value labels do not tell you what numerical
+#value each label maps to, but vtable() does.
+library(sjlabelled)
+data(efc)
+vtable(efc,values=TRUE)
+```
+
+## `factor.limit`
+
+If `values` is set to `TRUE`, then `factor.limit` limits the number of factors displayed on the variable table. `factor.limit` is by default 5, to cut down on clutter. The table will include the phrase "and more" to indicate that some factors have been cut off.
+
+Setting `factor.limit=0` will include all factors.  If `values=FALSE`, `factor.limit` does nothing.
+
+```
+library(vtable)
+
+#CO2 contains factor variables
+data(CO2)
+vtable(CO2,values=TRUE)
+vtable(CO2,values=TRUE,factor.limit=1)
+vtable(CO2,values=TRUE,factor.limit=0)
+```
+
+## `data.title`
+
+`data.title` will include a data title in the variable documentation file. If not set manually, this will default to the variable name for `data`.
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+vtable(LifeCycleSavings)
+vtable(LifeCycleSavings,data.title="Intercountry Life-Cycle Savings Data")
+```
+
+## `desc`
+
+`desc` will include a description of the data set in the variable documentation file. 
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+vtable(LifeCycleSavings)
+vtable(LifeCycleSavings,data.title="Intercountry Life-Cycle Savings Data",
+desc='Data on the savings ratio 1960–1970.')
+```
+
+## `col.width`
+
+`vtable()` will select default column widths for the variable table depending on which measures (name, class, label, values) are included. `col.width`, as a vector of percentage column widths on the 0-100 scale, will override these defaults.
+
+```
+library(vtable)
+library(sjlabelled)
+
+data(efc)
+vtable(efc,values=TRUE)
+#The variable names in this data set are pretty short, and the value labels are
+#a little cramped, so let's move that over.
+vtable(efc,values=TRUE,col.width=c(10,10,40,40))
+```
+
+-----
+
+# The `dftoHTML()` function
+
+`dftoHTML()` syntax follows the following outline:
+
+`dftoHTML(data,out=NA,file=NA,col.width=NA,row.names=FALSE)`
+
+`dftoHTML()` largely exists to serve `vtable()`. What it does is takes a data set `data` and returns an HTML table with the contents of that table. 
+
+Outside of its use in `vtable()`, `dftoHTML()` can also be used to keep a view of the data file open while working on the data, avoiding repeated calls to `head()` or similar, or switching back and forth between code tabs and data view tabs.
+
+------
+
+## `data`
+
+`dftoHTML()` will accept any data set with a `colnames()` attribute.
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+dftoHTML(LifeCycleSavings)
+```
+
+## out
+
+The `out` option determines what will be done with the resulting variable documentation file. There are several options for `out`:
+
+| Option     | Result |
+|------------| -----------------------------------------|
+| browser    | Loads HTML version of `data` in web browser. |
+| viewer     | Loads HTML version of `data` in Viewer pane (RStudio only). |
+| htmlreturn | Returns HTML code for `data`. |
+
+By default, `vtable` will select "viewer" if running in RStudio, and "browser" otherwise.
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+dftoHTML(LifeCycleSavings)
+dftoHTML(LifeCycleSavings,out="browser")
+dftoHTML(LifeCycleSavings,out="viewer")
+htmlcode <- dftoHTML(LifeCycleSavings,out="htmlreturn")
+```
+
+## `file`
+
+The `file` argument will write the HTML version of `data` to an HTML file and save it. Will automatically append "html" filetype if the filename does not include a period.
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+dftoHTML(LifeCycleSavings,file="lifecycledata_htmlversion.html")
+```
+
+## `col.width`
+
+`dftoHTML()` will select, by default, equal column widths for all columns in `data'. `col.width`, as a vector of percentage column widths on the 0-100 scale, will override these defaults.
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+dftoHTML(LifeCycleSavings)
+#Let's make sr much bigger for some reason
+dftoHTML(LifeCycleSavings,col.width=c(60,10,10,10,10))
+
+```
+
+## `row.names`
+
+The `row.names` flag determines whether the row names of the data are included as the first column in the output table. 
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+dftoHTML(LifeCycleSavings,row.names=TRUE)
+```

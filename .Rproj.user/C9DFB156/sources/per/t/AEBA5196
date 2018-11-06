@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541201515358.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "175123805",
+    "id" : "AEBA5196",
+    "lastKnownWriteTime" : 1541202256,
+    "last_content_update" : 1541202256283,
+    "path" : "~/vtable/R/vtable.R",
+    "project_path" : "R/vtable.R",
+    "properties" : {
+        "cursorPosition" : "6,129",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
