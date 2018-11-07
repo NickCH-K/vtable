@@ -118,7 +118,9 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
     vt$Label <- labs
   }
   #If labels are directly included, override the embedded labels
-  if (min(is.na(labels))==0 & (length(labels) == 1 & labels[1] == "omit") == FALSE){
+  #Use ifelse construction so that labels[1] is not evaluated for two-column
+  #label styles (which throws an error)
+  if (min(is.na(labels))==0 & ifelse(length(labels) == 1,labels[1] != "omit",TRUE)) {
     #Override embedded labels
     vt$Label <- NULL
 
@@ -163,7 +165,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
       stop('Unrecognized label format. See help(vtable).')
     }
 
-  } else if (min(is.na(labels))==0 & (length(labels) == 1 & labels[1] == "omit") == TRUE) {
+  } else if (min(is.na(labels))==0 & ifelse(length(labels) == 1,labels[1] == "omit",FALSE)) {
     vt$Label <- NULL
   }
 
