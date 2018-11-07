@@ -4,7 +4,8 @@
 \alias{dftoHTML}
 \title{Data Frame to HTML Function}
 \usage{
-dftoHTML(data, out = NA, file = NA, col.width = NA)
+dftoHTML(data, out = NA, file = NA, col.width = NA,
+  row.names = FALSE)
 }
 \arguments{
 \item{data}{Data set; accepts any format with column names.}
@@ -13,7 +14,9 @@ dftoHTML(data, out = NA, file = NA, col.width = NA)
 
 \item{file}{Saves the completed variable table file to HTML with this filepath. May be combined with any value of out.}
 
-\item{@param}{col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.}
+\item{col.width}{Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.}
+
+\item{row.names}{Flag determining whether or not the row names should be included in the table. Defaults to FALSE.}
 }
 \description{
 This function takes a data frame or matrix with column names and outputs an HTML table version of that data frame.
@@ -22,7 +25,8 @@ This function takes a data frame or matrix with column names and outputs an HTML
 This function is designed to feed HTML versions of variable tables to vtable().
 }
 \examples{
-df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),var4=as.factor(c('A','B','C','C')),var5=c(T,T,F,F))
+df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),
+    var4=as.factor(c('A','B','C','C')),var5=c(TRUE,TRUE,FALSE,FALSE))
 dftoHTML(data,out="browser")
 
 }

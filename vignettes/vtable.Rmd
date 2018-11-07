@@ -3,7 +3,7 @@ title: "Variable Table"
 author: "Nick Huntington-Klein"
 date: "`r Sys.Date()`"
 output: pdf_document
-<!-- output: rmarkdown::html_vignette -->
+<!-- output: rmarkdown::html_vignette. pdf_document -->
 vignette: >
   %\VignetteIndexEntry{Variable Table (vtable)}
   %\VignetteEngine{knitr::rmarkdown}
@@ -12,9 +12,15 @@ vignette: >
 
 The `vtable` package serves the purpose of outputting automatic variable documentation that can be easily viewed while continuing to work with data.
 
-`vtable` contains two functions: `vtable()` and `dftoHTML()`. `vtable()` takes a dataset and outputs a formatted variable documentation file. This serves several purposes. First, it allows for an easy generation of a variable documentation file. Second, it produces a list of variables (and, if provided, their labels) that can be easily viewed while working with the data, preventing repeated calls to `head()`, and making it much easier to work with confusingly-named variables. Third, the variable documentation file can be easily searched with standard Find-in-Page functions like Ctrl/Cmd-F, allowsing you to search for the variable or variable label you want.
+`vtable` contains two functions: `vtable()` and `dftoHTML()`. `vtable()` takes a dataset and outputs a formatted variable documentation file. This serves several purposes. 
 
-`dftoHTML()`, which is used by `vtable()` to create variable documentaiton files, is more flexible, and takes any data frame or matrix with column names and outputs HTML table code.
+First, it allows for an easy generation of a variable documentation file, without requiring that one has already been created and made accessible through `help(data)`, or dealing with creating and finding R help documentation files. 
+
+Second, it produces a list of variables (and, if provided, their labels) that can be easily viewed while working with the data, preventing repeated calls to `head()`, and making it much easier to work with confusingly-named variables. 
+
+Third, the variable documentation file can be easily searched with standard Find-in-Page functions like Ctrl/Cmd-F, allowsing you to search for the variable or variable label you want.
+
+`dftoHTML()`, which is used by `vtable()` to create variable documentaiton files, is more narrow. It takes any data frame or matrix with column names and outputs HTML table code for that data.
 
 -----
 
@@ -22,7 +28,18 @@ The `vtable` package serves the purpose of outputting automatic variable documen
 
 `vtable()` syntax follows the following outline:
 
-`vtable(data, out=NA, file=NA, labels=NA, class=TRUE, values=FALSE, factor.limit=5, data.title=NA, desc=NA, col.width=NA)`
+```
+vtable(data, 
+    out=NA,
+    file=NA, 
+    labels=NA, 
+    class=TRUE, 
+    values=FALSE, 
+    factor.limit=5,
+    data.title=NA,
+    desc=NA, 
+    col.width=NA)
+```
 
 The goal of `vtable()` is to take a data set `data` and output an HTML file with documentation concerning each of the variables in `data'. There are several options as to what will be included in the documentation file, and each of these options are explained below. Throughout, most code will be included without output because output is typically rendered in a browser or in the Viewer pane of RStudio, not the console:
 
@@ -234,7 +251,7 @@ library(vtable)
 data(LifeCycleSavings)
 vtable(LifeCycleSavings)
 vtable(LifeCycleSavings,data.title="Intercountry Life-Cycle Savings Data",
-desc='Data on the savings ratio 1960–1970.')
+    desc='Data on the savings ratio 1960–1970.')
 ```
 
 ## `col.width`
@@ -260,7 +277,7 @@ vtable(efc,values=TRUE,col.width=c(10,10,40,40))
 
 `dftoHTML(data,out=NA,file=NA,col.width=NA,row.names=FALSE)`
 
-`dftoHTML()` largely exists to serve `vtable()`. What it does is takes a data set `data` and returns an HTML table with the contents of that table. 
+`dftoHTML()` largely exists to serve `vtable()`. What it does is takes a data set `data` and returns an HTML table with the contents of that data. 
 
 Outside of its use in `vtable()`, `dftoHTML()` can also be used to keep a view of the data file open while working on the data, avoiding repeated calls to `head()` or similar, or switching back and forth between code tabs and data view tabs.
 

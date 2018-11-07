@@ -17,22 +17,35 @@
 #' @param desc Character variable offering a brief description of the dataset itself.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
 #' @examples
-#' df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),var4=as.factor(c('A','B','C','C')),var5=c(T,T,F,F))
+#' df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),
+#'     var4=as.factor(c('A','B','C','C')),var5=c(TRUE,TRUE,FALSE,FALSE))
+#'
 #' #Demonstrating different options:
-#' vtable(df,labels=c('Number 1','Number 2','Some Letters','Some Labels','You Good?'))
-#' vtable(subset(df,select=c(1,2,5)),labels=c('Number 1','Number 2','You Good?'),class=FALSE)
-#' vtable(subset(df,select=c('var1','var4')),labels=c('Number 1','Some Labels'),values=TRUE,factor.limit=1,col.width=c(10,10,40,35))
+#' vtable(df,labels=c('Number 1','Number 2','Some Letters',
+#'     'Some Labels','You Good?'))
+#' vtable(subset(df,select=c(1,2,5)),
+#'     labels=c('Number 1','Number 2','You Good?'),class=FALSE)
+#' vtable(subset(df,select=c('var1','var4')),
+#'     labels=c('Number 1','Some Labels'),
+#'     values=TRUE,factor.limit=1,col.width=c(10,10,40,35))
+#'
 #' #Different methods of applying variable labels:
-#' labelsmethod2 <- data.frame(var1='Number 1',var2='Number 2',var3='Some Letters',var4='Some Labels',var5='You Good?')
-#' labelsmethod3 <- data.frame(a =c("var1","var2","var3","var4","var5"),b=c('Number 1','Number 2','Some Letters','Some Labels','You Good?'))
+#' labelsmethod2 <- data.frame(var1='Number 1',var2='Number 2',
+#'     var3='Some Letters',var4='Some Labels',var5='You Good?')
 #' vtable(df,labels=labelsmethod2)
+#' labelsmethod3 <- data.frame(a =c("var1","var2","var3","var4","var5"),
+#'     b=c('Number 1','Number 2','Some Letters','Some Labels','You Good?'))
 #' vtable(df,labels=labelsmethod3)
+#'
 #' #Using value labels and pre-labeled data:
 #' library(sjlabelled)
-#' df <- set_label(df,c('Number 1','Number 2','Some Letters','Some Labels','You Good?'))
-#' df$var1 <- set_labels(df$var1,labels=c('A little','Some more','Even more','A lot'))
+#' df <- set_label(df,c('Number 1','Number 2','Some Letters',
+#'     'Some Labels','You Good?'))
+#' df$var1 <- set_labels(df$var1,labels=c('A little','Some more',
+#' 'Even more','A lot'))
 #' vtable(df)
-#' #efc is data with variable and value lables from the sjlabelled package
+#'
+#' #efc is data with embedded variable and value lables from the sjlabelled package
 #' data(efc)
 #' vtable(efc)
 #'
@@ -163,13 +176,13 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
     #Determine whether we need to be looking for labeled values with sjlabelled or haven
     if ('sjlabelled' %in% .packages() | 'haven' %in% .packages()) {
       #Are there any labelled values?
-      if (!is.null(unlist(get_labels(data)))) {
+      if (!is.null(unlist(sjlabelled::get_labels(data)))) {
         #Since we've already extracted class, if necessary,
         #we can just turn these into factor variables with an included
         #numerical coding for clarity
 
         #Pull out labels
-        vallabs <- get_labels(data,values=TRUE)
+        vallabs <- sjlabelled::get_labels(data,values=TRUE)
         #Add numerical coding
         vallabscode <- lapply(vallabs, function(x) paste(names(x),': ',x,sep=''))
         #Make sure the labels are named chr vectors
@@ -180,10 +193,10 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
         #Don't count the factors, we don't want to relabel them
         havelabels[sapply(data,is.factor)] <- FALSE
         #Set new coded labels among the variables with value labels
-        data[,havelabels] <- set_labels(data[,havelabels],labels=vallabscode[havelabels])
+        data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels])
 
         #And turn 'em into factors
-        data[,havelabels] <- as_label(data[,havelabels])
+        data[,havelabels] <- sjlabelled::as_label(data[,havelabels])
       }
     }
 
@@ -368,7 +381,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
   if (out == 'viewer' | (Sys.getenv('RSTUDIO')==1 & is.na(out))) {
     rstudioapi::viewer(htmlpath)
   } else if (out == 'browser' | (Sys.getenv('RSTUDIO')==0 & is.na(out))) {
-    browseURL(htmlpath)
+    utils::browseURL(htmlpath)
   } else if (out == 'return') {
     return(vt)
   } else if (out == 'htmlreturn') {
@@ -391,7 +404,8 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
 #' @param row.names Flag determining whether or not the row names should be included in the table. Defaults to FALSE.
 #' @examples
-#' df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),var4=as.factor(c('A','B','C','C')),var5=c(T,T,F,F))
+#' df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),
+#'     var4=as.factor(c('A','B','C','C')),var5=c(TRUE,TRUE,FALSE,FALSE))
 #' dftoHTML(data,out="browser")
 #'
 
@@ -504,7 +518,7 @@ dftoHTML <- function(data,out=NA,file=NA,col.width=NA,row.names=FALSE) {
   if (out == 'viewer' | (Sys.getenv('RSTUDIO')==1 & is.na(out))) {
     rstudioapi::viewer(htmlpath)
   } else if (out == 'browser' | (Sys.getenv('RSTUDIO')==0 & is.na(out))) {
-    browseURL(htmlpath)
+    utils::browseURL(htmlpath)
   } else if (out == 'htmlreturn') {
     return(table.html)
   } else {
