@@ -226,7 +226,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
 
          } else {
           #No sjlabelled
-          warning("vtable() requires sjlabelled in order to process value labels. Labelled values will be shown as numeric. Load sjlabelled to include value labels.")
+          warning("vtable() requires sjlabelled in order to process value labels. Labelled values will be shown as numeric. Load sjlabelled to include value labels.",immediate.=TRUE)
         }
 
       }
