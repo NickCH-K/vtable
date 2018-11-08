@@ -179,7 +179,9 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
     if ('sjlabelled' %in% .packages() | 'haven' %in% .packages() | 'labelled' %in% .packages()) {
       #Are there any labelled values?
       #allow both for the labelled class and non-factor variables with value labels
-      if (sum(sapply(data,is.labelled))+sum(sapply(data,function(x) !is.factor(x) & !is.null(unlist(sjlabelled::get_labels(x)))))>0) {
+      if (sum(sapply(data,function(x) class(x) == "labelled"))+
+              sum(sapply(data,function(x) !is.factor(x) &
+                         !is.null(unlist(sjlabelled::get_labels(x)))))>0) {
 
         #Translating these requires sjlabelled
         if ('sjlabelled' %in% .packages()) {
@@ -187,7 +189,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
           #we can just turn these into factor variables with an included
           #numerical coding for clarity
           #Identify which variables have labels
-          havelabels <- sapply(data,is.labelled)
+          havelabels <- sapply(data,function(x) class(x) == "labelled")
           #Include variables not of the class labelled or factor but which have labels
           havelabels[sapply(data,function(x) !is.factor(x) & !is.null(unlist(sjlabelled::get_labels(x,attr.only=TRUE))))] <- TRUE
 
