@@ -176,29 +176,57 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
     vt$Values <- ''
 
     #Determine whether we need to be looking for labeled values with sjlabelled or haven
-    if ('sjlabelled' %in% .packages() | 'haven' %in% .packages()) {
+    if ('sjlabelled' %in% .packages() | 'haven' %in% .packages() | 'labelled' %in% .packages()) {
       #Are there any labelled values?
-      if (!is.null(unlist(sjlabelled::get_labels(data)))) {
-        #Since we've already extracted class, if necessary,
-        #we can just turn these into factor variables with an included
-        #numerical coding for clarity
+      #allow both for the labelled class and non-factor variables with value labels
+      if (sum(sapply(data,is.labelled))+sum(sapply(data,function(x) !is.factor(x) & !is.null(unlist(sjlabelled::get_labels(x)))))>0) {
 
-        #Pull out labels
-        vallabs <- sjlabelled::get_labels(data,values=TRUE)
-        #Add numerical coding
-        vallabscode <- lapply(vallabs, function(x) paste(names(x),': ',x,sep=''))
-        #Make sure the labels are named chr vectors
-        names(vallabscode) <- lapply(vallabs,function(x) names(x))
+        #Translating these requires sjlabelled
+        if ('sjlabelled' %in% .packages()) {
+          #Since we've already extracted class, if necessary,
+          #we can just turn these into factor variables with an included
+          #numerical coding for clarity
+          #Identify which variables have labels
+          havelabels <- sapply(data,is.labelled)
+          #Include variables not of the class labelled or factor but which have labels
+          havelabels[sapply(data,function(x) !is.factor(x) & !is.null(unlist(sjlabelled::get_labels(x,attr.only=TRUE))))] <- TRUE
 
-        #Identify which variables had labels
-        havelabels <- sapply(vallabs,function(x) !is.null(x))
-        #Don't count the factors, we don't want to relabel them
-        havelabels[sapply(data,is.factor)] <- FALSE
-        #Set new coded labels among the variables with value labels
-        data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels])
+          vallabs <- sjlabelled::get_labels(data,values=TRUE)
+          #Add numerical coding
+          vallabscode <- lapply(vallabs, function(x) paste(names(x),': ',x,sep=''))
+          #Make sure the labels are named chr vectors
+          names(vallabscode) <- lapply(vallabs,function(x) names(x))
 
-        #And turn 'em into factors
-        data[,havelabels] <- sjlabelled::as_label(data[,havelabels])
+          #Set new coded labels among the variables with value labels
+          #Run through try because this will produce an error if
+          #values are not exactly labeled (some values unlabeled, or some labels unused)
+          #If there is an error, use drop and fill labels to correct;
+          #check if necessary first because these commands are slow.
+          labcheck <- try(data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels]),silent=TRUE)
+          if (class(labcheck) == "try-error") {
+            warning("Labelled variables detected that have some values unlabelled, or some labels without matching values in data.\n  This will take a moment to correct. To avoid this delay in the future, ensure labels match values exactly, or run drop_labels() and/or fill_labels() on your data.",immediate.=TRUE)
+
+            #Make sure labels match
+            data[,havelabels] <- sjlabelled::drop_labels(data[,havelabels])
+            data[,havelabels] <- sjlabelled::fill_labels(data[,havelabels])
+
+            vallabs <- sjlabelled::get_labels(data,values=TRUE)
+            #Add numerical coding
+            vallabscode <- lapply(vallabs, function(x) paste(names(x),': ',x,sep=''))
+            #Make sure the labels are named chr vectors
+            names(vallabscode) <- lapply(vallabs,function(x) names(x))
+
+            data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels])
+
+          }
+
+          data[,havelabels] <- sjlabelled::as_label(data[,havelabels])
+
+         } else {
+          #No sjlabelled
+          warning("vtable() requires sjlabelled in order to process value labels. Labelled values will be shown as numeric. Load sjlabelled to include value labels.")
+        }
+
       }
     }
 
