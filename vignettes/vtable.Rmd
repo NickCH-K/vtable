@@ -18,9 +18,9 @@ First, it allows for an easy generation of a variable documentation file, withou
 
 Second, it produces a list of variables (and, if provided, their labels) that can be easily viewed while working with the data, preventing repeated calls to `head()`, and making it much easier to work with confusingly-named variables. 
 
-Third, the variable documentation file can be easily searched with standard Find-in-Page functions like Ctrl/Cmd-F, allowsing you to search for the variable or variable label you want.
+Third, the variable documentation file can be opened in a browser (with option `out='browser'`, saving to file and opening directly, or by opening in the RStudio Viewer pane and clicking 'Show in New Window') where it can be easily searched with standard Find-in-Page functions like Ctrl/Cmd-F, allowsing you to search for the variable or variable label you want.
 
-`dftoHTML()`, which is used by `vtable()` to create variable documentaiton files, is more narrow. It takes any data frame or matrix with column names and outputs HTML table code for that data.
+`dftoHTML()`, which is used by `vtable()` to create variable documentatoon files, is more narrow. It takes any data frame or matrix with column names and outputs HTML table code for that data.
 
 -----
 
@@ -34,11 +34,12 @@ vtable(data,
     file=NA, 
     labels=NA, 
     class=TRUE, 
-    values=FALSE, 
+    values=TRUE, 
     factor.limit=5,
     data.title=NA,
     desc=NA, 
-    col.width=NA)
+    col.width=NA,
+    summ=NA)
 ```
 
 The goal of `vtable()` is to take a data set `data` and output an HTML file with documentation concerning each of the variables in `data'. There are several options as to what will be included in the documentation file, and each of these options are explained below. Throughout, most code will be included without output because output is typically rendered in a browser or in the Viewer pane of RStudio, not the console:
@@ -57,7 +58,7 @@ data(LifeCycleSavings)
 vtable(LifeCycleSavings)
 
 #Example 2, using constructed data frame
-df <- data.frame(var1 = 1:4, var2 = c("A","B","C","D"))
+df <- data.frame(var1 = 1:4, var2 = c('A','B','C','D'))
 vtable(df)
 
 #Example 3, using matrix with column names
@@ -81,34 +82,34 @@ The `out` option determines what will be done with the resulting variable docume
 | htmlreturn | Returns HTML code for variable documentation file. |
 | return     | Returns variable documentation table in data frame format. |
 
-By default, `vtable` will select "viewer" if running in RStudio, and "browser" otherwise.
+By default, `vtable` will select 'viewer' if running in RStudio, and 'browser' otherwise.
 
 ```
 library(vtable)
 
 data(LifeCycleSavings)
 vtable(LifeCycleSavings)
-vtable(LifeCycleSavings,out="browser")
-vtable(LifeCycleSavings,out="viewer")
-htmlcode <- vtable(LifeCycleSavings,out="htmlreturn")
-vartable <- vtable(LifeCycleSavings,out="return")
+vtable(LifeCycleSavings,out='browser')
+vtable(LifeCycleSavings,out='viewer')
+htmlcode <- vtable(LifeCycleSavings,out='htmlreturn')
+vartable <- vtable(LifeCycleSavings,out='return')
 ```
 
 
 ## `file`
 
-The `file` argument will write the variable documentation file to an HTML file and save it. Will automatically append "html" filetype if the filename does not include a period.
+The `file` argument will write the variable documentation file to an HTML file and save it. Will automatically append 'html' filetype if the filename does not include a period.
 
 ```
 library(vtable)
 
 data(LifeCycleSavings)
-vtable(LifeCycleSavings,file="lifecycle_variabledocumentation")
+vtable(LifeCycleSavings,file='lifecycle_variabledocumentation')
 ```
 
 ## `labels`
 
-The `labels` argument will attach variable labels to the variables in `data`. If variable labels are embedded in `data` and those labels are what you want, the `labels` argument is unnecessary. Set `labels="omit"` if there are embedded labels but you do not want them in the table.
+The `labels` argument will attach variable labels to the variables in `data`. If variable labels are embedded in `data` and those labels are what you want, the `labels` argument is unnecessary. Set `labels='omit'` if there are embedded labels but you do not want them in the table.
 
 `labels` can be used in any one of three formats.
 
@@ -122,14 +123,14 @@ library(vtable)
 #Note that LifeCycleSavings has five variables
 data(LifeCycleSavings)
 #These variable labels are taken from help(LifeCycleSavings)
-labs <- c("numeric aggregate personal savings",
-    "numeric % of population under 15",
-    "numeric % of population over 75",
-    "numeric real per-capita disposable income",
-    "numeric % growth rate of dpi")
+labs <- c('numeric aggregate personal savings',
+    'numeric % of population under 15',
+    'numeric % of population over 75',
+    'numeric real per-capita disposable income',
+    'numeric % growth rate of dpi')
 vtable(LifeCycleSavings,labels=labs)
 
-labs <- c("numeric aggregate personal savings",NA,NA,NA,NA)
+labs <- c('numeric aggregate personal savings',NA,NA,NA,NA)
 vtable(LifeCycleSavings,labels=labs)
 ```
 ### `labels` as a two-column data set
@@ -142,13 +143,13 @@ This approach does __not__ require that every variable name in `data` has a matc
 library(vtable)
 
 #Note that LifeCycleSavings has five variables
-#with names "sr", "pop15", "pop75", "dpi", and "ddpi"
+#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'
 data(LifeCycleSavings)
 #These variable labels are taken from help(LifeCycleSavings)
-labs <- data.frame(nonsensename1 = c("sr", "pop15", "pop75"),
-nonsensename2 = c("numeric aggregate personal savings",
-    "numeric % of population under 15",
-    "numeric % of population over 75"))
+labs <- data.frame(nonsensename1 = c('sr', 'pop15', 'pop75'),
+nonsensename2 = c('numeric aggregate personal savings',
+    'numeric % of population under 15',
+    'numeric % of population over 75'))
 vtable(LifeCycleSavings,labels=labs)
 
 labs <- as.matrix(labs)
@@ -165,12 +166,12 @@ This approach does __not__ require that every variable name in `data` has a matc
 library(vtable)
 
 #Note that LifeCycleSavings has five variables
-#with names "sr", "pop15", "pop75", "dpi", and "ddpi"
+#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'
 data(LifeCycleSavings)
 #These variable labels are taken from help(LifeCycleSavings)
-labs <- data.frame(sr = "numeric aggregate personal savings",
-    pop15 = "numeric % of population under 15",
-    pop75 = "numeric % of population over 75")
+labs <- data.frame(sr = 'numeric aggregate personal savings',
+    pop15 = 'numeric % of population under 15',
+    pop75 = 'numeric % of population over 75')
 vtable(LifeCycleSavings,labels=labs)
 
 labs <- as.matrix(labs)
@@ -193,24 +194,25 @@ vtable(LifeCycleSavings,class=FALSE)
 
 The `values` flag will either report or not report the values that each variable takes. Numeric variables will report a range, logicals will report 'TRUE FALSE', and factor variables will report the first `factor.limit` (default 5) factors listed.
 
-If the variable is numeric but has value labels applied by the `sjlabelled` package, `vtable()` will find them and report the numeric-label crosswalk.
+If the variable is numeric but has value labels applied by the `sjlabelled` package, `vtable()` will find them and report the numeric-label crosswalk. This requires `sjlabelled` to be loaded.
 
 ```
 library(vtable)
 
 data(LifeCycleSavings)
-vtable(LifeCycleSavings,values=TRUE)
+vtable(LifeCycleSavings,values=FALSE)
+vtable(LifeCycleSavings)
 
 #CO2 contains factor variables
 data(CO2)
-vtable(CO2,values=TRUE)
+vtable(CO2)
 
 #efc contains labeled values
-#Note that the original value labels do not tell you what numerical
+#Note that the original value labels do not tell easily you what numerical
 #value each label maps to, but vtable() does.
 library(sjlabelled)
 data(efc)
-vtable(efc,values=TRUE)
+vtable(efc)
 ```
 
 ## `factor.limit`
@@ -224,9 +226,9 @@ library(vtable)
 
 #CO2 contains factor variables
 data(CO2)
-vtable(CO2,values=TRUE)
-vtable(CO2,values=TRUE,factor.limit=1)
-vtable(CO2,values=TRUE,factor.limit=0)
+vtable(CO2)
+vtable(CO2,factor.limit=1)
+vtable(CO2,factor.limit=0)
 ```
 
 ## `data.title`
@@ -238,35 +240,53 @@ library(vtable)
 
 data(LifeCycleSavings)
 vtable(LifeCycleSavings)
-vtable(LifeCycleSavings,data.title="Intercountry Life-Cycle Savings Data")
+vtable(LifeCycleSavings,data.title='Intercountry Life-Cycle Savings Data')
 ```
 
 ## `desc`
 
-`desc` will include a description of the data set in the variable documentation file. 
+`desc` will include a description of the data set in the variable documentation file. This will by default include information on the number of observations and the number of columns. To remove this, set `desc='omit'`, or include any description and then include 'omit' as the last four characters. 
 
 ```
 library(vtable)
 
 data(LifeCycleSavings)
 vtable(LifeCycleSavings)
-vtable(LifeCycleSavings,data.title="Intercountry Life-Cycle Savings Data",
+vtable(LifeCycleSavings,data.title='Intercountry Life-Cycle Savings Data',
     desc='Data on the savings ratio 1960–1970.')
+vtable(LifeCycleSavings,data.title='Intercountry Life-Cycle Savings Data',
+    desc='omit')
+vtable(LifeCycleSavings,data.title='Intercountry Life-Cycle Savings Data',
+    desc='Data on the savings ratio 1960–1970. omit')
 ```
 
 ## `col.width`
 
-`vtable()` will select default column widths for the variable table depending on which measures (name, class, label, values) are included. `col.width`, as a vector of percentage column widths on the 0-100 scale, will override these defaults.
+`vtable()` will select default column widths for the variable table depending on which measures `(name, class, label, values, summ)` are included. `col.width`, as a vector of percentage column widths on the 0-100 scale, will override these defaults.
 
 ```
 library(vtable)
 library(sjlabelled)
 
 data(efc)
-vtable(efc,values=TRUE)
+vtable(efc)
 #The variable names in this data set are pretty short, and the value labels are
 #a little cramped, so let's move that over.
-vtable(efc,values=TRUE,col.width=c(10,10,40,40))
+vtable(efc,col.width=c(10,10,40,40))
+```
+
+## `summ`
+
+`summ` will calculate summary statistics for each numeric and logical variable. `summ` is very flexible. It takes a character vector in which each element is of the form `function(x)`, where `function(x)` is any function that takes a vector and returns a single numeric value. For example, `summ=c('mean(x)','median(x)','mean(log(x))')` would calculate the mean, median, and mean of the log for each variable.
+
+`summ` also takes two functions that are not R standards: `propNA(x)` and `countNA(x)`, which give the proportion and count of NA values in the variable, respectively. These two functions are calculated for all variables, not just numeric and logical ones.
+
+```
+library(vtable)
+library(sjlabelled)
+data(efc)
+
+vtable(efc,summ=c('mean(x)','countNA(x)'))
 ```
 
 -----
@@ -304,27 +324,27 @@ The `out` option determines what will be done with the resulting variable docume
 | viewer     | Loads HTML version of `data` in Viewer pane (RStudio only). |
 | htmlreturn | Returns HTML code for `data`. |
 
-By default, `vtable` will select "viewer" if running in RStudio, and "browser" otherwise.
+By default, `vtable` will select 'viewer' if running in RStudio, and 'browser' otherwise.
 
 ```
 library(vtable)
 
 data(LifeCycleSavings)
 dftoHTML(LifeCycleSavings)
-dftoHTML(LifeCycleSavings,out="browser")
-dftoHTML(LifeCycleSavings,out="viewer")
-htmlcode <- dftoHTML(LifeCycleSavings,out="htmlreturn")
+dftoHTML(LifeCycleSavings,out='browser')
+dftoHTML(LifeCycleSavings,out='viewer')
+htmlcode <- dftoHTML(LifeCycleSavings,out='htmlreturn')
 ```
 
 ## `file`
 
-The `file` argument will write the HTML version of `data` to an HTML file and save it. Will automatically append "html" filetype if the filename does not include a period.
+The `file` argument will write the HTML version of `data` to an HTML file and save it. Will automatically append 'html' filetype if the filename does not include a period.
 
 ```
 library(vtable)
 
 data(LifeCycleSavings)
-dftoHTML(LifeCycleSavings,file="lifecycledata_htmlversion.html")
+dftoHTML(LifeCycleSavings,file='lifecycledata_htmlversion.html')
 ```
 
 ## `col.width`

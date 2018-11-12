@@ -11,11 +11,12 @@
 #' @param file Saves the completed variable table file to HTML with this filepath. May be combined with any value of out.
 #' @param labels Variable labels. labels will accept three formats: (1) A vector of the same length as the number of variables in the data, in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, or (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels. Setting the labels parameter will override any variable labels already in the data. Set to "omit" if the data set has embedded labels but you don't want any labels in the table.
 #' @param class Set to TRUE to include variable classes in the variable table. Defaults to TRUE.
-#' @param values Set to TRUE to include the range of values of each variable: min and max for numeric variables, list of factors for factor variables, and 'TRUE FALSE' for logicals. values will detect and use value labels set by the sjlabelled or haven packages. Defaults to FALSE.
+#' @param values Set to TRUE to include the range of values of each variable: min and max for numeric variables, list of factors for factor or ordered variables, and 'TRUE FALSE' for logicals. values will detect and use value labels set by the sjlabelled or haven packages. Defaults to TRUE.
 #' @param factor.limit Sets maximum number of factors that will be included if values = TRUE. Set to 0 for no limit. Defaults to 5.
 #' @param data.title Character variable with the title of the dataset.
-#' @param desc Character variable offering a brief description of the dataset itself.
+#' @param desc Character variable offering a brief description of the dataset itself. This will by default include information on the number of observations and the number of columns. To remove this, set desc='omit', or include any description and then include 'omit' as the last four characters.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
+#' @param summ Character vector of summary statistics to include for numeric and logical variables, in the form 'function(x)'. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, summ=c('mean(x)','mean(log(x))') will provide the mean of each variable as well as the mean of the log of each variable. This also allows the special functions `propNA(x)` and `countNA(x)`,  which provide the proportion and total number of missing values in the variable, respectively, which will always be displayed first and which are applied to factor and character variables as well as numeric and logical. NAs will be omitted from all calculations other than propNA(x) and countNA(x).
 #' @examples
 #' df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),
 #'     var4=as.factor(c('A','B','C','C')),var5=c(TRUE,TRUE,FALSE,FALSE))
@@ -24,10 +25,10 @@
 #' vtable(df,labels=c('Number 1','Number 2','Some Letters',
 #'     'Some Labels','You Good?'))
 #' vtable(subset(df,select=c(1,2,5)),
-#'     labels=c('Number 1','Number 2','You Good?'),class=FALSE)
+#'     labels=c('Number 1','Number 2','You Good?'),class=FALSE,values=FALSE)
 #' vtable(subset(df,select=c('var1','var4')),
 #'     labels=c('Number 1','Some Labels'),
-#'     values=TRUE,factor.limit=1,col.width=c(10,10,40,35))
+#'     factor.limit=1,col.width=c(10,10,40,35))
 #'
 #' #Different methods of applying variable labels:
 #' labelsmethod2 <- data.frame(var1='Number 1',var2='Number 2',
@@ -49,6 +50,8 @@
 #' data(efc)
 #' vtable(efc)
 #'
+#' #Adding summary statistics for variable mean and proportion of data that is missing.
+#' vtable(efc,summ=c('mean(x)','propNA(x)'))
 # You can learn more about package authoring with RStudio at:
 #
 #   http://r-pkgs.had.co.nz/
@@ -60,8 +63,8 @@
 #   Test Package:              'Ctrl + Shift + T'
 
 #' @export
-vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
-                   factor.limit=5,data.title=NA,desc=NA,col.width=NA) {
+vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,
+                   factor.limit=5,data.title=NA,desc=NA,col.width=NA,summ=NA) {
 
   #######CHECK INPUTS
   if (is.null(colnames(data))) {
@@ -91,6 +94,14 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
   if (min(is.na(col.width)) == 0 & (max(col.width) > 100 | min(col.width) < 0)) {
     stop('Elements of col.width must be between 0 and 100.')
   }
+  if (min(is.na(summ)) == 0 & (!is.vector(summ) | !is.character(summ) | sum(is.na(summ)) > 0)) {
+    stop('summ must be a character vector with no missing values.')
+  }
+
+  #One-column matrices run into some problems later on
+  if (is.matrix(data) & dim(data)[2] == 1) {
+    data <- as.data.frame(data)
+  }
 
   ####### APPLICATION OF DATA.TITLE OPTION
   #If data.title is missing, fill in with name of the data frame read in
@@ -106,7 +117,19 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
   ####### APPLICATION OF CLASS OPTION
   #If user asks for variable classes, add them to the variable table
   if (class == TRUE) {
-    vt$Class <- sapply(data,class)
+    #If multiple classes listed, take the first
+    vt$Class <- sapply(data,function(x) class(x)[1])
+  }
+  #Now that we've taken the class names, we need only one class
+  #If there are multiples and one is factor, treat as factor
+  if (sum(sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))) > 0) {
+    data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))] <-
+      factor(data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))],ordered=FALSE)
+  }
+  #If there are multiples and one is numeric do the same
+  if (sum(sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))) > 0) {
+    data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))] <-
+      as.numeric(data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))])
   }
 
   ####### APPLICATION OF LABELS OPTION
@@ -175,23 +198,40 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
     #Create variable to hold ranges
     vt$Values <- ''
 
-    #Determine whether we need to be looking for labeled values with sjlabelled or haven
-    if ('sjlabelled' %in% .packages() | 'haven' %in% .packages() | 'labelled' %in% .packages()) {
-      #Are there any labelled values?
-      #allow both for the labelled class and non-factor variables with value labels
-      if (sum(sapply(data,function(x) class(x) == "labelled"))+
-              sum(sapply(data,function(x) !is.factor(x) &
-                         !is.null(unlist(sjlabelled::get_labels(x)))))>0) {
+    #Are there any labelled values?
+    #allow both for the labelled class and non-factor variables with value labels
+    if (sum(sapply(data,function(x) class(x) == "labelled"))+
+        sum(sapply(data,function(x) !is.factor(x) &
+                   !is.null(unlist(sjlabelled::get_labels(x)))))>0) {
 
-        #Translating these requires sjlabelled
-        if ('sjlabelled' %in% .packages()) {
-          #Since we've already extracted class, if necessary,
-          #we can just turn these into factor variables with an included
-          #numerical coding for clarity
-          #Identify which variables have labels
-          havelabels <- sapply(data,function(x) class(x) == "labelled")
-          #Include variables not of the class labelled or factor but which have labels
-          havelabels[sapply(data,function(x) !is.factor(x) & !is.null(unlist(sjlabelled::get_labels(x,attr.only=TRUE))))] <- TRUE
+      #Translating these requires sjlabelled
+      if ('sjlabelled' %in% .packages()) {
+        #Since we've already extracted class, if necessary,
+        #we can just turn these into factor variables with an included
+        #numerical coding for clarity
+        #Identify which variables have labels
+        havelabels <- sapply(data,function(x) class(x) == "labelled")
+        #Include variables not of the class labelled or factor but which have labels
+        havelabels[sapply(data,function(x) !is.factor(x) & !is.null(unlist(sjlabelled::get_labels(x,attr.only=TRUE))))] <- TRUE
+
+        vallabs <- sjlabelled::get_labels(data,values=TRUE)
+        #Add numerical coding
+        vallabscode <- lapply(vallabs, function(x) paste(names(x),': ',x,sep=''))
+        #Make sure the labels are named chr vectors
+        names(vallabscode) <- lapply(vallabs,function(x) names(x))
+
+        #Set new coded labels among the variables with value labels
+        #Run through try because this will produce an error if
+        #values are not exactly labeled (some values unlabeled, or some labels unused)
+        #If there is an error, use drop and fill labels to correct;
+        #check if necessary first because these commands are slow.
+        labcheck <- try(data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels]),silent=TRUE)
+        if (class(labcheck)[1] == "try-error") {
+          warning("Labelled variables detected that have some values unlabelled, or some labels without matching values in data.\n  This will take a moment to correct. To avoid this delay in the future, ensure labels match values exactly, or run drop_labels() and/or fill_labels() on your data.",immediate.=TRUE)
+
+          #Make sure labels match
+          data[,havelabels] <- sjlabelled::drop_labels(data[,havelabels])
+          data[,havelabels] <- sjlabelled::fill_labels(data[,havelabels])
 
           vallabs <- sjlabelled::get_labels(data,values=TRUE)
           #Add numerical coding
@@ -199,37 +239,17 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
           #Make sure the labels are named chr vectors
           names(vallabscode) <- lapply(vallabs,function(x) names(x))
 
-          #Set new coded labels among the variables with value labels
-          #Run through try because this will produce an error if
-          #values are not exactly labeled (some values unlabeled, or some labels unused)
-          #If there is an error, use drop and fill labels to correct;
-          #check if necessary first because these commands are slow.
-          labcheck <- try(data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels]),silent=TRUE)
-          if (class(labcheck) == "try-error") {
-            warning("Labelled variables detected that have some values unlabelled, or some labels without matching values in data.\n  This will take a moment to correct. To avoid this delay in the future, ensure labels match values exactly, or run drop_labels() and/or fill_labels() on your data.",immediate.=TRUE)
+          data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels])
 
-            #Make sure labels match
-            data[,havelabels] <- sjlabelled::drop_labels(data[,havelabels])
-            data[,havelabels] <- sjlabelled::fill_labels(data[,havelabels])
-
-            vallabs <- sjlabelled::get_labels(data,values=TRUE)
-            #Add numerical coding
-            vallabscode <- lapply(vallabs, function(x) paste(names(x),': ',x,sep=''))
-            #Make sure the labels are named chr vectors
-            names(vallabscode) <- lapply(vallabs,function(x) names(x))
-
-            data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels])
-
-          }
-
-          data[,havelabels] <- sjlabelled::as_label(data[,havelabels])
-
-         } else {
-          #No sjlabelled
-          warning("vtable() requires sjlabelled in order to process value labels. Labelled values will be shown as numeric. Load sjlabelled to include value labels.",immediate.=TRUE)
         }
 
+        data[,havelabels] <- sjlabelled::as_label(data[,havelabels])
+
+       } else {
+        #No sjlabelled
+        warning("vtable() requires sjlabelled in order to process value labels. Labelled values will be shown as numeric. Load sjlabelled to include value labels.",immediate.=TRUE)
       }
+
     }
 
 
@@ -286,6 +306,90 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
     }
   }
 
+  ####### APPLICATION OF SUMM OPTION
+  #Check if anything included for summ
+  if (min(is.na(summ)) == 0) {
+    #Create blank to fill in
+    vt$Summary = ''
+
+    #First, do the propNA and countNA functions
+    #Do separately so it can be applied to factors and characters
+    #and also because all other functions are run only on nonmissings
+    #So if we have NA counts and also factors to do them to
+    if ('propNA(x)' %in% summ) {
+      vt$Summary <-
+        #Start the summary variable off by pasting together the propNA name
+        paste('propNA: ',
+              #with a summary calculation performed on each character or factor column of the data
+              sapply(data,
+                     #and in particular that function is mean(is.na(x))
+                     function(x) round(mean(is.na(x)),3)),sep='')
+      #If propNA isn't the only thing, use a line break to separate this from the next
+      if (length(summ) > 1) {
+        vt$Summary <-
+          paste(vt$Summary,'<br/>',sep='')
+      }
+    }
+    #Now do the exact same thing for countNA as was done for propNA
+    if ('countNA(x)' %in% summ) {
+      vt$Summary <-
+        #Start the summary variable off by pasting together the countNA name
+        paste(vt$Summary,'countNA: ',
+              #with a summary calculation performed on each character or factor column of the data
+              sapply(data,
+                     #and in particular that function is mean(is.na(x))
+                     function(x) sum(is.na(x))),sep='')
+
+      #If there's still more to come, add a line break
+      if (length(summ[!summ %in% c('propNA(x)','countNA(x)')])>0) {
+        vt$Summary <-
+          paste(vt$Summary,'<br/>',sep='')
+      }
+    }
+
+    #If there are propNA or countNA functions, drop them since we just used them
+    summ <- summ[!summ %in% c('propNA(x)','countNA(x)')]
+
+    #Create copy of summ for actual use
+    summuse <- summ
+    #And a copy for naming the summary stats
+    summnames <- summ
+
+    #Change names for presentation. If the name is simple
+    #(i.e. ends in just (x)), cut that out. Otherwise, leave intact for clarity
+    #replace the names of all names that end in '(x)'
+    summnames[substring(summnames,nchar(summnames)-2)=='(x)'] <-
+      #with a substring of those names that starts at 1 and ends before (x)
+      substring(summnames[substring(summnames,nchar(summnames)-2)=='(x)'],
+                1,nchar(summnames[substring(summnames,nchar(summnames)-2)=='(x)'])-3)
+    #and tack on a ': ' that will go between the name and the number
+    summnames <- paste(summnames,': ',sep='')
+
+    #Now do all the stats for numeric and logicals. This one's a beast!
+    #Comments are numbered for the purpose of reading them in order
+    vt[!(sapply(data,class) %in% c("character","factor")),]$Summary <-
+      #8. And finally paste it together with what we already have
+      paste(vt[!(sapply(data,class) %in% c("character","factor")),]$Summary,
+      #3. Go through each of those variables one by one to calculate summary stats
+      sapply(
+      #2 Turn it into a list and restrict each of the columns to nonmissing
+        #(can't just use complete.cases - you want each variable to have all its nonmissings)
+        #(can't use na.rm since some functions might not take it)
+        #(can't do this at the level of x on the innermost sapply since it may be difficult to locate the x that connotates data if the function has the letter x in it)
+      lapply(as.list(
+      #1. Take all the variables that aren't characters or factors
+      data[,!(sapply(data,class) %in% c("character","factor")),drop=FALSE]),function(x) x[!is.na(x)]),
+      #4. within each of those variables, paste together a bunch of summary stats
+      function(x) paste0(
+        #5. Each of those summary stats should be preceded by the name of the summary stat
+        paste(summnames,
+        #6. then, the summary stat itself, for which we need to run through everything in summuse
+        sapply(summuse,function(y) round(eval(parse(text=y)),3)),sep=''),
+        #7. Bring together with a line break between each summary stat except the last
+        collapse='<br/>')),sep='')
+
+  }
+
 
   ####### CONSTRUCTION OF HTML
   #Head of file
@@ -334,9 +438,30 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
                     '<td style=\"text-align:right\">Variable Documentation</td></tr></table>',
                     '<h1>',data.title,'</h1>')
 
-  #If there's a description
-  if (!is.na(desc)) {
-    out.html <- paste(out.html,'<p>',desc,'</p>',sep='')
+  #Applying description
+  #By default, this is number of obs and number of columns, plus whatever is in desc.
+  #"omit" will leave that out.
+  description <- paste('This data contains ',dim(data)[1],' rows and ',dim(data)[2],' columns.',sep='')
+  #four possibilities: desc is NA (print description),
+  #desc is just omit (print nothing, do nothing)
+  #desc is other stuff followed by omit (just print the other stuff)
+  #desc is other stuff not followed by omit (print desc and the other stuff)
+  #First, check for blank desc
+  if (is.na(desc)) {
+    out.html <- paste(out.html,'<p>',description,'</p>',sep='')
+
+    #Evaluate these only if desc is nonmissing
+  } else if(desc == "omit") {
+    #Do nothing here
+
+    #Next, stuff followed by omit
+  } else if(substring(desc,nchar(desc)-3)=="omit" & desc != "omit") {
+    #Don't actually print the omit!
+    out.html <- paste(out.html,'<p>',substring(desc,1,nchar(desc)-4),'</p>',sep='')
+
+    #Finally, stuff not followed by omit
+  } else {
+    out.html <- paste(out.html,'<p>',desc,' ',description,'</p>',sep='')
   }
 
   out.html <- paste(out.html,'<h3>Variable Table</h3>',sep='')
@@ -347,35 +472,32 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=FALSE,
   haslabels <- 'Label' %in% colnames(vt)
   hasclass <- 'Class' %in% colnames(vt)
   hasvalues <- 'Values' %in% colnames(vt)
+  hassumm <- 'Summary' %in% colnames(vt)
   #If col.width not manually set, use defaults
   if (sum(!is.na(col.width)) == 0) {
-    #Default values:
-    #All four columns: Name 25%, class 10%, label 40%, Values 25%
-    #Name only: Name 50%
-    #Name and class: Name 35%, class 20%
-    #Name and label: Name 35%, Label 65%
-    #Name and values: Name 35%, Label 65%
-    #Name, class, label: Name 30%, Class 10%, Label 55%
-    #Name, class, Values: Name 30%, Class 10%, Values 55%
-    #Name, label, values: Name 25%, label 45%, Values 30%
-    #By default, names gets 20% with labels, 30% without.
-    if (haslabels == 1 & hasclass == 1 & hasvalues == 1) {
-      col.width <- c(25,10,40,25)
-    } else if (haslabels == 0 & hasclass == 1 & hasvalues == 1) {
-      col.width <- c(30,10,55)
-    } else if (haslabels == 1 & hasclass == 0 & hasvalues == 1) {
-      col.width <- c(25,45,30)
-    } else if (haslabels == 1 & hasclass == 1 & hasvalues == 0) {
-      col.width <- c(30,10,55)
-    } else if (haslabels == 0 & hasclass == 0 & hasvalues == 1) {
-      col.width <- c(35,65)
-    } else if (haslabels == 0 & hasclass == 1 & hasvalues == 0) {
-      col.width <- c(35,20)
-    } else if (haslabels == 1 & hasclass == 0 & hasvalues == 0) {
-      col.width <- c(35,65)
-    } else if (haslabels == 0 & hasclass == 0 & hasvalues == 0) {
-      col.width <- c(50)
-    }
+    #initialize vector
+    col.width <- rep(0,length(colnames(vt)))
+
+    #Default ratios:
+    #Name:class:label:values:summ
+    #1:.5:1.75:1.25:.75
+    col.width[colnames(vt)=='Name'] <- 1
+    col.width[colnames(vt)=='Class'] <- .5
+    col.width[colnames(vt)=='Label'] <- 1.75
+    col.width[colnames(vt)=='Values'] <- 1.25
+    col.width[colnames(vt)=='Summary'] <- .9
+
+    #Add it up
+    totalwidth <- sum(col.width)
+
+    #If total amount is less than two name-spaces, let table take up 60% of screen
+    #From 2-3 name-spaces, 80%
+    #More than 3 is full-screen
+    tablescale <- 60 + 20*(totalwidth>=2) + 20*(totalwidth>=3)
+
+    #And rescale column widths
+    col.width <- (col.width/totalwidth)*tablescale
+
   }
 
 

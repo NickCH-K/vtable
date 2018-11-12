@@ -5,8 +5,8 @@
 \title{Variable Table Function}
 \usage{
 vtable(data, out = NA, file = NA, labels = NA, class = TRUE,
-  values = FALSE, factor.limit = 5, data.title = NA, desc = NA,
-  col.width = NA)
+  values = TRUE, factor.limit = 5, data.title = NA, desc = NA,
+  col.width = NA, summ = NA)
 }
 \arguments{
 \item{data}{Data set; accepts any format with column names. If variable labels are set with the haven package, set_label() from sjlabelled, or label() from Hmisc, vtable will extract them automatically.}
@@ -19,15 +19,17 @@ vtable(data, out = NA, file = NA, labels = NA, class = TRUE,
 
 \item{class}{Set to TRUE to include variable classes in the variable table. Defaults to TRUE.}
 
-\item{values}{Set to TRUE to include the range of values of each variable: min and max for numeric variables, list of factors for factor variables, and 'TRUE FALSE' for logicals. values will detect and use value labels set by the sjlabelled or haven packages. Defaults to FALSE.}
+\item{values}{Set to TRUE to include the range of values of each variable: min and max for numeric variables, list of factors for factor or ordered variables, and 'TRUE FALSE' for logicals. values will detect and use value labels set by the sjlabelled or haven packages. Defaults to TRUE.}
 
 \item{factor.limit}{Sets maximum number of factors that will be included if values = TRUE. Set to 0 for no limit. Defaults to 5.}
 
 \item{data.title}{Character variable with the title of the dataset.}
 
-\item{desc}{Character variable offering a brief description of the dataset itself.}
+\item{desc}{Character variable offering a brief description of the dataset itself. This will by default include information on the number of observations and the number of columns. To remove this, set desc='omit', or include any description and then include 'omit' as the last four characters.}
 
 \item{col.width}{Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.}
+
+\item{summ}{Character vector of summary statistics to include for numeric and logical variables, in the form 'function(x)'. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, summ=c('mean(x)','mean(log(x))') will provide the mean of each variable as well as the mean of the log of each variable. This also allows the special functions `propNA(x)` and `countNA(x)`,  which provide the proportion and total number of missing values in the variable, respectively, which will always be displayed first and which are applied to factor and character variables as well as numeric and logical. NAs will be omitted from all calculations other than propNA(x) and countNA(x).}
 }
 \description{
 This function will output a descriptive variable table either to the console or as an HTML file that can be viewed continuously while working with data.
@@ -45,10 +47,10 @@ df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),
 vtable(df,labels=c('Number 1','Number 2','Some Letters',
     'Some Labels','You Good?'))
 vtable(subset(df,select=c(1,2,5)),
-    labels=c('Number 1','Number 2','You Good?'),class=FALSE)
+    labels=c('Number 1','Number 2','You Good?'),class=FALSE,values=FALSE)
 vtable(subset(df,select=c('var1','var4')),
     labels=c('Number 1','Some Labels'),
-    values=TRUE,factor.limit=1,col.width=c(10,10,40,35))
+    factor.limit=1,col.width=c(10,10,40,35))
 
 #Different methods of applying variable labels:
 labelsmethod2 <- data.frame(var1='Number 1',var2='Number 2',
@@ -70,4 +72,6 @@ vtable(df)
 data(efc)
 vtable(efc)
 
+#Adding summary statistics for variable mean and proportion of data that is missing.
+vtable(efc,summ=c('mean(x)','propNA(x)'))
 }
