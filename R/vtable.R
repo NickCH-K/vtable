@@ -12,6 +12,7 @@
 #' @param labels Variable labels. labels will accept three formats: (1) A vector of the same length as the number of variables in the data, in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, or (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels. Setting the labels parameter will override any variable labels already in the data. Set to "omit" if the data set has embedded labels but you don't want any labels in the table.
 #' @param class Set to TRUE to include variable classes in the variable table. Defaults to TRUE.
 #' @param values Set to TRUE to include the range of values of each variable: min and max for numeric variables, list of factors for factor or ordered variables, and 'TRUE FALSE' for logicals. values will detect and use value labels set by the sjlabelled or haven packages. Defaults to TRUE.
+#' @param index Set to TRUE to include the index number of the column with the variable name. Defaults to FALSE.
 #' @param factor.limit Sets maximum number of factors that will be included if values = TRUE. Set to 0 for no limit. Defaults to 5.
 #' @param data.title Character variable with the title of the dataset.
 #' @param desc Character variable offering a brief description of the dataset itself. This will by default include information on the number of observations and the number of columns. To remove this, set desc='omit', or include any description and then include 'omit' as the last four characters.
@@ -63,7 +64,7 @@
 #   Test Package:              'Ctrl + Shift + T'
 
 #' @export
-vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,
+vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,index=FALSE,
                    factor.limit=5,data.title=NA,desc=NA,col.width=NA,summ=NA) {
 
   #######CHECK INPUTS
@@ -77,6 +78,9 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,
     stop('The class option must be TRUE or FALSE.')
   }
   if (!is.logical(values)) {
+    stop('The values option must be TRUE or FALSE.')
+  }
+  if (!is.logical(index)) {
     stop('The values option must be TRUE or FALSE.')
   }
   if (!is.numeric(factor.limit) | factor.limit%%1 != 0) {
@@ -110,9 +114,14 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,
   }
 
   ####### FORM VARIABLE TABLE TO BUILD ON
-  #Start table with variable names or column names (earlier error check ensures one exists)
-  vt <- data.frame(Name = colnames(data))
-
+  #If index = TRUE, start with that. Otherwise, start wtih Name
+  if (index==TRUE) {
+    vt <- data.frame(Index=1:ncol(data),
+                     Name=colnames(data))
+  } else {
+    #Start table with variable names or column names (earlier error check ensures one exists)
+    vt <- data.frame(Name = colnames(data))
+  }
 
   ####### APPLICATION OF CLASS OPTION
   #If user asks for variable classes, add them to the variable table
@@ -481,6 +490,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,
     #Default ratios:
     #Name:class:label:values:summ
     #1:.5:1.75:1.25:.75
+    col.width[colnames(vt)=='Index'] <- .25
     col.width[colnames(vt)=='Name'] <- 1
     col.width[colnames(vt)=='Class'] <- .5
     col.width[colnames(vt)=='Label'] <- 1.75

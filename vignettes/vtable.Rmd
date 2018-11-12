@@ -2,7 +2,7 @@
 title: "Variable Table"
 author: "Nick Huntington-Klein"
 date: "`r Sys.Date()`"
-output: pdf_document
+output: rmarkdown::html_vignette
 <!-- output: rmarkdown::html_vignette. pdf_document -->
 vignette: >
   %\VignetteIndexEntry{Variable Table (vtable)}
@@ -34,7 +34,8 @@ vtable(data,
     file=NA, 
     labels=NA, 
     class=TRUE, 
-    values=TRUE, 
+    values=TRUE,
+    index=FALSE,
     factor.limit=5,
     data.title=NA,
     desc=NA, 
@@ -42,7 +43,7 @@ vtable(data,
     summ=NA)
 ```
 
-The goal of `vtable()` is to take a data set `data` and output an HTML file with documentation concerning each of the variables in `data'. There are several options as to what will be included in the documentation file, and each of these options are explained below. Throughout, most code will be included without output because output is typically rendered in a browser or in the Viewer pane of RStudio, not the console:
+The goal of `vtable()` is to take a data set `data` and output an HTML file with documentation concerning each of the variables in `data`. There are several options as to what will be included in the documentation file, and each of these options are explained below. Throughout, most code will be included without output because output is typically rendered in a browser or in the Viewer pane of RStudio, not the console:
 
 ## `data`
 
@@ -215,6 +216,17 @@ data(efc)
 vtable(efc)
 ```
 
+## `index`
+
+The `index` flag will either report or not report the index number of each variable. Defaults to FALSE.
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+vtable(LifeCycleSavings,index=TRUE)
+```
+
 ## `factor.limit`
 
 If `values` is set to `TRUE`, then `factor.limit` limits the number of factors displayed on the variable table. `factor.limit` is by default 5, to cut down on clutter. The table will include the phrase "and more" to indicate that some factors have been cut off.
@@ -277,9 +289,9 @@ vtable(efc,col.width=c(10,10,40,40))
 
 ## `summ`
 
-`summ` will calculate summary statistics for each numeric and logical variable. `summ` is very flexible. It takes a character vector in which each element is of the form `function(x)`, where `function(x)` is any function that takes a vector and returns a single numeric value. For example, `summ=c('mean(x)','median(x)','mean(log(x))')` would calculate the mean, median, and mean of the log for each variable.
+`summ` will calculate summary statistics for all non-missing values of each numeric and logical variable. `summ` is very flexible. It takes a character vector in which each element is of the form `function(x)`, where `function(x)` is any function that takes a vector and returns a single numeric value. For example, `summ=c('mean(x)','median(x)','mean(log(x))')` would calculate the mean, median, and mean of the log for each variable.
 
-`summ` also takes two functions that are not R standards: `propNA(x)` and `countNA(x)`, which give the proportion and count of NA values in the variable, respectively. These two functions are calculated for all variables, not just numeric and logical ones.
+`summ` also takes two functions that are not R standards: `propNA(x)` and `countNA(x)`, which give the proportion and count of NA values in the variable, respectively. These two functions are always reported first, and are calculated for all variables, not just numeric and logical ones.
 
 ```
 library(vtable)
@@ -349,7 +361,7 @@ dftoHTML(LifeCycleSavings,file='lifecycledata_htmlversion.html')
 
 ## `col.width`
 
-`dftoHTML()` will select, by default, equal column widths for all columns in `data'. `col.width`, as a vector of percentage column widths on the 0-100 scale, will override these defaults.
+`dftoHTML()` will select, by default, equal column widths for all columns in `data`. `col.width`, as a vector of percentage column widths on the 0-100 scale, will override these defaults.
 
 ```
 library(vtable)
