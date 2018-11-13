@@ -296,10 +296,10 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,index=FA
     #If there are any numeric variables:
     if (sum(sapply(data,is.numeric)) > 0) {
       #Get minimums
-      min <- lapply(subset(data,select=sapply(data,is.numeric)),min,na.rm=TRUE)
+      min <- lapply(subset(data,select=sapply(data,is.numeric)),function(x) round(min(x,na.rm=TRUE),3))
 
       #Get maximums
-      max <- lapply(subset(data,select=sapply(data,is.numeric)),max,na.rm=TRUE)
+      max <- lapply(subset(data,select=sapply(data,is.numeric)),function(x) round(max(x,na.rm=TRUE),3))
 
       #Range description
       range <- paste('Num:',min,'to',max)
@@ -570,7 +570,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,index=FA
 #' @examples
 #' df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),
 #'     var4=as.factor(c('A','B','C','C')),var5=c(TRUE,TRUE,FALSE,FALSE))
-#' dftoHTML(data,out="browser")
+#' dftoHTML(df,out="browser")
 #'
 
 #' @export
