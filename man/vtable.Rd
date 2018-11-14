@@ -5,8 +5,8 @@
 \title{Variable Table Function}
 \usage{
 vtable(data, out = NA, file = NA, labels = NA, class = TRUE,
-  values = TRUE, index = FALSE, factor.limit = 5, data.title = NA,
-  desc = NA, col.width = NA, summ = NA)
+  values = TRUE, missing = FALSE, index = FALSE, factor.limit = 5,
+  data.title = NA, desc = NA, col.width = NA, summ = NA)
 }
 \arguments{
 \item{data}{Data set; accepts any format with column names. If variable labels are set with the haven package, set_label() from sjlabelled, or label() from Hmisc, vtable will extract them automatically.}
@@ -20,6 +20,8 @@ vtable(data, out = NA, file = NA, labels = NA, class = TRUE,
 \item{class}{Set to TRUE to include variable classes in the variable table. Defaults to TRUE.}
 
 \item{values}{Set to TRUE to include the range of values of each variable: min and max for numeric variables, list of factors for factor or ordered variables, and 'TRUE FALSE' for logicals. values will detect and use value labels set by the sjlabelled or haven packages. Defaults to TRUE.}
+
+\item{missing}{Set to TRUE to include whether the variable contains any NAs. Defaults to FALSE}
 
 \item{index}{Set to TRUE to include the index number of the column with the variable name. Defaults to FALSE.}
 
