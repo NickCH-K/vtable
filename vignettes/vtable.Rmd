@@ -35,6 +35,7 @@ vtable(data,
     labels=NA, 
     class=TRUE, 
     values=TRUE,
+    missing=FALSE,
     index=FALSE,
     factor.limit=5,
     data.title=NA,
@@ -214,6 +215,18 @@ vtable(CO2)
 library(sjlabelled)
 data(efc)
 vtable(efc)
+```
+
+## `missing`
+
+The `missing` flag, set to TRUE, will report whether or not the variable has any missing values. Defaults to FALSE.
+
+```
+library(vtable)
+
+data(LifeCycleSavings)
+LifeCycleSavings$sr[1] <- NA
+vtable(LifeCycleSavings,missing=TRUE)
 ```
 
 ## `index`

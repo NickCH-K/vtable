@@ -12,7 +12,7 @@
 #' @param labels Variable labels. labels will accept three formats: (1) A vector of the same length as the number of variables in the data, in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, or (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels. Setting the labels parameter will override any variable labels already in the data. Set to "omit" if the data set has embedded labels but you don't want any labels in the table.
 #' @param class Set to TRUE to include variable classes in the variable table. Defaults to TRUE.
 #' @param values Set to TRUE to include the range of values of each variable: min and max for numeric variables, list of factors for factor or ordered variables, and 'TRUE FALSE' for logicals. values will detect and use value labels set by the sjlabelled or haven packages. Defaults to TRUE.
-#' @param missing Set to TRUE to include whether the variable contains any NAs. Defaults to FALSE
+#' @param missing Set to TRUE to include whether the variable contains any NAs. Defaults to FALSE.
 #' @param index Set to TRUE to include the index number of the column with the variable name. Defaults to FALSE.
 #' @param factor.limit Sets maximum number of factors that will be included if values = TRUE. Set to 0 for no limit. Defaults to 5.
 #' @param data.title Character variable with the title of the dataset.
@@ -82,10 +82,10 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     stop('The values option must be TRUE or FALSE.')
   }
   if (!is.logical(missing)) {
-    stop('The values option must be TRUE or FALSE.')
+    stop('The missing option must be TRUE or FALSE.')
   }
   if (!is.logical(index)) {
-    stop('The values option must be TRUE or FALSE.')
+    stop('The index option must be TRUE or FALSE.')
   }
   if (!is.numeric(factor.limit) | factor.limit%%1 != 0) {
     stop('factor.limit must be an integer. Set to 0 for unlimited factors.')
@@ -322,7 +322,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
   #If user asks for whether column includes missing values, add them to the variable table
   if (missing==TRUE) {
       vt$Missing <- sapply(data,function(x) anyNA(x))
-    }
+  }
   ####### APPLICATION OF SUMM OPTION
   #Check if anything included for summ
   if (min(is.na(summ)) == 0) {

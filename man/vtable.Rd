@@ -21,7 +21,7 @@ vtable(data, out = NA, file = NA, labels = NA, class = TRUE,
 
 \item{values}{Set to TRUE to include the range of values of each variable: min and max for numeric variables, list of factors for factor or ordered variables, and 'TRUE FALSE' for logicals. values will detect and use value labels set by the sjlabelled or haven packages. Defaults to TRUE.}
 
-\item{missing}{Set to TRUE to include whether the variable contains any NAs. Defaults to FALSE}
+\item{missing}{Set to TRUE to include whether the variable contains any NAs. Defaults to FALSE.}
 
 \item{index}{Set to TRUE to include the index number of the column with the variable name. Defaults to FALSE.}
 
