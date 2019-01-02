@@ -27,6 +27,6 @@ This function is designed to feed HTML versions of variable tables to vtable().
 \examples{
 df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),
     var4=as.factor(c('A','B','C','C')),var5=c(TRUE,TRUE,FALSE,FALSE))
-dftoHTML(data,out="browser")
+dftoHTML(df,out="browser")
 
 }
