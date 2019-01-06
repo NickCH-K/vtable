@@ -6,12 +6,13 @@ Date: 2018-11-12
 Author: c(person(given = "Nick", family = "Huntington-Klein", role = "aut", email = "nhuntington-klein@fullerton.edu"))
 Maintainer: Nick Huntington-Klein <nhuntington-klein@fullerton.edu>
 Description: Automatically generates HTML variable documentation including variable names, labels, classes, value labels (if applicable), value ranges, and summary statistics. See the vignette "vtable" for a package overview.
-License: GPL-3
+License: MIT + file LICENSE
 LazyData: true
 Encoding: UTF-8
-Suggests: 
+Imports:
     utils,
-    sjlabelled,
+    sjlabelled
+Suggests: 
     rstudioapi,
     knitr,
     rmarkdown

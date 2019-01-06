@@ -28,7 +28,7 @@ Third, the variable documentation file can be opened in a browser (with option `
 
 `vtable()` syntax follows the following outline:
 
-```
+```{r, eval=FALSE}
 vtable(data, 
     out=NA,
     file=NA, 
@@ -52,7 +52,7 @@ The `data` argument can take any data frame, data table, tibble, or matrix, as l
 
 If `data` has embedded variable or value labels, as the data set `efc` does below, `vtable()` will extract and use them automatically.
                    
-```
+```{r, eval=FALSE}
 library(vtable)
 
 #Example 1, using base data LifeCycleSavings
@@ -86,7 +86,7 @@ The `out` option determines what will be done with the resulting variable docume
 
 By default, `vtable` will select 'viewer' if running in RStudio, and 'browser' otherwise.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)
@@ -102,7 +102,7 @@ vartable <- vtable(LifeCycleSavings,out='return')
 
 The `file` argument will write the variable documentation file to an HTML file and save it. Will automatically append 'html' filetype if the filename does not include a period.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)
@@ -119,7 +119,7 @@ The `labels` argument will attach variable labels to the variables in `data`. If
 
 `labels` can be set to be a vector of equal length to the number of variables in `data`, and in the same order. `NA` values can be used for padding if some variables do not have labels.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 #Note that LifeCycleSavings has five variables
@@ -141,7 +141,7 @@ vtable(LifeCycleSavings,labels=labs)
 
 This approach does __not__ require that every variable name in `data` has a matching label.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 #Note that LifeCycleSavings has five variables
@@ -164,7 +164,7 @@ vtable(LifeCycleSavings,labels=labs)
 
 This approach does __not__ require that every variable name in `data` has a matching label.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 #Note that LifeCycleSavings has five variables
@@ -184,7 +184,7 @@ vtable(LifeCycleSavings,labels=labs)
 
 The `class` flag will either report or not report the class of each variable in the resulting variable table. By default this is set to `TRUE`.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)
@@ -198,7 +198,7 @@ The `values` flag will either report or not report the values that each variable
 
 If the variable is numeric but has value labels applied by the `sjlabelled` package, `vtable()` will find them and report the numeric-label crosswalk. This requires `sjlabelled` to be loaded.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)
@@ -221,7 +221,7 @@ vtable(efc)
 
 The `missing` flag, set to TRUE, will report whether or not the variable has any missing values. Defaults to FALSE.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)
@@ -233,7 +233,7 @@ vtable(LifeCycleSavings,missing=TRUE)
 
 The `index` flag will either report or not report the index number of each variable. Defaults to FALSE.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)
@@ -246,7 +246,7 @@ If `values` is set to `TRUE`, then `factor.limit` limits the number of factors d
 
 Setting `factor.limit=0` will include all factors.  If `values=FALSE`, `factor.limit` does nothing.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 #CO2 contains factor variables
@@ -260,7 +260,7 @@ vtable(CO2,factor.limit=0)
 
 `data.title` will include a data title in the variable documentation file. If not set manually, this will default to the variable name for `data`.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)
@@ -272,7 +272,7 @@ vtable(LifeCycleSavings,data.title='Intercountry Life-Cycle Savings Data')
 
 `desc` will include a description of the data set in the variable documentation file. This will by default include information on the number of observations and the number of columns. To remove this, set `desc='omit'`, or include any description and then include 'omit' as the last four characters. 
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)
@@ -289,7 +289,7 @@ vtable(LifeCycleSavings,data.title='Intercountry Life-Cycle Savings Data',
 
 `vtable()` will select default column widths for the variable table depending on which measures `(name, class, label, values, summ)` are included. `col.width`, as a vector of percentage column widths on the 0-100 scale, will override these defaults.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 library(sjlabelled)
 
@@ -306,7 +306,7 @@ vtable(efc,col.width=c(10,10,40,40))
 
 `summ` also takes two functions that are not R standards: `propNA(x)` and `countNA(x)`, which give the proportion and count of NA values in the variable, respectively. These two functions are always reported first, and are calculated for all variables, not just numeric and logical ones.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 library(sjlabelled)
 data(efc)
@@ -332,7 +332,7 @@ Outside of its use in `vtable()`, `dftoHTML()` can also be used to keep a view o
 
 `dftoHTML()` will accept any data set with a `colnames()` attribute.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)
@@ -351,7 +351,7 @@ The `out` option determines what will be done with the resulting variable docume
 
 By default, `vtable` will select 'viewer' if running in RStudio, and 'browser' otherwise.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)
@@ -365,7 +365,7 @@ htmlcode <- dftoHTML(LifeCycleSavings,out='htmlreturn')
 
 The `file` argument will write the HTML version of `data` to an HTML file and save it. Will automatically append 'html' filetype if the filename does not include a period.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)
@@ -376,7 +376,7 @@ dftoHTML(LifeCycleSavings,file='lifecycledata_htmlversion.html')
 
 `dftoHTML()` will select, by default, equal column widths for all columns in `data`. `col.width`, as a vector of percentage column widths on the 0-100 scale, will override these defaults.
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)
@@ -390,7 +390,7 @@ dftoHTML(LifeCycleSavings,col.width=c(60,10,10,10,10))
 
 The `row.names` flag determines whether the row names of the data are included as the first column in the output table. 
 
-```
+```{r, eval=FALSE}
 library(vtable)
 
 data(LifeCycleSavings)

@@ -20,6 +20,7 @@
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
 #' @param summ Character vector of summary statistics to include for numeric and logical variables, in the form 'function(x)'. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, summ=c('mean(x)','mean(log(x))') will provide the mean of each variable as well as the mean of the log of each variable. This also allows the special functions `propNA(x)` and `countNA(x)`,  which provide the proportion and total number of missing values in the variable, respectively, which will always be displayed first and which are applied to factor and character variables as well as numeric and logical. NAs will be omitted from all calculations other than propNA(x) and countNA(x).
 #' @examples
+#' \dontrun{
 #' df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),
 #'     var4=as.factor(c('A','B','C','C')),var5=c(TRUE,TRUE,FALSE,FALSE))
 #'
@@ -54,6 +55,8 @@
 #'
 #' #Adding summary statistics for variable mean and proportion of data that is missing.
 #' vtable(efc,summ=c('mean(x)','propNA(x)'))
+#'
+#' }
 # You can learn more about package authoring with RStudio at:
 #
 #   http://r-pkgs.had.co.nz/

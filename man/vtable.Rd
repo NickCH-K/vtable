@@ -44,6 +44,7 @@ Outputting the variable table as a help file will make it easy to search through
 This function is in a similar spirit to promptData(), but focuses on variable documentation rather than dataset documentation.
 }
 \examples{
+\dontrun{
 df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),
     var4=as.factor(c('A','B','C','C')),var5=c(TRUE,TRUE,FALSE,FALSE))
 
@@ -78,4 +79,6 @@ vtable(efc)
 
 #Adding summary statistics for variable mean and proportion of data that is missing.
 vtable(efc,summ=c('mean(x)','propNA(x)'))
+
+}
 }
