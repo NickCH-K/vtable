@@ -676,9 +676,14 @@ dftoHTML <- function(data,out=NA,file=NA,col.width=NA,row.names=FALSE) {
     writeLines(table.html,filepath)
   }
 
+  #For better evaluating if statements
+  if (is.na(out)) {
+    out = ''
+  }
+
   ####### APPLICATION OF OUT OPTION
   #If the plan is to produce a viewable HTML, create it
-  if (out == 'viewer' | out == 'browser' | is.na(out)) {
+  if (out == 'viewer' | out == 'browser' | out == '') {
     #Get temporary dirpath
     tempDir <- tempfile()
     #Create temporary directory
@@ -692,16 +697,11 @@ dftoHTML <- function(data,out=NA,file=NA,col.width=NA,row.names=FALSE) {
   #Either print the variable table to the help window
   #or return a variable table to the screen, as desired
 
-  #For better evaluating if statements
-  if (is.na(out)) {
-    out = ''
-  }
-
   if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {
     rstudioapi::viewer(htmlpath)
   } else if (Sys.getenv('RSTUDIO')=='' & out == 'viewer') {
     stop('out = viewer is not a valid option if RStudio is not running.')
-  } else if (Sys.getenv('RSTUDIO')=='' & (out == 'browser' | out == '')) {
+  } else if ((Sys.getenv('RSTUDIO')=='' & out == '') | (out == 'browser')) {
     utils::browseURL(htmlpath)
   } else if (out == 'htmlreturn') {
     return(table.html)
