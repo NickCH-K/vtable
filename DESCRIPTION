@@ -2,9 +2,8 @@ Package: vtable
 Type: Package
 Title: Variable Table
 Version: 0.2.0
-Date: 2018-11-12
-Author: c(person(given = "Nick", family = "Huntington-Klein", role = "aut", email = "nhuntington-klein@fullerton.edu"))
-Maintainer: Nick Huntington-Klein <nhuntington-klein@fullerton.edu>
+Date: 2019-01-07
+Authors@R: c(person(given = "Nick", family = "Huntington-Klein", role = c("aut","cre"), email = "nhuntington-klein@fullerton.edu"))
 Description: Automatically generates HTML variable documentation including variable names, labels, classes, value labels (if applicable), value ranges, and summary statistics. See the vignette "vtable" for a package overview.
 License: MIT + file LICENSE
 LazyData: true
