@@ -539,9 +539,14 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     writeLines(out.html,filepath)
   }
 
+  #For more easily working with if statements
+  if (is.na(out)) {
+    out = ''
+  }
+
   ####### APPLICATION OF OUT OPTION
   #If the plan is to produce a viewable HTML, create it
-  if (out == 'viewer' | out == 'browser' | is.na(out)) {
+  if (out == 'viewer' | out == 'browser' | out == '') {
     #Get temporary dirpath
     tempDir <- tempfile()
     #Create temporary directory
@@ -554,9 +559,11 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
   #Either print the variable table to the help window
   #or return a variable table to the screen, as desired
-  if (out == 'viewer' | (Sys.getenv('RSTUDIO')==1 & is.na(out))) {
+  if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {
     rstudioapi::viewer(htmlpath)
-  } else if (out == 'browser' | (Sys.getenv('RSTUDIO')==0 & is.na(out))) {
+  } else if (Sys.getenv('RSTUDIO')=='' & out == 'viewer') {
+    stop('out = viewer is not a valid option if RStudio is not running.')
+  } else if ((Sys.getenv('RSTUDIO')=='' & out == '') | (out == 'browser')) {
     utils::browseURL(htmlpath)
   } else if (out == 'return') {
     return(vt)
