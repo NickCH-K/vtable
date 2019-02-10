@@ -196,7 +196,7 @@ vtable(LifeCycleSavings,class=FALSE)
 
 The `values` flag will either report or not report the values that each variable takes. Numeric variables will report a range, logicals will report 'TRUE FALSE', and factor variables will report the first `factor.limit` (default 5) factors listed.
 
-If the variable is numeric but has value labels applied by the `sjlabelled` package, `vtable()` will find them and report the numeric-label crosswalk. This requires `sjlabelled` to be loaded.
+If the variable is numeric but has value labels applied by the `sjlabelled` package, `vtable()` will find them and report the numeric-label crosswalk.
 
 ```{r, eval=FALSE}
 library(vtable)

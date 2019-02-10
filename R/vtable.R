@@ -42,14 +42,14 @@
 #' vtable(df,labels=labelsmethod3)
 #'
 #' #Using value labels and pre-labeled data:
-#' library(sjlabelled)
 #' df <- set_label(df,c('Number 1','Number 2','Some Letters',
 #'     'Some Labels','You Good?'))
 #' df$var1 <- set_labels(df$var1,labels=c('A little','Some more',
 #' 'Even more','A lot'))
 #' vtable(df)
 #'
-#' #efc is data with embedded variable and value lables from the sjlabelled package
+#' #efc is data with embedded variable and value labels from the sjlabelled package
+#' library(sjlabelled)
 #' data(efc)
 #' vtable(efc)
 #'
@@ -220,8 +220,6 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
         sum(sapply(data,function(x) !is.factor(x) &
                    !is.null(unlist(sjlabelled::get_labels(x)))))>0) {
 
-      #Translating these requires sjlabelled
-      if ('sjlabelled' %in% .packages()) {
         #Since we've already extracted class, if necessary,
         #we can just turn these into factor variables with an included
         #numerical coding for clarity
@@ -260,11 +258,6 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
         }
 
         data[,havelabels] <- sjlabelled::as_label(data[,havelabels])
-
-       } else {
-        #No sjlabelled
-        warning("vtable() requires sjlabelled in order to process value labels. Labelled values will be shown as numeric. Load sjlabelled to include value labels.",immediate.=TRUE)
-      }
 
     }
 

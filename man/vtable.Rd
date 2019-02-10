@@ -66,14 +66,14 @@ labelsmethod3 <- data.frame(a =c("var1","var2","var3","var4","var5"),
 vtable(df,labels=labelsmethod3)
 
 #Using value labels and pre-labeled data:
-library(sjlabelled)
 df <- set_label(df,c('Number 1','Number 2','Some Letters',
     'Some Labels','You Good?'))
 df$var1 <- set_labels(df$var1,labels=c('A little','Some more',
 'Even more','A lot'))
 vtable(df)
 
-#efc is data with embedded variable and value lables from the sjlabelled package
+#efc is data with embedded variable and value labels from the sjlabelled package
+library(sjlabelled)
 data(efc)
 vtable(efc)
 

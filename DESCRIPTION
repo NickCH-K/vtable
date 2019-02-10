@@ -1,8 +1,8 @@
 Package: vtable
 Type: Package
 Title: Variable Table
-Version: 0.2.0
-Date: 2019-01-07
+Version: 0.3.0
+Date: 2019-01-16
 Authors@R: c(person(given = "Nick", family = "Huntington-Klein", role = c("aut","cre"), email = "nhuntington-klein@fullerton.edu"))
 Description: Automatically generates HTML variable documentation including variable names, labels, classes, value labels (if applicable), value ranges, and summary statistics. See the vignette "vtable" for a package overview.
 License: MIT + file LICENSE
@@ -15,5 +15,5 @@ Suggests:
     rstudioapi,
     knitr,
     rmarkdown
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr
