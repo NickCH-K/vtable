@@ -15,6 +15,7 @@
 #' @param missing Set to TRUE to include whether the variable contains any NAs. Defaults to FALSE.
 #' @param index Set to TRUE to include the index number of the column with the variable name. Defaults to FALSE.
 #' @param factor.limit Sets maximum number of factors that will be included if values = TRUE. Set to 0 for no limit. Defaults to 5.
+#' @param char.values Set to TRUE to include values of character variables as though they were factors, if values = TRUE. Or, set to a character vector of variable names to list values of only those character variables. Defaults to FALSE. Has no effect if values = FALSE.
 #' @param data.title Character variable with the title of the dataset.
 #' @param desc Character variable offering a brief description of the dataset itself. This will by default include information on the number of observations and the number of columns. To remove this, set desc='omit', or include any description and then include 'omit' as the last four characters.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
@@ -66,7 +67,7 @@
 #' vtable(efc,summ=c('mean(x)','propNA(x)'),out='htmlreturn')
 #'
 #' }
-#' \dontrun{
+#' if(interactive()){
 #' df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),
 #'     var4=as.factor(c('A','B','C','C')),var5=c(TRUE,TRUE,FALSE,FALSE))
 #'
@@ -100,6 +101,11 @@
 #' data(efc)
 #' vtable(efc)
 #'
+#' #Displaying the values of a character vector
+#' data(USJudgeRatings)
+#' USJudgeRatings$Judge <- row.names(USJudgeRatings)
+#' vtable(USJudgeRatings,char.values=c('Judge'))
+#'
 #' #Adding summary statistics for variable mean and proportion of data that is missing.
 #' vtable(efc,summ=c('mean(x)','propNA(x)'))
 #'
@@ -116,7 +122,7 @@
 
 #' @export
 vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=FALSE,
-                   index=FALSE,factor.limit=5,data.title=NA,desc=NA,col.width=NA,summ=NA) {
+                   index=FALSE,factor.limit=5,char.values=FALSE,data.title=NA,desc=NA,col.width=NA,summ=NA) {
 
   #######CHECK INPUTS
   if (is.null(colnames(data))) {
@@ -139,6 +145,9 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
   }
   if (!is.numeric(factor.limit) | factor.limit%%1 != 0) {
     stop('factor.limit must be an integer. Set to 0 for unlimited factors.')
+  }
+  if (!(is.logical(char.values) | is.character(char.values))) {
+    stop('char.values must be FALSE, TRUE, or a character vector.')
   }
   if (!is.na(data.title) & !is.character(data.title)) {
     stop('data.title must be a character variable.')
@@ -178,18 +187,21 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
   }
 
   ####### APPLICATION OF CLASS OPTION
+
   #If user asks for variable classes, add them to the variable table
   if (class == TRUE) {
     #If multiple classes listed, take the first
     vt$Class <- sapply(data,function(x) class(x)[1])
   }
-  #Now that we've taken the class names, we need only one class
+
+
+  #We need only one class
   #If there are multiples and one is factor, treat as factor
   if (sum(sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))) > 0) {
     data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))] <-
-      factor(data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))],ordered=FALSE)
+      as.data.frame(sapply(data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))],function(x) factor(x,ordered=FALSE)))
   }
-  #If there are multiples and one is numeric do the same
+  #Similarly, only take one class if it's numeric.
   if (sum(sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))) > 0) {
     data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))] <-
       as.numeric(data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))])
@@ -258,12 +270,33 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
   ####### APPLICATION OF VALUES OPTION
   #If user wants values, show the possible values the variable can take
   if (values == TRUE) {
+
+    ####### APPLICATION OF CHAR.VALUES OPTION
+    if (class(char.values) == 'logical') {
+      if (char.values == TRUE) {
+        #See which are characters
+        charvariables <- as.logical(unlist(sapply(data,function(x) max(class(x) == "character"))))
+        #and convert
+        data[,charvariables] <- as.data.frame(sapply(data[,charvariables],function(x) as.factor(x)))
+        #clean
+        rm(charvariables)
+      }
+    }
+    else if (class(char.values) == 'character') {
+      #See which variables are in the list
+      charvariables <- names(data) %in% char.values
+      #and convert
+      data[,charvariables] <- as.data.frame(sapply(data[,charvariables],function(x) as.factor(x)))
+      #clean
+      rm(charvariables)
+    }
+
     #Create variable to hold ranges
     vt$Values <- ''
 
     #Are there any labelled values?
     #allow both for the labelled class and non-factor variables with value labels
-    if (sum(sapply(data,function(x) class(x) == "labelled"))+
+    if (sum(unlist(sapply(data,function(x) class(x) == "labelled")))+
         sum(sapply(data,function(x) !is.factor(x) &
                    !is.null(unlist(sjlabelled::get_labels(x)))))>0) {
 
@@ -271,7 +304,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
         #we can just turn these into factor variables with an included
         #numerical coding for clarity
         #Identify which variables have labels
-        havelabels <- sapply(data,function(x) class(x) == "labelled")
+        havelabels <- as.logical(unlist(sapply(data,function(x) max(class(x) == "labelled"))))
         #Include variables not of the class labelled or factor but which have labels
         havelabels[sapply(data,function(x) !is.factor(x) & !is.null(unlist(sjlabelled::get_labels(x,attr.only=TRUE))))] <- TRUE
 
@@ -286,25 +319,26 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
         #values are not exactly labeled (some values unlabeled, or some labels unused)
         #If there is an error, use drop and fill labels to correct;
         #check if necessary first because these commands are slow.
-        labcheck <- try(data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels]),silent=TRUE)
+        suppressWarnings(labcheck <- try(data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels]),silent=TRUE))
+
         if (class(labcheck)[1] == "try-error") {
-          warning("Labelled variables detected that have some values unlabelled, or some labels without matching values in data.\n  This will take a moment to correct. To avoid this delay in the future, ensure labels match values exactly, or run drop_labels() and/or fill_labels() on your data.",immediate.=TRUE)
+          warning("Labelled variables detected that have some values unlabelled, or some labels without matching values in data.\n  This will take a moment to correct. To avoid this delay in the future, ensure labels match values exactly, or run sjlabelled::drop_labels() and/or sjlabelled::fill_labels() on your data before using vtable.",immediate.=TRUE)
 
           #Make sure labels match
-          data[,havelabels] <- sjlabelled::drop_labels(data[,havelabels])
-          data[,havelabels] <- sjlabelled::fill_labels(data[,havelabels])
+          suppressWarnings(data[,havelabels] <- sjlabelled::drop_labels(data[,havelabels]))
+          suppressWarnings(data[,havelabels] <- sjlabelled::fill_labels(data[,havelabels]))
 
-          vallabs <- sjlabelled::get_labels(data,values=TRUE)
+          suppressWarnings(vallabs <- sjlabelled::get_labels(data,values=TRUE))
           #Add numerical coding
           vallabscode <- lapply(vallabs, function(x) paste(names(x),': ',x,sep=''))
           #Make sure the labels are named chr vectors
           names(vallabscode) <- lapply(vallabs,function(x) names(x))
 
-          data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels])
+          suppressWarnings(data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels]))
 
         }
 
-        data[,havelabels] <- sjlabelled::as_label(data[,havelabels])
+        suppressWarnings(data[,havelabels] <- sjlabelled::as_label(data[,havelabels]))
 
     }
 

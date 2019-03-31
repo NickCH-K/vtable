@@ -6,7 +6,8 @@
 \usage{
 vtable(data, out = NA, file = NA, labels = NA, class = TRUE,
   values = TRUE, missing = FALSE, index = FALSE, factor.limit = 5,
-  data.title = NA, desc = NA, col.width = NA, summ = NA)
+  char.values = FALSE, data.title = NA, desc = NA, col.width = NA,
+  summ = NA)
 }
 \arguments{
 \item{data}{Data set; accepts any format with column names. If variable labels are set with the haven package, set_label() from sjlabelled, or label() from Hmisc, vtable will extract them automatically.}
@@ -26,6 +27,8 @@ vtable(data, out = NA, file = NA, labels = NA, class = TRUE,
 \item{index}{Set to TRUE to include the index number of the column with the variable name. Defaults to FALSE.}
 
 \item{factor.limit}{Sets maximum number of factors that will be included if values = TRUE. Set to 0 for no limit. Defaults to 5.}
+
+\item{char.values}{Set to TRUE to include values of character variables as though they were factors, if values = TRUE. Or, set to a character vector of variable names to list values of only those character variables. Defaults to FALSE. Has no effect if values = FALSE.}
 
 \item{data.title}{Character variable with the title of the dataset.}
 
@@ -90,7 +93,7 @@ vtable(efc,out='htmlreturn')
 vtable(efc,summ=c('mean(x)','propNA(x)'),out='htmlreturn')
 
 }
-\dontrun{
+if(interactive()){
 df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),
     var4=as.factor(c('A','B','C','C')),var5=c(TRUE,TRUE,FALSE,FALSE))
 
@@ -123,6 +126,11 @@ vtable(df)
 library(sjlabelled)
 data(efc)
 vtable(efc)
+
+#Displaying the values of a character vector
+data(USJudgeRatings)
+USJudgeRatings$Judge <- row.names(USJudgeRatings)
+vtable(USJudgeRatings,char.values=c('Judge'))
 
 #Adding summary statistics for variable mean and proportion of data that is missing.
 vtable(efc,summ=c('mean(x)','propNA(x)'))

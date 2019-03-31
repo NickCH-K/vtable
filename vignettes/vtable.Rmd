@@ -38,6 +38,7 @@ vtable(data,
     missing=FALSE,
     index=FALSE,
     factor.limit=5,
+    char.values=FALSE,
     data.title=NA,
     desc=NA, 
     col.width=NA,
@@ -254,6 +255,24 @@ data(CO2)
 vtable(CO2)
 vtable(CO2,factor.limit=1)
 vtable(CO2,factor.limit=0)
+```
+
+## `char.values`
+
+If `values` is set to `TRUE`, then `char.values = TRUE` instructs `vtable` to list the values that character variables take, as though they were factors. If you only want some of the character variables to have their values listed, use a character vector to indicate which variables.
+
+```{r, eval=FALSE}
+library(vtable)
+
+data(USJudgeRatings)
+USJudgeRatings$Judge <- row.names(USJudgeRatings)
+USJudgeRatings$SecondCharacter <- 'Less Interesting'
+USJudgeRatings$ThirdCharacter <- 'Less Interesting Still!'
+
+#Show values for all character variables
+vtable(USJudgeRatings,char.values=TRUE)
+#Or just for a subset
+vtable(USJudgeRatings,char.values=c('Judge','SecondCharacter'))
 ```
 
 ## `data.title`
