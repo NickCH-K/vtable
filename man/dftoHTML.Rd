@@ -22,7 +22,7 @@ dftoHTML(data, out = NA, file = NA, col.width = NA,
 This function takes a data frame or matrix with column names and outputs an HTML table version of that data frame.
 }
 \details{
-This function is designed to feed HTML versions of variable tables to vtable().
+This function is designed to feed HTML versions of variable tables to vtable() and labeltable().
 }
 \examples{
 df <- data.frame(var1 = 1:4,var2=5:8,var3=c('A','B','C','D'),

@@ -6,8 +6,8 @@
 \usage{
 vtable(data, out = NA, file = NA, labels = NA, class = TRUE,
   values = TRUE, missing = FALSE, index = FALSE, factor.limit = 5,
-  char.values = FALSE, data.title = NA, desc = NA, col.width = NA,
-  summ = NA)
+  char.values = FALSE, slow.ok = FALSE, data.title = NA, desc = NA,
+  col.width = NA, summ = NA)
 }
 \arguments{
 \item{data}{Data set; accepts any format with column names. If variable labels are set with the haven package, set_label() from sjlabelled, or label() from Hmisc, vtable will extract them automatically.}
@@ -29,6 +29,8 @@ vtable(data, out = NA, file = NA, labels = NA, class = TRUE,
 \item{factor.limit}{Sets maximum number of factors that will be included if values = TRUE. Set to 0 for no limit. Defaults to 5.}
 
 \item{char.values}{Set to TRUE to include values of character variables as though they were factors, if values = TRUE. Or, set to a character vector of variable names to list values of only those character variables. Defaults to FALSE. Has no effect if values = FALSE.}
+
+\item{slow.ok}{If values = TRUE and the data contains value labels, but those labels don't line up properly with the values in the data, that's a problem. With slow.ok = TRUE, vtable can fix it but it's a very slow fix. slow.ok = FALSE (default) opts for a much faster approach that provides a little less information in Values about labelled variables.}
 
 \item{data.title}{Character variable with the title of the dataset.}
 

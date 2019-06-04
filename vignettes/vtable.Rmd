@@ -12,7 +12,7 @@ vignette: >
 
 The `vtable` package serves the purpose of outputting automatic variable documentation that can be easily viewed while continuing to work with data.
 
-`vtable` contains two functions: `vtable()` and `dftoHTML()`. `vtable()` takes a dataset and outputs a formatted variable documentation file. This serves several purposes. 
+`vtable` contains three functions: `vtable()`, `labeltable()`, and `dftoHTML()`. `vtable()` takes a dataset and outputs a formatted variable documentation file. This serves several purposes. 
 
 First, it allows for an easy generation of a variable documentation file, without requiring that one has already been created and made accessible through `help(data)`, or dealing with creating and finding R help documentation files. 
 
@@ -20,7 +20,13 @@ Second, it produces a list of variables (and, if provided, their labels) that ca
 
 Third, the variable documentation file can be opened in a browser (with option `out='browser'`, saving to file and opening directly, or by opening in the RStudio Viewer pane and clicking 'Show in New Window') where it can be easily searched with standard Find-in-Page functions like Ctrl/Cmd-F, allowsing you to search for the variable or variable label you want.
 
-`dftoHTML()`, which is used by `vtable()` to create variable documentatoon files, is more narrow. It takes any data frame or matrix with column names and outputs HTML table code for that data.
+`labeltable()` is designed to take a single variable and show the values it is associated with. This can also be used to generate data documentation if desired, or can just be an easy way to look at label values, or learn more about the data you're working with.
+
+If that variable has value labels from the `sjlabelled` or `haven` packages, it will show how the values in the data correspond to the value labels.
+
+Alternately, you can include other variables as well, and `labeltable()` will show, for each value of the variable you're interested in, the values that those other variables take. This can be handy, for example, if you used some variables to create a numeric ID and want to remember what original values correspond to each ID. It can also act as sort of a cross-tabulation.
+
+`dftoHTML()` is a helper function used by `vtable()` and `labeltable()`. It takes any data frame or matrix with column names and outputs HTML table code for that data.
 
 -----
 
@@ -275,6 +281,18 @@ vtable(USJudgeRatings,char.values=TRUE)
 vtable(USJudgeRatings,char.values=c('Judge','SecondCharacter'))
 ```
 
+## `slow.ok`
+
+If the data contains labelled values, but the labels don't line up properly with the actual values in the data, that's a problem for `vtable` as it tries to match up data values with labels.
+
+`vtable` has a fix for this but it's very slow, on the order of a few minutes for larger data sets. 
+
+So in this case, by default (`slow.ok = FALSE`), the Values column will not attempt to link values to labels, and will just show the label for labelled values and raw data for unlabelled values. 
+
+Set `slow.ok = TRUE` to instead get the correct result, slowly.
+
+To avoid this being an issue at all, ensure that labels match values exactly before calling `vtable`, perhaps by running `sjlabelled::drop_labels()` and `sjlabelled::fill_labels()`.
+
 ## `data.title`
 
 `data.title` will include a data title in the variable documentation file. If not set manually, this will default to the variable name for `data`.
@@ -332,6 +350,59 @@ data(efc)
 
 vtable(efc,summ=c('mean(x)','countNA(x)'))
 ```
+
+-----
+
+# The `labeltable()` function
+
+`vtable()` syntax follows the following outline:
+
+```{r, eval=FALSE}
+labeltable(var,
+    ...,
+    out=NA,
+    file=NA, 
+    desc=NA)
+```
+
+`labeltable()` is a function that shows the values that correspond to `var`. This could be value label values, or it could be the values found in the data for the `...` variables.
+
+```{r, eval=FALSE}
+#Include a single labelled variable to show how the values of that variable correspond to its value labels.
+library(sjlabelled)
+data(efc)
+labeltable(efc$e15relat)
+
+#Include more than one variable to show, for each value of the first, what values of the others are present in the data.
+data(mtcars)
+labeltable(mtcars$cyl,mtcars$carb,mtcars$am)
+```
+
+## `out`
+
+The `out` option determines what will be done with the resulting label table file. There are several options for `out`:
+
+| Option     | Result |
+|------------| -----------------------------------------|
+| browser    | Loads variable documentation in web browser. |
+| viewer     | Loads variable documentation in Viewer pane (RStudio only). |
+| htmlreturn | Returns HTML code for variable documentation file. |
+| return     | Returns variable documentation table in data frame format. |
+
+## `file`
+
+The `file` argument will write the variable documentation file to an HTML file and save it. Will automatically append 'html' filetype if the filename does not include a period.
+
+```{r, eval=FALSE}
+library(vtable)
+
+data(LifeCycleSavings)
+vtable(LifeCycleSavings,file='lifecycle_variabledocumentation')
+```
+
+## `desc`
+
+`desc` will include a description of the data set in the variable documentation file, which may be useful for documentation purposes.
 
 -----
 

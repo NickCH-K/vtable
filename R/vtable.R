@@ -16,6 +16,7 @@
 #' @param index Set to TRUE to include the index number of the column with the variable name. Defaults to FALSE.
 #' @param factor.limit Sets maximum number of factors that will be included if values = TRUE. Set to 0 for no limit. Defaults to 5.
 #' @param char.values Set to TRUE to include values of character variables as though they were factors, if values = TRUE. Or, set to a character vector of variable names to list values of only those character variables. Defaults to FALSE. Has no effect if values = FALSE.
+#' @param slow.ok If values = TRUE and the data contains value labels, but those labels don't line up properly with the values in the data, that's a problem. With slow.ok = TRUE, vtable can fix it but it's a very slow fix. slow.ok = FALSE (default) opts for a much faster approach that provides a little less information in Values about labelled variables.
 #' @param data.title Character variable with the title of the dataset.
 #' @param desc Character variable offering a brief description of the dataset itself. This will by default include information on the number of observations and the number of columns. To remove this, set desc='omit', or include any description and then include 'omit' as the last four characters.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
@@ -110,19 +111,9 @@
 #' vtable(efc,summ=c('mean(x)','propNA(x)'))
 #'
 #' }
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Build and Reload Package:  'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
-
 #' @export
 vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=FALSE,
-                   index=FALSE,factor.limit=5,char.values=FALSE,data.title=NA,desc=NA,col.width=NA,summ=NA) {
+                   index=FALSE,factor.limit=5,char.values=FALSE,slow.ok=FALSE,data.title=NA,desc=NA,col.width=NA,summ=NA) {
 
   #######CHECK INPUTS
   if (is.null(colnames(data))) {
@@ -319,27 +310,21 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
         #values are not exactly labeled (some values unlabeled, or some labels unused)
         #If there is an error, use drop and fill labels to correct;
         #check if necessary first because these commands are slow.
-        suppressWarnings(labcheck <- try(data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels]),silent=TRUE))
+        suppressMessages(suppressWarnings(labcheck <- try(data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels]),silent=TRUE)))
 
         if (class(labcheck)[1] == "try-error") {
-          warning("Labelled variables detected that have some values unlabelled, or some labels without matching values in data.\n  This will take a moment to correct. To avoid this delay in the future, ensure labels match values exactly, or run sjlabelled::drop_labels() and/or sjlabelled::fill_labels() on your data before using vtable.",immediate.=TRUE)
-
-          #Make sure labels match
-          suppressWarnings(data[,havelabels] <- sjlabelled::drop_labels(data[,havelabels]))
-          suppressWarnings(data[,havelabels] <- sjlabelled::fill_labels(data[,havelabels]))
-
-          suppressWarnings(vallabs <- sjlabelled::get_labels(data,values=TRUE))
-          #Add numerical coding
-          vallabscode <- lapply(vallabs, function(x) paste(names(x),': ',x,sep=''))
-          #Make sure the labels are named chr vectors
-          names(vallabscode) <- lapply(vallabs,function(x) names(x))
-
-          suppressWarnings(data[,havelabels] <- sjlabelled::set_labels(data[,havelabels],labels=vallabscode[havelabels]))
-
+          warning("For some labelled variables, the values and labels don't line up. vtable's fix for this is slow, so the Values column will instead be simplfied (still slow, but less so).\n See the slow.ok option for more detail, or for how to avoid this.",immediate.=TRUE)
+          if (slow.ok == TRUE) {
+            data[,havelabels] <- matrix(paste(as.matrix(data[,havelabels]),as.matrix(sjlabelled::as_label(data[,havelabels])),sep=': '),ncol=sum(havelabels))
+            data[,havelabels] <- lapply(data[,havelabels],as.factor)
+          }
+          else {
+            suppressWarnings(data[,havelabels] <- sjlabelled::as_label(data[,havelabels]))
+          }
         }
-
-        suppressWarnings(data[,havelabels] <- sjlabelled::as_label(data[,havelabels]))
-
+        else {
+          suppressWarnings(data[,havelabels] <- sjlabelled::as_label(data[,havelabels]))
+        }
     }
 
 
@@ -375,18 +360,18 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
 
     #If there are any numeric variables:
-    if (sum(sapply(data,is.numeric)) > 0) {
-      #Get minimums
-      min <- lapply(subset(data,select=sapply(data,is.numeric)),function(x) round(min(x,na.rm=TRUE),3))
+    if (sum(sapply(data,function(x) is.numeric(x) & min(is.na(x)) == 0)) > 0) {
+      #Get minimums, be sure to skip any variables that are always NA
+      min <- lapply(subset(data,select=sapply(data,function(x) is.numeric(x) & min(is.na(x)) == 0)),function(x) round(min(x,na.rm=TRUE),3))
 
       #Get maximums
-      max <- lapply(subset(data,select=sapply(data,is.numeric)),function(x) round(max(x,na.rm=TRUE),3))
+      max <- lapply(subset(data,select=sapply(data,function(x) is.numeric(x) & min(is.na(x)) == 0)),function(x) round(max(x,na.rm=TRUE),3))
 
       #Range description
       range <- paste('Num:',min,'to',max)
 
       #Fill in for output table
-      vt[sapply(data,is.numeric),]$Values <- range
+      vt[sapply(data,function(x) is.numeric(x) & min(is.na(x)) == 0),]$Values <- range
     }
 
     #Binary variables
@@ -653,7 +638,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 #'
 #' This function takes a data frame or matrix with column names and outputs an HTML table version of that data frame.
 #'
-#' This function is designed to feed HTML versions of variable tables to vtable().
+#' This function is designed to feed HTML versions of variable tables to vtable() and labeltable().
 #'
 #' @param data Data set; accepts any format with column names.
 #' @param out Determines where the completed table is sent. Set to "browser" to open HTML file in browser using browseURL(), "viewer" to open in RStudio viewer using viewer(), if available, or "htmlreturn" to return the HTML code. Defaults to Defaults to "viewer" if RStudio is running and "browser" if it isn't.
