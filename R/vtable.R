@@ -185,19 +185,6 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     vt$Class <- sapply(data,function(x) class(x)[1])
   }
 
-
-  #We need only one class
-  #If there are multiples and one is factor, treat as factor
-  if (sum(sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))) > 0) {
-    data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))] <-
-      as.data.frame(sapply(data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))],function(x) factor(x,ordered=FALSE)))
-  }
-  #Similarly, only take one class if it's numeric.
-  if (sum(sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))) > 0) {
-    data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))] <-
-      as.numeric(data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))])
-  }
-
   ####### APPLICATION OF LABELS OPTION
   #Pull from label attribute if present
   #label attribute works for labels from Hmisc, sjlabelled, haven
@@ -256,6 +243,19 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
   } else if (min(is.na(labels))==0 & ifelse(length(labels) == 1,labels[1] == "omit",FALSE)) {
     vt$Label <- NULL
+  }
+
+
+  ####### We need only one class
+  #If there are multiples and one is factor, treat as factor
+  if (sum(sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))) > 0) {
+    data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))] <-
+      as.data.frame(sapply(data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))],function(x) factor(x,ordered=FALSE)))
+  }
+  #Similarly, only take one class if it's numeric.
+  if (sum(sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))) > 0) {
+    data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))] <-
+      as.data.frame(sapply(data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))],function(x) as.numeric(x)))
   }
 
   ####### APPLICATION OF VALUES OPTION
