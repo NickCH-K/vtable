@@ -2,12 +2,44 @@
 % Please edit documentation in R/vtable.R
 \name{vtable}
 \alias{vtable}
+\alias{vt}
 \title{Variable Table Function}
 \usage{
-vtable(data, out = NA, file = NA, labels = NA, class = TRUE,
-  values = TRUE, missing = FALSE, index = FALSE, factor.limit = 5,
-  char.values = FALSE, slow.ok = FALSE, data.title = NA, desc = NA,
-  col.width = NA, summ = NA)
+vtable(
+  data,
+  out = NA,
+  file = NA,
+  labels = NA,
+  class = TRUE,
+  values = TRUE,
+  missing = FALSE,
+  index = FALSE,
+  factor.limit = 5,
+  char.values = FALSE,
+  data.title = NA,
+  desc = NA,
+  col.width = NA,
+  summ = NA,
+  lush = FALSE
+)
+
+vt(
+  data,
+  out = NA,
+  file = NA,
+  labels = NA,
+  class = TRUE,
+  values = TRUE,
+  missing = FALSE,
+  index = FALSE,
+  factor.limit = 5,
+  char.values = FALSE,
+  data.title = NA,
+  desc = NA,
+  col.width = NA,
+  summ = NA,
+  lush = FALSE
+)
 }
 \arguments{
 \item{data}{Data set; accepts any format with column names. If variable labels are set with the haven package, set_label() from sjlabelled, or label() from Hmisc, vtable will extract them automatically.}
@@ -20,9 +52,9 @@ vtable(data, out = NA, file = NA, labels = NA, class = TRUE,
 
 \item{class}{Set to TRUE to include variable classes in the variable table. Defaults to TRUE.}
 
-\item{values}{Set to TRUE to include the range of values of each variable: min and max for numeric variables, list of factors for factor or ordered variables, and 'TRUE FALSE' for logicals. values will detect and use value labels set by the sjlabelled or haven packages. Defaults to TRUE.}
+\item{values}{Set to TRUE to include the range of values of each variable: min and max for numeric variables, list of factors for factor or ordered variables, and 'TRUE FALSE' for logicals. values will detect and use value labels set by the sjlabelled or haven packages, as long as every value is labelled. Defaults to TRUE.}
 
-\item{missing}{Set to TRUE to include whether the variable contains any NAs. Defaults to FALSE.}
+\item{missing}{Set to TRUE to include the number of NAs in the variable. Defaults to FALSE.}
 
 \item{index}{Set to TRUE to include the index number of the column with the variable name. Defaults to FALSE.}
 
@@ -30,18 +62,18 @@ vtable(data, out = NA, file = NA, labels = NA, class = TRUE,
 
 \item{char.values}{Set to TRUE to include values of character variables as though they were factors, if values = TRUE. Or, set to a character vector of variable names to list values of only those character variables. Defaults to FALSE. Has no effect if values = FALSE.}
 
-\item{slow.ok}{If values = TRUE and the data contains value labels, but those labels don't line up properly with the values in the data, that's a problem. With slow.ok = TRUE, vtable can fix it but it's a very slow fix. slow.ok = FALSE (default) opts for a much faster approach that provides a little less information in Values about labelled variables.}
-
 \item{data.title}{Character variable with the title of the dataset.}
 
 \item{desc}{Character variable offering a brief description of the dataset itself. This will by default include information on the number of observations and the number of columns. To remove this, set desc='omit', or include any description and then include 'omit' as the last four characters.}
 
 \item{col.width}{Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.}
 
-\item{summ}{Character vector of summary statistics to include for numeric and logical variables, in the form 'function(x)'. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, summ=c('mean(x)','mean(log(x))') will provide the mean of each variable as well as the mean of the log of each variable. This also allows the special functions `propNA(x)` and `countNA(x)`,  which provide the proportion and total number of missing values in the variable, respectively, which will always be displayed first and which are applied to factor and character variables as well as numeric and logical. NAs will be omitted from all calculations other than propNA(x) and countNA(x).}
+\item{summ}{Character vector of summary statistics to include for numeric and logical variables, in the form 'function(x)'. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, summ=c('mean(x)','mean(log(x))') will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable helper functions designed specifically for this option propNA and countNA, which report counts and proportions of NAs in the vectors, and nuniq, which reports the number of unique values. NAs will be omitted from all calculations other than propNA(x) and countNA(x).}
+
+\item{lush}{Set to TRUE to select a set of options with more information: sets char.values and missing to TRUE, and sets summ to c('mean(x)', 'sd(x)', 'nuniq(x)'). summ can be overwritten by setting summ to something else.}
 }
 \description{
-This function will output a descriptive variable table either to the console or as an HTML file that can be viewed continuously while working with data.
+This function will output a descriptive variable table either to the console or as an HTML file that can be viewed continuously while working with data. vt() is the same thing but requires fewer key presses to type.
 }
 \details{
 Outputting the variable table as a help file will make it easy to search through variable names or labels, or to refer to information about the variables easily.

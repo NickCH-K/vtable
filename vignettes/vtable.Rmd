@@ -12,7 +12,7 @@ vignette: >
 
 The `vtable` package serves the purpose of outputting automatic variable documentation that can be easily viewed while continuing to work with data.
 
-`vtable` contains three functions: `vtable()`, `labeltable()`, and `dftoHTML()`. `vtable()` takes a dataset and outputs a formatted variable documentation file. This serves several purposes. 
+`vtable` contains three main functions: `vtable()` (or `vt()`), `labeltable()`, and `dftoHTML()`. `vtable()` takes a dataset and outputs a formatted variable documentation file. This serves several purposes. 
 
 First, it allows for an easy generation of a variable documentation file, without requiring that one has already been created and made accessible through `help(data)`, or dealing with creating and finding R help documentation files. 
 
@@ -28,11 +28,13 @@ Alternately, you can include other variables as well, and `labeltable()` will sh
 
 `dftoHTML()` is a helper function used by `vtable()` and `labeltable()`. It takes any data frame or matrix with column names and outputs HTML table code for that data.
 
+Other helper functions are `nuniq()` (short for `length(unique(x))`), `countNA()` (short for `sum(is.na(x))`), and `propNA` (short for `mean(is.na(x))`), which offer convenient shortcuts for these common compound functions for use with `vtable`'s `summ` option.
+
 -----
 
 # The `vtable()` function
 
-`vtable()` syntax follows the following outline:
+`vtable()` (or `vt()` for short) syntax follows the following outline:
 
 ```{r, eval=FALSE}
 vtable(data, 
@@ -48,7 +50,8 @@ vtable(data,
     data.title=NA,
     desc=NA, 
     col.width=NA,
-    summ=NA)
+    summ=NA,
+    lush=FALSE)
 ```
 
 The goal of `vtable()` is to take a data set `data` and output an HTML file with documentation concerning each of the variables in `data`. There are several options as to what will be included in the documentation file, and each of these options are explained below. Throughout, most code will be included without output because output is typically rendered in a browser or in the Viewer pane of RStudio, not the console:
@@ -226,7 +229,7 @@ vtable(efc)
 
 ## `missing`
 
-The `missing` flag, set to TRUE, will report whether or not the variable has any missing values. Defaults to FALSE.
+The `missing` flag, set to TRUE, will report the number of missing values in each variable. Defaults to FALSE.
 
 ```{r, eval=FALSE}
 library(vtable)
@@ -281,18 +284,6 @@ vtable(USJudgeRatings,char.values=TRUE)
 vtable(USJudgeRatings,char.values=c('Judge','SecondCharacter'))
 ```
 
-## `slow.ok`
-
-If the data contains labelled values, but the labels don't line up properly with the actual values in the data, that's a problem for `vtable` as it tries to match up data values with labels.
-
-`vtable` has a fix for this but it's very slow, on the order of a few minutes for larger data sets. 
-
-So in this case, by default (`slow.ok = FALSE`), the Values column will not attempt to link values to labels, and will just show the label for labelled values and raw data for unlabelled values. 
-
-Set `slow.ok = TRUE` to instead get the correct result, slowly.
-
-To avoid this being an issue at all, ensure that labels match values exactly before calling `vtable`, perhaps by running `sjlabelled::drop_labels()` and `sjlabelled::fill_labels()`.
-
 ## `data.title`
 
 `data.title` will include a data title in the variable documentation file. If not set manually, this will default to the variable name for `data`.
@@ -339,9 +330,9 @@ vtable(efc,col.width=c(10,10,40,40))
 
 ## `summ`
 
-`summ` will calculate summary statistics for all non-missing values of each numeric and logical variable. `summ` is very flexible. It takes a character vector in which each element is of the form `function(x)`, where `function(x)` is any function that takes a vector and returns a single numeric value. For example, `summ=c('mean(x)','median(x)','mean(log(x))')` would calculate the mean, median, and mean of the log for each variable.
+`summ` will calculate summary statistics for all variables that report valid output on the given summary statistics functions. `summ` is very flexible. It takes a character vector in which each element is of the form `function(x)`, where `function(x)` is any function that takes a vector and returns a single numeric value. For example, `summ=c('mean(x)','median(x)','mean(log(x))')` would calculate the mean, median, and mean of the log for each variable.
 
-`summ` also takes two functions that are not R standards: `propNA(x)` and `countNA(x)`, which give the proportion and count of NA values in the variable, respectively. These two functions are always reported first, and are calculated for all variables, not just numeric and logical ones.
+`summ` treats as special two `vtable` functions: `propNA(x)` and `countNA(x)`, which give the proportion and count of NA values in the variable, respectively. These two functions are always reported first, and are the only functions that include NA values in their calculations.
 
 ```{r, eval=FALSE}
 library(vtable)
@@ -350,6 +341,11 @@ data(efc)
 
 vtable(efc,summ=c('mean(x)','countNA(x)'))
 ```
+
+
+## `lush`
+
+The default `vtable` settings may not be to your liking, and in particular you may prefer more information. Setting `lush = TRUE` is an easy way to get more information. It will force `char.values` and `missing` to `TRUE`, and will also set a default `summ` value of `c('mean(x)', 'sd(x)', 'nuniq(x)')`.
 
 -----
 
@@ -486,3 +482,21 @@ library(vtable)
 data(LifeCycleSavings)
 dftoHTML(LifeCycleSavings,row.names=TRUE)
 ```
+
+-----
+
+# Shortcut Helper Functions
+
+`vtable` includes three shortcut functions. These are generally intended for use with `vtable`'s `summ` option because nested functions don't look very nice in a `vtable`. But you probably commonly use these nested functions on your own, so they have been exported for use.
+
+## `countNA`
+
+`countNA(x)` returns `sum(is.na(x))`, the number of missing observations in the vector.
+
+## `propNA`
+
+`propNA(x)` returns `mean(is.na(x))`, the proportion of missing observations in the vector.
+
+## `nuniq`
+
+`nuniq(x)` returns `length(unique(x))`, the number of unique values in the vector.

@@ -4,8 +4,7 @@
 \alias{dftoHTML}
 \title{Data Frame to HTML Function}
 \usage{
-dftoHTML(data, out = NA, file = NA, col.width = NA,
-  row.names = FALSE)
+dftoHTML(data, out = NA, file = NA, col.width = NA, row.names = FALSE)
 }
 \arguments{
 \item{data}{Data set; accepts any format with column names.}
