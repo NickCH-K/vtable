@@ -13,7 +13,7 @@ nuniq(x)
 This function takes a vector and returns the number of unique values in that vector.
 }
 \details{
-This function is just shorthand for length(unique(x)), with a shorter name for reference in the vtable summ option.
+This function is just shorthand for \code{length(unique(x))}, with a shorter name for reference in the \code{vtable} or \code{sumtable} \code{summ} option.
 }
 \examples{
 x <- c(1, 1, 2, 3, 4, 4, 4)

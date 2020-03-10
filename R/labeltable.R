@@ -6,10 +6,10 @@
 #'
 #' Labels that are not in the data will also be reported in the table.
 #'
-#' @param var A vector. Label table will show, for each of the values of this variable, its label (if labels can be found with sjlabelled::get_labels()), or the values in the ... variables.
+#' @param var A vector. Label table will show, for each of the values of this variable, its label (if labels can be found with \code{sjlabelled::get_labels()}), or the values in the \code{...} variables.
 #' @param ... As described above. If specified, will show the values of these variables, instead of the labels of var, even if labels can be found.
-#' @param out Determines where the completed table is sent. Set to "browser" to open HTML file in browser using browseURL(), "viewer" to open in RStudio viewer using viewer(), if available. Use "htmlreturn" to return the HTML code to R, or "return" to return the completed variable table to R in data frame form. Defaults to "viewer" if RStudio is running and "browser" if it isn't.
-#' @param file Saves the completed variable table file to HTML with this filepath. May be combined with any value of out.
+#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"return"} to return the completed variable table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Additional options include \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running and \code{"browser"} if it isn't.
+#' @param file Saves the completed variable table file to HTML with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard labeltable HTML file as with \code{out = "viewer"} or \code{out = "browser"}..
 #' @param desc Description of variable (or labeling system) to be included with the table.
 #' @examples
 #' \dontshow{
@@ -71,6 +71,9 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA) {
   if (!is.na(desc) & !is.character(desc)) {
     stop('desc must be a character.')
   }
+  if (!identical(out,NA) & !(out %in% c('viewer', 'browser','return','htmlreturn','kable','latex','latexpage'))) {
+    stop('out must be viewer, browser, return, htmlreturn, kable, latex, or latexpage')
+  }
 
   #Get actual name of variable
   var.name <- deparse(substitute(var))
@@ -121,6 +124,43 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA) {
 
     lt <- lt[order(lt$var),]
     names(lt) <- c(var.name,names(prelt)[-1])
+  }
+
+  ####### LATEX OUTPUT
+  if (!identical(out, NA) & out %in% c('latex','latexpage')) {
+    align <- paste0('l',rep('c',ncol(lt)-1))
+
+    #Table only
+    if (out == 'latex') {
+      return(dftoLaTeX(lt, file = file, align = align, title = 'Label Table'))
+    }
+
+    #Now for the full page
+    out.latex <- '\\documentclass{article}\n\\begin{document}\n\nlabeltable \\{vtable\\}\n\n'
+    out.latex <- paste(out.latex,
+                       '\\textbf{\\LARGE ', var.name,'}\n\n')
+
+    #Applying description
+    #Applying description
+    if (!is.na(desc)) {
+      out.latex <- paste(out.latex,desc,'\n\n')
+    }
+    #And bring in the table itself
+    out.latex <- paste(out.latex,dftoLaTeX(lt, align = align, title = 'Label Table'),'\n\n\\end{document}',sep='')
+
+    ####### APPLICATION OF FILE OPTION
+    if (!is.na(file)) {
+      #If they forgot a file extension, fill it in
+      if (!grepl("\\.tex",file)) {
+        file <- paste(file,'.tex',sep='')
+      }
+
+      filepath <- file.path(file)
+      #Create temporary tex file
+      writeLines(out.latex,filepath)
+    }
+
+    return(out.latex)
   }
 
   ####### CONSTRUCTION OF HTML
@@ -220,10 +260,10 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA) {
     utils::browseURL(htmlpath)
   } else if (out == 'return') {
     return(lt)
+  } else if (out == 'kable') {
+    return(knitr::kable(lt))
   } else if (out == 'htmlreturn') {
     return(out.html)
-  } else {
-    stop('Unrecognized value of out. Set to \"viewer\", \"browser\", \"return\", \"htmlreturn\", or leave blank.')
   }
 
 }

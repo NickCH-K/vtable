@@ -7,13 +7,13 @@
 labeltable(var, ..., out = NA, file = NA, desc = NA)
 }
 \arguments{
-\item{var}{A vector. Label table will show, for each of the values of this variable, its label (if labels can be found with sjlabelled::get_labels()), or the values in the ... variables.}
+\item{var}{A vector. Label table will show, for each of the values of this variable, its label (if labels can be found with \code{sjlabelled::get_labels()}), or the values in the \code{...} variables.}
 
 \item{...}{As described above. If specified, will show the values of these variables, instead of the labels of var, even if labels can be found.}
 
-\item{out}{Determines where the completed table is sent. Set to "browser" to open HTML file in browser using browseURL(), "viewer" to open in RStudio viewer using viewer(), if available. Use "htmlreturn" to return the HTML code to R, or "return" to return the completed variable table to R in data frame form. Defaults to "viewer" if RStudio is running and "browser" if it isn't.}
+\item{out}{Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"return"} to return the completed variable table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Additional options include \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running and \code{"browser"} if it isn't.}
 
-\item{file}{Saves the completed variable table file to HTML with this filepath. May be combined with any value of out.}
+\item{file}{Saves the completed variable table file to HTML with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard labeltable HTML file as with \code{out = "viewer"} or \code{out = "browser"}..}
 
 \item{desc}{Description of variable (or labeling system) to be included with the table.}
 }

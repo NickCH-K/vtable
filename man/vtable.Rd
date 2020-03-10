@@ -18,9 +18,13 @@ vtable(
   char.values = FALSE,
   data.title = NA,
   desc = NA,
+  anchor = NA,
   col.width = NA,
+  col.align = NA,
+  align = NA,
   summ = NA,
-  lush = FALSE
+  lush = FALSE,
+  opts = list()
 )
 
 vt(
@@ -36,49 +40,63 @@ vt(
   char.values = FALSE,
   data.title = NA,
   desc = NA,
+  anchor = NA,
   col.width = NA,
+  col.align = NA,
+  align = NA,
   summ = NA,
-  lush = FALSE
+  lush = FALSE,
+  opts = list()
 )
 }
 \arguments{
-\item{data}{Data set; accepts any format with column names. If variable labels are set with the haven package, set_label() from sjlabelled, or label() from Hmisc, vtable will extract them automatically.}
+\item{data}{Data set; accepts any format with column names. If variable labels are set with the haven package, \code{set_label()} from sjlabelled, or \code{label()} from Hmisc, \code{vtable} will extract them automatically.}
 
-\item{out}{Determines where the completed table is sent. Set to "browser" to open HTML file in browser using browseURL(), "viewer" to open in RStudio viewer using viewer(), if available. Use "htmlreturn" to return the HTML code to R, or "return" to return the completed variable table to R in data frame form. Defaults to "viewer" if RStudio is running and "browser" if it isn't.}
+\item{out}{Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R. Use \code{"return"} to return the completed variable table to R in data frame form or \code{"kable"} to return it as a \code{knitr::kable()}. Additional options include \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running and \code{"browser"} if it isn't.}
 
-\item{file}{Saves the completed variable table file to HTML with this filepath. May be combined with any value of out.}
+\item{file}{Saves the completed variable table file to HTML or .tex with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard vtable HTML file as with \code{out = "viewer"} or \code{out = "browser"}.}
 
-\item{labels}{Variable labels. labels will accept three formats: (1) A vector of the same length as the number of variables in the data, in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, or (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels. Setting the labels parameter will override any variable labels already in the data. Set to "omit" if the data set has embedded labels but you don't want any labels in the table.}
+\item{labels}{Variable labels. labels will accept three formats: (1) A vector of the same length as the number of variables in the data, in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, or (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels. Setting the labels parameter will override any variable labels already in the data. Set to \code{"omit"} if the data set has embedded labels but you don't want any labels in the table.}
 
-\item{class}{Set to TRUE to include variable classes in the variable table. Defaults to TRUE.}
+\item{class}{Set to \code{TRUE} to include variable classes in the variable table. Defaults to \code{TRUE}.}
 
-\item{values}{Set to TRUE to include the range of values of each variable: min and max for numeric variables, list of factors for factor or ordered variables, and 'TRUE FALSE' for logicals. values will detect and use value labels set by the sjlabelled or haven packages, as long as every value is labelled. Defaults to TRUE.}
+\item{values}{Set to \code{TRUE} to include the range of values of each variable: min and max for numeric variables, list of factors for factor or ordered variables, and 'TRUE FALSE' for logicals. values will detect and use value labels set by the sjlabelled or haven packages, as long as every value is labelled. Defaults to \code{TRUE}.}
 
-\item{missing}{Set to TRUE to include the number of NAs in the variable. Defaults to FALSE.}
+\item{missing}{Set to \code{TRUE} to include the number of NAs in the variable. Defaults to \code{FALSE}.}
 
-\item{index}{Set to TRUE to include the index number of the column with the variable name. Defaults to FALSE.}
+\item{index}{Set to \code{TRUE} to include the index number of the column with the variable name. Defaults to \code{FALSE}.}
 
-\item{factor.limit}{Sets maximum number of factors that will be included if values = TRUE. Set to 0 for no limit. Defaults to 5.}
+\item{factor.limit}{Sets maximum number of factors that will be included if \code{values = TRUE}. Set to 0 for no limit. Defaults to 5.}
 
-\item{char.values}{Set to TRUE to include values of character variables as though they were factors, if values = TRUE. Or, set to a character vector of variable names to list values of only those character variables. Defaults to FALSE. Has no effect if values = FALSE.}
+\item{char.values}{Set to \code{TRUE} to include values of character variables as though they were factors, if \code{values = TRUE}. Or, set to a character vector of variable names to list values of only those character variables. Defaults to \code{FALSE}. Has no effect if \code{values = FALSE}.}
 
 \item{data.title}{Character variable with the title of the dataset.}
 
-\item{desc}{Character variable offering a brief description of the dataset itself. This will by default include information on the number of observations and the number of columns. To remove this, set desc='omit', or include any description and then include 'omit' as the last four characters.}
+\item{desc}{Character variable offering a brief description of the dataset itself. This will by default include information on the number of observations and the number of columns. To remove this, set \code{desc='omit'}, or include any description and then include \code{'omit'} as the last four characters.}
+
+\item{anchor}{Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.}
 
 \item{col.width}{Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.}
 
-\item{summ}{Character vector of summary statistics to include for numeric and logical variables, in the form 'function(x)'. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, summ=c('mean(x)','mean(log(x))') will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable helper functions designed specifically for this option propNA and countNA, which report counts and proportions of NAs in the vectors, and nuniq, which reports the number of unique values. NAs will be omitted from all calculations other than propNA(x) and countNA(x).}
+\item{col.align}{For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to all left-aligned.}
 
-\item{lush}{Set to TRUE to select a set of options with more information: sets char.values and missing to TRUE, and sets summ to c('mean(x)', 'sd(x)', 'nuniq(x)'). summ can be overwritten by setting summ to something else.}
+\item{align}{For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to all \code{p{}} columns with widths set using the same defaults as with \code{col.width}.}
+
+\item{summ}{Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)}, \code{countNA(x)}, and  \code{notNA(x)}.}
+
+\item{lush}{Set to \code{TRUE} to select a set of options with more information: sets \code{char.values} and \code{missing} to \code{TRUE}, and sets summ to \code{c('mean(x)', 'sd(x)', 'nuniq(x)')}. \code{summ} can be overwritten by setting \code{summ} to something else.}
+
+\item{opts}{The same \code{vtable} options as above, but in a named list format. Useful for applying the same set of options to multiple \code{vtable}s.}
 }
 \description{
-This function will output a descriptive variable table either to the console or as an HTML file that can be viewed continuously while working with data. vt() is the same thing but requires fewer key presses to type.
+This function will output a descriptive variable table either to the console or as an HTML file that can be viewed continuously while working with data. \code{vt()} is the same thing but requires fewer key presses to type.
 }
 \details{
 Outputting the variable table as a help file will make it easy to search through variable names or labels, or to refer to information about the variables easily.
 
-This function is in a similar spirit to promptData(), but focuses on variable documentation rather than dataset documentation.
+This function is in a similar spirit to \code{promptData()}, but focuses on variable documentation rather than dataset documentation.
+
+If you would like to include a \code{sumtable} in an RMarkdown document, use \code{out="latexfrag"} if outputting to LaTeX (note this will just capture the table itself, not the header information). If outputting to another format, use \code{out="return"}, and send the result to \code{knitr::kable()}, perhaps followed by \code{kableExtra::kable_styling()} for styling control. Alternately, if you want the full page and not just the table and are exporting to HTML, save the \code{vtable} to file with \code{file='filename.html'}, and then put the page in your RMarkdown document with \code{<iframe>}.
 }
 \examples{
 \dontshow{

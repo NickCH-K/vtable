@@ -13,7 +13,7 @@ countNA(x)
 This function calculates the number of values in a vector that are NA.
 }
 \details{
-This function just shorthand for sum(is.na(x)), with a shorter name for reference in the vtable summ option.
+This function just shorthand for \code{sum(is.na(x))}, with a shorter name for reference in the \code{vtable} or \code{sumtable} \code{summ} option.
 }
 \examples{
 x <- c(1, 1, NA, 2, 3, NA)
