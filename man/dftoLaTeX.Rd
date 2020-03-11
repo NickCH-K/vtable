@@ -9,6 +9,7 @@ dftoLaTeX(
   file = NA,
   frag = TRUE,
   title = NA,
+  note = NA,
   anchor = NA,
   align = NA,
   row.names = FALSE,
@@ -21,6 +22,8 @@ dftoLaTeX(
 \item{file}{Saves the completed table to LaTeX with this filepath.}
 
 \item{title}{Character variable with the title of the table.}
+
+\item{note}{Table note to go after the last row of the table.}
 
 \item{anchor}{Character variable to be used to set a label tag for the table.}
 

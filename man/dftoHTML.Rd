@@ -8,6 +8,7 @@ dftoHTML(
   data,
   out = NA,
   file = NA,
+  note = NA,
   anchor = NA,
   col.width = NA,
   col.align = NA,
@@ -21,6 +22,8 @@ dftoHTML(
 \item{out}{Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available, or \code{"htmlreturn"} to return the HTML code. Defaults to Defaults to \code{"viewer"} if RStudio is running and \code{"browser"} if it isn't.}
 
 \item{file}{Saves the completed variable table file to HTML with this filepath. May be combined with any value of \code{out}.}
+
+\item{note}{Table note to go after the last row of the table.}
 
 \item{anchor}{Character variable to be used to set an \code{<a name>} tag for the table.}
 

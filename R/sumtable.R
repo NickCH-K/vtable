@@ -185,16 +185,16 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   for (c in 1:ncol(data)) {
     #Factorize each character variable with six or fewer unique values
     if (var.classes[c] == 'character') {
-      if (vtable::nuniq(data[,c]) <= 6) {
-        data[,c] <- as.factor(data[,c])
+      if (vtable::nuniq(data[[c]]) <= 6) {
+        data[[c]] <- as.factor(data[[c]])
       }
     } else if (var.classes[c] == 'logical') {
       #Turn logicals to numerics if logical.numeric = FALSE
       if (logical.numeric) {
-        data[,c] <- as.numeric(data[,c])
+        data[[c]] <- as.numeric(data[[c]])
       } else {
         # Otherwise make them factors
-        data[,c] <- factor(data[,c], labels = c("No","Yes"))
+        data[[c]] <- factor(data[[c]], labels = c("No","Yes"))
       }
     } else if (var.classes[c] == 'numeric') {
       # If a numeric variable has value labels, turn this into a factor
@@ -206,7 +206,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
           labwarning <- TRUE
         } else {
           #Turn into the appropriately-titled factor
-          suppressWarnings(data[,c] <- sjlabelled::as_label(data[,c,drop=FALSE]))
+          suppressWarnings(data[[c]] <- sjlabelled::as_label(data[,c,drop=FALSE]))
         }
       }
     }
@@ -343,7 +343,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   #send the options to .opts, and make group.test be logical
   if (identical(group.test,TRUE)) {
     if (out %in% c('latex','latexpage')) {
-      group.test.opts <- list(format = '{name}$={stat}^{stars}$')
+      group.test.opts <- list(format = '{name}$={stat}^{{stars}}$')
+    } else if (out %in% c('return','kable')) {
+      group.test.opts <- list(format = '{name}={stat}{stars}')
     } else {
       group.test.opts <- list(format = '{name}={stat}<sup>{stars}</sup>')
     }
@@ -351,7 +353,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     group.test.opts <- group.test
     group.test <- TRUE
   }
-
+  if (!group.test) {
+    starnote <- NA_character_
+  }
 
   ####### APPLY LABELS OPTION
   vartitles <- vars
@@ -492,13 +496,19 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
         #Redo header with a Test column
         st[[i]] <- read.csv(text = paste(c('Variable',summ.names[[1]],'Test'), collapse =','))
         st[[i]][1,] <- c(paste0('HEADERROW',grouptitle),
-                         paste0(grouplevels[i],'_MULTICOL_c_',length(summ.names[[1]])+1),
-                         rep('DELETECELL',length(summ.names[[1]])))
+                         paste0(grouplevels[i],'_MULTICOL_c_',length(summ.names[[1]])),
+                         rep('DELETECELL',length(summ.names[[1]])-1),'')
 
         for (x in 1:length(vars)) {
-          test.result <- independence.test(data[[group]],
-                                           data[[vars[x]]],
-                                           opts=group.test.opts)
+          #Sometimes perhaps an error!
+          test.result <- suppressWarnings(
+            try(independence.test(data[[group]],
+                                  data[[vars[x]]],
+                                  opts=group.test.opts),
+                silent = TRUE))
+          if (inherits(test.result,'try-error')) {
+            test.result <- ''
+          }
           #We'll be no.escaping later, so escape the < in tiny pvals now
           if (!(out %in% c('latex','latexpage'))) {
             test.result <- gsub('<0','\\&lt0',test.result)
@@ -536,8 +546,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
         star.markers <- star.markers[order(-star.cutoffs)]
         star.cutoffs <- star.cutoffs[order(-star.cutoffs)]
         starnote <- paste0(paste0(star.markers,' p<',star.cutoffs),collapse = '; ')
-        starnote <- paste0('Statistical significance markers: ',starnote,'_MULTICOL_l_',ncol(st))
-        st[nrow(st)+1,] <- c(starnote,rep('DELETECELL',ncol(st)-1))
+        starnote <- paste0('Statistical significance markers: ',starnote)
       }
     }
   } else {
@@ -637,6 +646,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
       return(dftoLaTeX(st, file = file,
                        align = align, anchor = anchor,
                        title = title,
+                       note = starnote,
                        no.escape = ifelse(group.test,ncol(st),NA)))
     }
 
@@ -645,7 +655,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
     #And bring in the table itself
     out.latex <- paste(out.latex,dftoLaTeX(st, align = align,
-                                           anchor = anchor, title = title,
+                                           anchor = anchor, title = title, note = starnote,
                                            no.escape = ifelse(group.test,ncol(st),NA)),'\n\n\\end{document}',sep='')
 
     ####### APPLICATION OF FILE OPTION
@@ -713,7 +723,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
   #And bring in the table itself
   out.html <- paste(out.html,dftoHTML(st,out='htmlreturn',col.width=col.width,
-                                      col.align=col.align,anchor=anchor,
+                                      col.align=col.align,anchor=anchor, note = starnote,
                                       no.escape = ifelse(group.test,ncol(st),NA)),'</body></html>',sep='')
 
 
@@ -756,9 +766,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   } else if ((Sys.getenv('RSTUDIO')=='' & out == '') | (out == 'browser')) {
     utils::browseURL(htmlpath)
   } else if (out == 'return') {
-    return(st)
+    return(clean_multicol(st))
   } else if (out == 'kable') {
-    return(knitr::kable(st))
+    return(knitr::kable(clean_multicol(st)))
   } else if (out == 'htmlreturn') {
     return(out.html)
   }

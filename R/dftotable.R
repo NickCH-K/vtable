@@ -12,6 +12,7 @@
 #' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available, or \code{"htmlreturn"} to return the HTML code. Defaults to Defaults to \code{"viewer"} if RStudio is running and \code{"browser"} if it isn't.
 #' @param anchor Character variable to be used to set an \code{<a name>} tag for the table.
 #' @param file Saves the completed variable table file to HTML with this filepath. May be combined with any value of \code{out}.
+#' @param note Table note to go after the last row of the table.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
 #' @param col.align Vector of 'left', 'right', 'center', etc. to be used with the HTML table text-align attribute in each column.
 #' @param row.names Flag determining whether or not the row names should be included in the table. Defaults to \code{FALSE}.
@@ -23,7 +24,7 @@
 #'
 
 #' @export
-dftoHTML <- function(data,out=NA,file=NA,anchor=NA,col.width=NA,col.align=NA,row.names=FALSE,no.escape = NA) {
+dftoHTML <- function(data,out=NA,file=NA,note=NA,anchor=NA,col.width=NA,col.align=NA,row.names=FALSE,no.escape = NA) {
   if (is.null(colnames(data))) {
     stop('Requires data with variable names or column names.')
   }
@@ -43,11 +44,18 @@ dftoHTML <- function(data,out=NA,file=NA,anchor=NA,col.width=NA,col.align=NA,row
   #If row.names = TRUE, the row names must be included as their own column
   if (row.names==TRUE) {
     data <- cbind(row.names(data),data)
-    names(data)[1] <- "row.names"
+    names(data)[1] <- "Row Names"
   }
 
-  #Get the column headers
-  heads <- colnames(data)
+  #This assumes we work with characters
+  for (i in 1:ncol(data)) {
+    data[[i]] <- as.character(data[[i]])
+  }
+  #Put in the note
+  if (!is.na(note)) {
+    data[nrow(data)+1,] <- c(paste0(note,'_MULTICOL_l_all'),
+                             rep('DELETECELL',ncol(data)-1))
+  }
 
   #Set default column widths
   if (identical(col.width, NA)) {
@@ -71,15 +79,15 @@ dftoHTML <- function(data,out=NA,file=NA,anchor=NA,col.width=NA,col.align=NA,row
     data[[i]] <- gsub('>','\\&gt',data[[i]])
   }
 
-  cellprocess <- function(x,celltype,style) {
+  cellprocess <- function(x,celltype,style,maxall) {
     if (grepl('_MULTICOL_',x)) {
       #Split into the text and arguments
       spl <- strsplit(x,'_MULTICOL_')
       mcargs <- strsplit(spl[[1]][2],'_')
 
-      #If it's "all", make it all the columns
+      #If it's "all", make it all the following DELETECELLs
       if (mcargs[[1]][2] == 'all') {
-        mcargs[[1]][2] <- as.character(ncol(data))
+        mcargs[[1]][2] <- as.character(maxall)
       }
 
       align <- ifelse(mcargs[[1]][1] == 'l','left',
@@ -107,8 +115,21 @@ dftoHTML <- function(data,out=NA,file=NA,anchor=NA,col.width=NA,col.align=NA,row
     x <- unname(x)
     x <- as.character(x)
     rowstyle <- style[x != 'DELETECELL']
+    # How many DELETECELLs follow each cell? Necessary for MULTICOL_X_all
+    # Only bother if we have DELETECELLs
+    if (any(x == 'DELETECELL')) {
+      rl <- rle(x)
+      #Start with 1s and only override if you are right next to a DELETECELL
+      maxall <- rep(1,length(x))
+      #Add 1 because we want to include both DELETECELLs and the original multicol
+      maxall[which(x != 'DELETECELL' & c(tail(x,-1) == 'DELETECELL',FALSE))] <-
+        rl$lengths[rl$values == 'DELETECELL'] + 1
+      maxall <- maxall[x != 'DELETECELL']
+    } else {
+      maxall <- rep(0,length(x))
+    }
     x <- x[x != 'DELETECELL']
-    x <- sapply(1:length(x), function(y) cellprocess(x[y],celltype,rowstyle[y]))
+    x <- sapply(1:length(x), function(y) cellprocess(x[y],celltype,rowstyle[y],maxall[y]))
     return(paste('<tr>',paste(x, collapse = ''),'</tr>\n',sep =''))
   }
 
@@ -121,7 +142,10 @@ dftoHTML <- function(data,out=NA,file=NA,anchor=NA,col.width=NA,col.align=NA,row
 
 
   #Get the column headers
-  headrow <- rowprocess(colnames(data),'th')
+  heads <- colnames(data)
+  #And center them unless it's a "variable" column
+  heads[heads != 'Variable'] <- paste0(heads[heads != 'Variable'],'_MULTICOL_c_1')
+  headrow <- rowprocess(heads,'th')
 
   #Header row
   #Check for a secondary header row
@@ -204,6 +228,7 @@ dftoHTML <- function(data,out=NA,file=NA,anchor=NA,col.width=NA,col.align=NA,row
 #' @param data Data set; accepts any format with column names.
 #' @param file Saves the completed table to LaTeX with this filepath.
 #' @param title Character variable with the title of the table.
+#' @param note Table note to go after the last row of the table.
 #' @param anchor Character variable to be used to set a label tag for the table.
 #' @param align Character variable with standard LaTeX formatting for alignment, for example \code{'lccc'}. You can also use this to force column widths with \code{p} in standard LaTeX style. Defaults to the first column being left-aligned and all others centered.
 #' @param row.names Flag determining whether or not the row names should be included in the table. Defaults to \code{FALSE}.
@@ -215,7 +240,7 @@ dftoHTML <- function(data,out=NA,file=NA,anchor=NA,col.width=NA,col.align=NA,row
 #'
 
 #' @export
-dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,anchor=NA,align=NA,row.names=FALSE,no.escape = NA) {
+dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,note=NA,anchor=NA,align=NA,row.names=FALSE,no.escape = NA) {
   if (is.null(colnames(data))) {
     stop('Requires data with variable names or column names.')
   }
@@ -232,7 +257,12 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,anchor=NA,align=NA,row.nam
   #If row.names = TRUE, the row names must be included as their own column
   if (row.names==TRUE) {
     data <- cbind(row.names(data),data)
-    names(data)[1] <- "row.names"
+    names(data)[1] <- "Row Names"
+  }
+
+  #Work with everything as strings
+  for (i in 1:ncol(data)) {
+    data[[i]] <- as.character(data[[i]])
   }
 
   #Defaults
@@ -240,7 +270,7 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,anchor=NA,align=NA,row.nam
     align <- paste(rep('l',ncol(data)),collapse = '')
   }
 
-  multicoller <- function(x) {
+  multicoller <- function(x,maxall) {
     if (grepl('_MULTICOL_',x)) {
       #Split into the text and arguments
       spl <- strsplit(x,'_MULTICOL_')
@@ -248,7 +278,7 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,anchor=NA,align=NA,row.nam
 
       #If it's "all", make it all the columns
       if (mcargs[[1]][2] == 'all') {
-        mcargs[[1]][2] <- as.character(ncol(data))
+        mcargs[[1]][2] <- as.character(maxall)
       }
 
       #And construct the multicol
@@ -257,19 +287,47 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,anchor=NA,align=NA,row.nam
     return(x)
   }
 
-  #Escape characters and process multicols
+  # Process multicols
+  multicol.row <- function(x) {
+    # How many DELETECELLs follow each cell? Necessary for MULTICOL_X_all
+    # Only bother if we have DELETECELLs
+    if (any(x == 'DELETECELL')) {
+      rl <- rle(x)
+      #Start with 1s and only override if you are right next to a DELETECELL
+      maxall <- rep(1,length(x))
+      #Add 1 because we want to include both DELETECELLs and the original multicol
+      maxall[which(x != 'DELETECELL' & c(tail(x,-1) == 'DELETECELL',FALSE))] <-
+        rl$lengths[rl$values == 'DELETECELL'] + 1
+    } else {
+      maxall <- rep(0,length(x))
+    }
+    x <- sapply(1:length(x),
+                        function(j) multicoller(x[j],maxall[j]))
+    return(x)
+  }
+
+  for (i in 1:nrow(data)) {
+    data[i,] <- multicol.row(as.character(data[i,]))
+  }
+
+  #Escape characters (Do this after multicol since that has _)
   for (i in (1:ncol(data))[!(1:ncol(data) %in% no.escape)]) {
-    data[[i]] <- as.character(data[[i]])
-    data[[i]] <- sapply(data[[i]],multicoller)
     for (char in c('\\&','\\%','\\$','\\#','\\_')) {
       data[[i]] <- gsub(char,paste0('\\',char),data[[i]])
     }
     data[[i]] <- gsub('\\~','\\\\textasciitilde',data[[i]])
     data[[i]] <- gsub('\\^','\\\\textasciicircum',data[[i]])
   }
+  if (!is.na(note)) {
+    for (char in c('\\&','\\%','\\$','\\#','\\_')) {
+      note <- gsub(char,paste0('\\',char),note)
+    }
+    note <- gsub('\\~','\\\\textasciitilde',note)
+    note <- gsub('\\^','\\\\textasciicircum',note)
+  }
 
   #Begin table latex code by opening the table
-  table.latex <- '\\begin{table}[!htbp] \\centering \n'
+  table.latex <- '\\begin{table}[!htbp] \\centering \n \\renewcommand*{\\arraystretch}{1.1} \n'
 
   #Add a caption if there is one
   if (!is.na(title)) {
@@ -284,6 +342,11 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,anchor=NA,align=NA,row.nam
 
   #Get the column headers
   heads <- colnames(data)
+  #And center them unless it's a "variable" column
+  heads[heads != 'Variable'] <- paste0(heads[heads != 'Variable'],'_MULTICOL_c_1')
+  #Process
+  heads <- multicol.row(heads)
+
   # Allow for multicolumns
   heads <- heads[heads != 'DELETECELL']
   headrow <- paste(heads, collapse = ' & ')
@@ -313,7 +376,12 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,anchor=NA,align=NA,row.nam
   table.latex <- paste0(table.latex,headrow,rows)
 
   #And close the table
-  table.latex <- paste0(table.latex,'\\\\ \\hline\n\\hline\n\\end{tabular}\n\\end{table}')
+  table.latex <- paste0(table.latex,'\\\\ \n\\hline\n\\hline\n')
+  if (!is.na(note)) {
+    table.latex <- paste0(table.latex,
+                          '\\multicolumn{',ncol(data),'}{l}{',note,'}\\\\ \n')
+  }
+  table.latex <- paste0(table.latex,'\\end{tabular}\n\\end{table}')
 
   #Make into a page if requested
   if (!frag) {

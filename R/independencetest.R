@@ -87,7 +87,7 @@ chisq.it <- function(x,y) {
   suppressWarnings(result <- chisq.test(x,y))
 
   return(list(
-    'Chi.sq',
+    'X2',
     unname(result$statistic),
     result$p.value
   ))

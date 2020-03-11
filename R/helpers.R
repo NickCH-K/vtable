@@ -134,7 +134,7 @@ summary.row <- function(data,var,st,
   numcols <- length(summ)
   if (cla == 'header') {
     st[1,] <- c(
-                paste0(title,'_MULTICOL_l_',numcols+1),
+                paste0(title,'_MULTICOL_l_all'),
                 rep('DELETECELL',numcols))
   } else if (cla == 'factor' & !factor.numeric) {
     #Get data
@@ -229,4 +229,22 @@ cbind_unequal <- function(x) {
   }
 
   return(do.call(cbind,x))
+}
+
+#For a table that is going to be seen "raw", remove all the multicolumn stuff
+clean_multicol <- function(df) {
+  df[1,1] <- gsub('HEADERROW','',df[1,1])
+
+  clean_content <- function(x) {
+    x <- sapply(x, function(y) gsub('DELETECELL','',y))
+
+    x <- sapply(x, function(y) ifelse(grepl('_MULTICOL_',y),
+                                      substr(y,1,gregexpr('_MULTICOL_',y)[[1]]-1),
+                                      y))
+  }
+
+  for (i in 1:ncol(df)) {
+    df[[i]] <- clean_content(df[[i]])
+  }
+  return(df)
 }
