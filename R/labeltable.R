@@ -83,6 +83,8 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA) {
   if (ncol(comp.vars)==0) {
     #Put in a data frame for working with
     lt <- data.frame(var)
+    #Drop missings
+    lt <- na.omit(lt)
     #Only need one of each value
     lt <- subset(lt,!duplicated(lt))
 
@@ -112,8 +114,13 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA) {
   }
   #comp.var version
   else {
+    # No missing data please!
+    var <- as.character(var)
+    var[is.na(var)] <- 'NA'
+
     #Put in a data frame for working with
     prelt <- data.frame(var,comp.vars)
+
     #Only need one of each value
     prelt <- subset(prelt,!duplicated(prelt))
 
@@ -125,6 +132,9 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA) {
     lt <- lt[order(lt$var),]
     names(lt) <- c(var.name,names(prelt)[-1])
   }
+
+  # Row names have gotten funky
+  row.names(lt) <- 1:nrow(lt)
 
   ####### LATEX OUTPUT
   if (!identical(out, NA) & out %in% c('latex','latexpage')) {

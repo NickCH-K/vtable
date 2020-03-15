@@ -30,6 +30,7 @@
 #' @param logical.numeric By default, logical variables are treated as factors with \code{TRUE = "Yes"} and \code{FALSE = "No"}. Set this to \code{FALSE} to instead treat them as numeric variables rather than factors, with \code{TRUE = 1} and \code{FALSE = 0}.
 #' @param labels Variable labels. labels will accept four formats: (1) A vector of the same length as the number of variables in the data that will be included in the table (tricky to use if many are being dropped, also won't work for your \code{group} variable), in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels, or (4) TRUE to look in the data for variable labels set by the haven package, \code{set_label()} from sjlabelled, or \code{label()} from Hmisc.
 #' @param title Character variable with the title of the table.
+#' @param note Table note to go after the last row of the table. Will follow significance star note if \code{group.test = TRUE}.
 #' @param anchor Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in an HTML table. Must have a number of elements equal to the number of columns in the resulting table.
 #' @param col.align For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to variable-name columns left-aligned and all others right-aligned.
@@ -86,7 +87,8 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                      digits=NA,fixed.digits=FALSE,factor.percent=TRUE,
                      factor.counts=TRUE,factor.numeric=FALSE,
                      logical.numeric=FALSE,labels=NA,title='Summary Statistics',
-                     anchor=NA,col.width=NA,col.align=NA,align=NA,opts=list()) {
+                     note = NA, anchor=NA,col.width=NA,col.align=NA,
+                     align=NA,opts=list()) {
   #Bring in opts
   list2env(opts,envir=environment())
   #######CHECK INPUTS
@@ -98,6 +100,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   }
   if (!identical(vars,NA) & !is.character(vars)) {
     stop('vars must be a character vector.')
+  }
+  if (!identical(note,NA) & !is.character(note)) {
+    stop('note must be a character vector.')
   }
   if (!identical(anchor,NA) & !is.character(anchor)) {
     stop('anchor must be a character variable.')
@@ -198,11 +203,11 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
       }
     } else if (var.classes[c] == 'numeric') {
       # If a numeric variable has value labels, turn this into a factor
-      if ('labelled' %in% class(data[,c]) | !is.null(unlist(sjlabelled::get_labels(data[,c])))) {
+      if ('labelled' %in% class(data[[c]]) | ('haven_labelled' %in% class(data[[c]]) | !is.null(unlist(sjlabelled::get_labels(data[[c]]))))) {
         #DON'T include variables with unlabelled values
-        unlabvals <-  length(sjlabelled::get_labels(data[,c])) == length(sjlabelled::get_labels(data[,c], non.labelled = TRUE))
+        unlabvals <-  length(sjlabelled::get_labels(data[[c]])) == length(sjlabelled::get_labels(data[[c]], non.labelled = TRUE))
         if (!unlabvals) {
-          havelabels[havelabels] <- unlabvals
+          data[[c]] <- as.numeric(data[[c]])
           labwarning <- TRUE
         } else {
           #Turn into the appropriately-titled factor
@@ -638,6 +643,13 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     }
   }
 
+  # Finalize note
+  if (!is.na(note) & !is.na(starnote)) {
+    note <- paste0(starnote,'. ',note)
+  } else if (!is.na(starnote)) {
+    note <- starnote
+  }
+
   ####### LATEX OUTPUT
   if (!identical(out, NA) & out %in% c('latex','latexpage')) {
 
@@ -646,7 +658,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
       return(dftoLaTeX(st, file = file,
                        align = align, anchor = anchor,
                        title = title,
-                       note = starnote,
+                       note = note,
                        no.escape = ifelse(group.test,ncol(st),NA)))
     }
 
@@ -655,7 +667,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
     #And bring in the table itself
     out.latex <- paste(out.latex,dftoLaTeX(st, align = align,
-                                           anchor = anchor, title = title, note = starnote,
+                                           anchor = anchor, title = title, note = note,
                                            no.escape = ifelse(group.test,ncol(st),NA)),'\n\n\\end{document}',sep='')
 
     ####### APPLICATION OF FILE OPTION
@@ -723,7 +735,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
   #And bring in the table itself
   out.html <- paste(out.html,dftoHTML(st,out='htmlreturn',col.width=col.width,
-                                      col.align=col.align,anchor=anchor, note = starnote,
+                                      col.align=col.align,anchor=anchor, note = note,
                                       no.escape = ifelse(group.test,ncol(st),NA)),'</body></html>',sep='')
 
 

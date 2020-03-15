@@ -20,6 +20,7 @@
 #' @param char.values Set to \code{TRUE} to include values of character variables as though they were factors, if \code{values = TRUE}. Or, set to a character vector of variable names to list values of only those character variables. Defaults to \code{FALSE}. Has no effect if \code{values = FALSE}.
 #' @param data.title Character variable with the title of the dataset.
 #' @param desc Character variable offering a brief description of the dataset itself. This will by default include information on the number of observations and the number of columns. To remove this, set \code{desc='omit'}, or include any description and then include \code{'omit'} as the last four characters.
+#' @param note Table note to go after the last row of the table.
 #' @param anchor Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
 #' @param col.align For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to all left-aligned.
@@ -121,7 +122,7 @@
 #' @export
 vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=FALSE,
                    index=FALSE,factor.limit=5,char.values=FALSE,
-                   data.title=NA,desc=NA,anchor=NA,col.width=NA,col.align=NA,
+                   data.title=NA,desc=NA,note = NA,anchor=NA,col.width=NA,col.align=NA,
                    align=NA,summ=NA,lush=FALSE,opts=list()) {
   #Bring in opts
   list2env(opts,envir=environment())
@@ -536,7 +537,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
     #Table only
     if (out == 'latex') {
-      return(dftoLaTeX(vt, file = file, align = align, anchor = anchor, title = 'Variable Table'))
+      return(dftoLaTeX(vt, file = file, align = align, note = note, anchor = anchor, title = 'Variable Table'))
     }
 
     #Now for the full page
@@ -571,7 +572,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     }
 
     #And bring in the table itself
-    out.latex <- paste(out.latex,dftoLaTeX(vt, align = align, anchor = anchor, title = 'Variable Table'),'\n\n\\end{document}',sep='')
+    out.latex <- paste(out.latex,dftoLaTeX(vt, align = align, anchor = anchor, note = note, title = 'Variable Table'),'\n\n\\end{document}',sep='')
 
     ####### APPLICATION OF FILE OPTION
     if (!is.na(file)) {
@@ -665,7 +666,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
   out.html <- paste(out.html,'<h3>Variable Table</h3>',sep='')
 
   #And bring in the table itself
-  out.html <- paste(out.html,dftoHTML(vt,out='htmlreturn',col.width=col.width,col.align=col.align,anchor=anchor),'</body></html>',sep='')
+  out.html <- paste(out.html,dftoHTML(vt,out='htmlreturn',col.width=col.width,col.align=col.align, note = note, anchor=anchor),'</body></html>',sep='')
 
 
   ####### APPLICATION OF FILE OPTION
@@ -707,8 +708,14 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
   } else if ((Sys.getenv('RSTUDIO')=='' & out == '') | (out == 'browser')) {
     utils::browseURL(htmlpath)
   } else if (out == 'return') {
+    for (i in 1:ncol(vt)) {
+      vt[[i]] <- gsub('<br/>','; ',vt[[i]])
+    }
     return(vt)
   } else if (out == 'kable') {
+    for (i in 1:ncol(vt)) {
+      vt[[i]] <- gsub('<br/>','<br>',vt[[i]])
+    }
     return(knitr::kable(vt))
   } else if (out == 'htmlreturn') {
     return(out.html)
