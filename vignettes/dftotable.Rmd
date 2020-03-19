@@ -1,0 +1,212 @@
+---
+title: "dftoHTML and dftoLaTeX: Data Frame Formatting"
+author: "Nick Huntington-Klein"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+<!-- output: rmarkdown::html_vignette. pdf_document -->
+vignette: >
+  %\VignetteIndexEntry{dftoHTML and dftoLaTeX: Data Frame Formatting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The `vtable` package serves the purpose of outputting automatic variable documentation that can be easily viewed while continuing to work with data.
+
+`vtable` contains four main functions: `vtable()` (or `vt()`), `sumtable()` (or `st()`),  `labeltable()`, and `dftoHTML()`/`dftoLaTeX()`. This vignette focuses on `dftoHTML()`/`dftoLaTeX()`. 
+
+`dftoHTML()` and `dftoLaTeX` are helper functions used by `vtable()`, `sumtable()`, and `labeltable()`. They takes any data frame or matrix with column names and outputs HTML or LaTeX table code for that data.
+
+Note that none of the vignettes in this example are set to run because `dftoHTML` and `dftoLaTeX` output is intended to go to places other than Markdown (although both can certainly be used with 'asis' chunks to produce results in Markdown).
+
+-----
+
+# The `dftoHTML()` function
+
+`dftoHTML()` syntax follows the following outline:
+
+```{r, eval = FALSE}
+dftoHTML(data,
+         out=NA,
+         file=NA,
+         note=NA,
+         anchor=NA,
+         col.width=NA,
+         col.align=NA,
+         row.names=FALSE,
+         no.escape=NA)
+```
+
+`dftoHTML()` largely exists to serve `vtable()`, `sumtable()`, and `labeltable()`. What it does is takes a data set `data` and returns an HTML table with the contents of that data. 
+
+Outside of its use with other `vtable` functions, `dftoHTML()` can also be used to keep a view of the data file open while working on the data, avoiding repeated calls to `head()` or similar, or switching back and forth between code tabs and data view tabs.
+
+------
+
+## `data`
+
+`dftoHTML()` will accept any data set with a `colnames()` attribute.
+
+```{r, eval = FALSE}
+library(vtable)
+
+data(LifeCycleSavings)
+dftoHTML(LifeCycleSavings)
+```
+
+## out
+
+The `out` option determines what will be done with the resulting variable documentation file. There are several options for `out`:
+
+| Option     | Result |
+|------------| -----------------------------------------|
+| browser    | Loads HTML version of `data` in web browser. |
+| viewer     | Loads HTML version of `data` in Viewer pane (RStudio only). |
+| htmlreturn | Returns HTML code for `data`. |
+
+By default, `vtable` will select 'viewer' if running in RStudio, and 'browser' otherwise.
+
+```{r, eval=FALSE}
+library(vtable)
+
+data(LifeCycleSavings)
+dftoHTML(LifeCycleSavings)
+dftoHTML(LifeCycleSavings,out='browser')
+dftoHTML(LifeCycleSavings,out='viewer')
+htmlcode <- dftoHTML(LifeCycleSavings,out='htmlreturn')
+```
+
+## `file`
+
+The `file` argument will write the HTML version of `data` to an HTML file and save it. Will automatically append 'html' filetype if the filename does not include a period.
+
+```{r, eval=FALSE}
+data(LifeCycleSavings)
+dftoHTML(LifeCycleSavings,file='lifecycledata_htmlversion.html')
+```
+
+## `note`
+
+`note` will add a table note in the last row.
+
+```{r, eval = FALSE}
+dftoHTML(LifeCycleSavings,note='Data from Belsley, Kuh, and Welsch 1980').
+```
+
+## `anchor`
+
+`anchor` will add an anchor ID (`<a name = `) to allow other parts of your document to link to it, if you are including your table in a larger document.
+
+## `col.width`
+
+`dftoHTML()` will select, by default, equal column widths for all columns in `data`. `col.width`, as a vector of percentage column widths on the 0-100 scale, will override these defaults.
+
+```{r, eval = FALSE}
+#Let's make sr much bigger for some reason
+dftoHTML(LifeCycleSavings,col.width=c(60,10,10,10,10))
+```
+
+## `col.align`
+
+`col.align` can be used to adjust text alignment in HTML output. Set to 'left', 'right', or 'center' to align all columns, or give a vector of column alignments to do each column separately.
+
+## `row.names`
+
+The `row.names` flag determines whether the row names of the data are included as the first column in the output table. 
+
+```{r, eval=FALSE}
+dftoHTML(LifeCycleSavings,row.names=TRUE)
+```
+
+## `no.escape`
+
+If the data passed to `dftoHTML()` contains special HTML characters like '<', `dftoHTML()` will escape them. This could cause you some sort of existential crisis if you wanted to put HTML formatting in your data to be displayed. So set `no.escape` to a vector of column indices to skip the character-escaping process for those columns.
+
+```{r, eval=FALSE}
+#Don't escape columns 1 or 2
+dftoHTML(LifeCycleSavings,no.escape=1:2)
+```
+
+-----
+
+# The `dftoLaTeX()` function
+
+`dftoLaTeX()` syntax follows the following outline:
+
+```{r, eval = FALSE}
+dftoLaTeX(data,
+         file=NA,
+         frag=TRUE,
+         title=NA,
+         note=NA,
+         anchor=NA,
+         align=NA,
+         row.names=FALSE,
+         no.escape=NA)
+```
+
+`dftoLaTeX()` largely exists to serve `vtable()`, `sumtable()`, and `labeltable()`. What it does is takes a data set `data` and returns an LaTeX table with the contents of that data. You could also use it on its own to write any data frame to LaTeX table format.
+
+------
+
+## `data`
+
+`dftoLaTeX()` will accept any data set with a `colnames()` attribute.
+
+```{r, eval = FALSE}
+library(vtable)
+
+data(LifeCycleSavings)
+dftoLaTeX(LifeCycleSavings)
+```
+
+## `file`
+
+The `file` argument will write the TeX version of `data` to a .tex file and save it. Will automatically append 'tex' filetype if the filename does not include a period.
+
+```{r, eval=FALSE}
+data(LifeCycleSavings)
+dftoLaTeX(LifeCycleSavings,file='lifecycledata_latexversion.tex')
+```
+
+## `note`
+
+`note` will add a table note in the last row.
+
+```{r, eval = FALSE}
+dftoLaTeX(LifeCycleSavings,note='Data from Belsley, Kuh, and Welsch 1980').
+```
+
+## `anchor`
+
+`anchor` will add an anchor ID (`\label{}`) to allow other parts of your document to link to it, if you are including your output in a larger document.
+
+```{r, eval = FALSE}
+dftoLaTeX(LifeCycleSavings,anchor='tab:LCS')
+```
+
+## `align`
+
+This is a single string, which will be used as column alignment in standard LaTeX syntax, for example 'lccc' for the left column left-aligned and the other three centered. Accepts 'p{}' and other LaTeX column types. Don't forget to escape backslashes!
+
+Defaults to all left-aligned.
+
+```{r, eval = FALSE}
+dftoLaTeX(LifeCycleSavings,row.names=TRUE,align='p{.25\\textwidth}ccccc')
+```
+
+## `row.names`
+
+The `row.names` flag determines whether the row names of the data are included as the first column in the output table. 
+
+```{r, eval=FALSE}
+dftoLaTeX(LifeCycleSavings,row.names=TRUE)
+```
+
+## `no.escape`
+
+If the data passed to `dftoLaTeX()` contains special HTML characters like '~' or '^', `dftoLaTeX()` will escape them. This could cause you some sort of existential crisis if you wanted to put LaTeX formatting in your data to be displayed. So set `no.escape` to a vector of column indices to skip the character-escaping process for those columns.
+
+```{r, eval=FALSE}
+#Don't escape columns 1 or 2
+dftoLaTeX(LifeCycleSavings,no.escape=1:2)
+```

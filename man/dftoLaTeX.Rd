@@ -21,13 +21,15 @@ dftoLaTeX(
 
 \item{file}{Saves the completed table to LaTeX with this filepath.}
 
+\item{frag}{Set to TRUE to produce only the LaTeX table itself, or FALSE to produce a fully buildable LaTeX. Defaults to TRUE.}
+
 \item{title}{Character variable with the title of the table.}
 
 \item{note}{Table note to go after the last row of the table.}
 
 \item{anchor}{Character variable to be used to set a label tag for the table.}
 
-\item{align}{Character variable with standard LaTeX formatting for alignment, for example \code{'lccc'}. You can also use this to force column widths with \code{p} in standard LaTeX style. Defaults to the first column being left-aligned and all others centered.}
+\item{align}{Character variable with standard LaTeX formatting for alignment, for example \code{'lccc'}. You can also use this to force column widths with \code{p} in standard LaTeX style. Defaults to the first column being left-aligned and all others centered. Be sure to escape special characters, in particular backslashes (i.e. \code{p{.25\\\\textwidth}} instead of \code{p{.25\\textwidth}}).}
 
 \item{row.names}{Flag determining whether or not the row names should be included in the table. Defaults to \code{FALSE}.}
 

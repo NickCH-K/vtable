@@ -1,0 +1,11 @@
+pandoc: 2.9.2
+pkgdown: 1.4.1
+pkgdown_sha: ~
+articles:
+  dftotable: dftotable.html
+  labeltable: labeltable.html
+  sumtable: sumtable.html
+  vtable: vtable.html
+  vtablefunction: vtablefunction.html
+  vtablehelpers: vtablehelpers.html
+

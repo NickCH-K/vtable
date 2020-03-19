@@ -1,0 +1,321 @@
+---
+title: "vtable: Variable Table"
+author: "Nick Huntington-Klein"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+<!-- output: rmarkdown::html_vignette. pdf_document -->
+vignette: >
+  %\VignetteIndexEntry{Variable Table (vtable)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The `vtable` package serves the purpose of outputting automatic variable documentation that can be easily viewed while continuing to work with data.
+
+`vtable` contains four main functions: `vtable()` (or `vt()`), `sumtable()` (or `st()`),  `labeltable()`, and `dftoHTML()`/`dftoLaTeX()`. This vignette focuses on `vtable()`. 
+
+`vtable()` takes a dataset and outputs a formatted variable documentation file. This serves several purposes. 
+
+First, it allows for an easy generation of a variable documentation file, without requiring that one has already been created and made accessible through `help(data)`, or dealing with creating and finding R help documentation files. 
+
+Second, it produces a list of variables (and, if provided, their labels) that can be easily viewed while working with the data, preventing repeated calls to `head()`, and making it much easier to work with confusingly-named variables. 
+
+Third, the variable documentation file can be opened in a browser (with option `out='browser'`, saving to file and opening directly, or by opening in the RStudio Viewer pane and clicking 'Show in New Window') where it can be easily searched with standard Find-in-Page functions like Ctrl/Cmd-F, allowsing you to search for the variable or variable label you want.
+
+-----
+
+# The `vtable()` function
+
+`vtable()` (or `vt()` for short) syntax follows the following outline:
+
+```{r, eval=FALSE}
+vtable(data,
+       out=NA,
+       file=NA,
+       labels=NA,
+       class=TRUE,
+       values=TRUE,
+       missing=FALSE,
+       index=FALSE,
+       factor.limit=5,
+       char.values=FALSE,
+       data.title=NA,
+       desc=NA,
+       note=NA,
+       anchor=NA,
+       col.width=NA,
+       col.align=NA,
+       align=NA,
+       summ=NA,
+       lush=FALSE,
+       opts=list())
+```
+
+The goal of `vtable()` is to take a data set `data` and output a usually-HTML (but `data.frame`, `kable`, and `latex` options are there too) file with documentation concerning each of the variables in `data`. There are several options as to what will be included in the documentation file, and each of these options are explained below. Throughout, the output will be built as `kable`s since this is an RMarkdown document. However, generally you can leave `out` at its default and it will publish an HTML table to Viewer (in RStudio) or the browser (otherwise). This will also include some additional information about your data that can't be demonstrated in this vignette:
+
+## `data`
+
+The `data` argument can take any `data.frame`, `data.table`, `tibble`, or `matrix`, as long as it has a valid set of variable names stored in the `colnames()` attribute. The goal of `vtable()` is to produce documentation of each of the variables in this data set and display that documentation, one variable per row on the output `vtable`.
+
+If `data` has embedded variable or value labels, as the data set `efc` does below, `vtable()` will extract and use them automatically.
+                   
+```{r}
+library(vtable)
+
+#Example 1, using base data LifeCycleSavings
+data(LifeCycleSavings)
+vtable(LifeCycleSavings, out='kable')
+```
+
+```{r}
+#Example 2, using efc data with embedded variable labels
+library(sjlabelled)
+data(efc)
+#Don't forget the handy shortcut vt()!
+vt(efc)
+```
+
+## `out`
+
+The `out` option determines what will be done with the resulting variable documentation file. There are several options for `out`:
+
+| Option     | Result |
+|------------| -----------------------------------------|
+| browser    | Loads variable documentation in web browser. |
+| viewer     | Loads variable documentation in Viewer pane (RStudio only). |
+| htmlreturn | Returns HTML code for variable documentation file. |
+| return     | Returns variable documentation table in data frame format. |
+| kable      | Returns a `knitr::kable()` |
+| latex      | Returns a LaTeX table. |
+| latexpage  | Returns an independently-buildable LaTeX document. |
+
+By default, `vtable` will select 'viewer' if running in RStudio, and 'browser' otherwise. If it's being built in an RMarkdown document with `knitr`, it will default to 'kable'.
+
+```{r, eval = FALSE}
+data(LifeCycleSavings)
+vtable(LifeCycleSavings)
+vtable(LifeCycleSavings,out='browser')
+vtable(LifeCycleSavings,out='viewer')
+htmlcode <- vtable(LifeCycleSavings,out='htmlreturn')
+vartable <- vtable(LifeCycleSavings,out='return')
+
+#I can easily \input this into my LaTeX doc:
+vt(LifeCycleSavings,out='latex',file='mytable1.tex')
+```
+
+
+## `file`
+
+The `file` argument will write the variable documentation file to an HTML or LaTeX file and save it. Will automatically append 'html' or 'tex' filetype if the filename does not include a period.
+
+```{r, eval=FALSE}
+data(LifeCycleSavings)
+vt(LifeCycleSavings,file='lifecycle_variabledocumentation')
+```
+
+## `labels`
+
+The `labels` argument will attach variable labels to the variables in `data`. If variable labels are embedded in `data` and those labels are what you want, the `labels` argument is unnecessary. Set `labels='omit'` if there are embedded labels but you do not want them in the table.
+
+`labels` can be used in any one of three formats.
+
+### `labels` as a vector
+
+`labels` can be set to be a vector of equal length to the number of variables in `data`, and in the same order. `NA` values can be used for padding if some variables do not have labels.
+
+```{r}
+#Note that LifeCycleSavings has five variables
+data(LifeCycleSavings)
+#These variable labels are taken from help(LifeCycleSavings)
+labs <- c('numeric aggregate personal savings',
+    'numeric % of population under 15',
+    'numeric % of population over 75',
+    'numeric real per-capita disposable income',
+    'numeric % growth rate of dpi')
+vtable(LifeCycleSavings,labels=labs)
+```
+
+```{r}
+labs <- c('numeric aggregate personal savings',NA,NA,NA,NA)
+vtable(LifeCycleSavings,labels=labs)
+```
+### `labels` as a two-column data set
+
+`labels` can be set to a two-column data set (any type will do) where the first column has the variable names, and the second column has the labels. The column names don't matter.
+
+This approach does __not__ require that every variable name in `data` has a matching label.
+
+```{r}
+#Note that LifeCycleSavings has five variables
+#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'
+data(LifeCycleSavings)
+#These variable labels are taken from help(LifeCycleSavings)
+labs <- data.frame(nonsensename1 = c('sr', 'pop15', 'pop75'),
+nonsensename2 = c('numeric aggregate personal savings',
+    'numeric % of population under 15',
+    'numeric % of population over 75'))
+vt(LifeCycleSavings,labels=labs)
+```
+
+### `labels` as a one-row data set
+
+`labels` can be set to a one-row data set in which the column names are the variable names in `data` and the first row is the variable names. The `labels` argument can take any data type including data frame, data table, tibble, or matrix, as long as it has a valid set of variable names stored in the `colnames()` attribute.
+
+This approach does __not__ require that every variable name in `data` has a matching label.
+
+```{r}
+#Note that LifeCycleSavings has five variables
+#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'
+data(LifeCycleSavings)
+#These variable labels are taken from help(LifeCycleSavings)
+labs <- data.frame(sr = 'numeric aggregate personal savings',
+    pop15 = 'numeric % of population under 15',
+    pop75 = 'numeric % of population over 75')
+vtable(LifeCycleSavings,labels=labs)
+```
+
+## `class`
+
+The `class` flag will either report or not report the class of each variable in the resulting variable table. By default this is set to `TRUE`.
+
+## `values`
+
+The `values` flag will either report or not report the values that each variable takes. Numeric variables will report a range, logicals will report 'TRUE FALSE', and factor variables will report the first `factor.limit` (default 5) factors listed.
+
+If the variable is numeric but has value labels applied by the `sjlabelled` package, `vtable()` will find them and report the numeric-label crosswalk.
+
+```{r}
+data(LifeCycleSavings)
+vtable(LifeCycleSavings,values=FALSE)
+vtable(LifeCycleSavings)
+
+#CO2 contains factor variables
+data(CO2)
+vtable(CO2)
+```
+
+```{r}
+#efc contains labeled values
+#Note that the original value labels do not easily tell you what numerical
+#value each label maps to, but vtable() does.
+library(sjlabelled)
+data(efc)
+vtable(efc)
+```
+
+## `missing`
+
+The `missing` flag, set to TRUE, will report the number of missing values in each variable. Defaults to FALSE.
+
+## `index`
+
+The `index` flag will either report or not report the index number of each variable. Defaults to FALSE.
+
+## `factor.limit`
+
+If `values` is set to `TRUE`, then `factor.limit` limits the number of factors displayed on the variable table. `factor.limit` is by default 5, to cut down on clutter. The table will include the phrase "and more" to indicate that some factors have been cut off.
+
+Setting `factor.limit=0` will include all factors.  If `values=FALSE`, `factor.limit` does nothing.
+
+## `char.values`
+
+If `values` is set to `TRUE`, then `char.values = TRUE` instructs `vtable` to list the values that character variables take, as though they were factors. If you only want some of the character variables to have their values listed, use a character vector to indicate which variables.
+
+```{r, eval=FALSE}
+data(USJudgeRatings)
+USJudgeRatings$Judge <- row.names(USJudgeRatings)
+USJudgeRatings$SecondCharacter <- 'Less Interesting'
+USJudgeRatings$ThirdCharacter <- 'Less Interesting Still!'
+
+#Show values for all character variables
+vtable(USJudgeRatings,char.values=TRUE)
+#Or just for a subset
+vtable(USJudgeRatings,char.values=c('Judge','SecondCharacter'))
+```
+
+## `data.title`, `desc`, `note`, and `anchor`
+
+`data.title` will include a data title in the variable documentation file. If not set manually, this will default to the variable name for `data`.
+
+`desc` will include a description of the data set in the variable documentation file. This will by default include information on the number of observations and the number of columns. To remove this, set `desc='omit'`, or include any description and then include 'omit' as the last four characters. 
+
+`note` will add a table note in the last row.
+
+`anchor` will add an anchor ID (`<a name = ` in HTML or `\label{}` in LaTeX) to allow other parts of your document to link to it, if you are including your `vtable` in a larger document.
+
+`data.title` and `desc` will only show up in full-page `vtable`s. That is, you won't get them with `out = 'kable'`, `out = 'return'`, or `out = 'latex'` (although `out = 'latexpage'` works). `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so they won't work with  `out = 'kable'` or `out = 'return'`.
+
+```{r, eval=FALSE}
+library(vtable)
+
+data(LifeCycleSavings)
+vtable(LifeCycleSavings)
+vtable(LifeCycleSavings,data.title='Intercountry Life-Cycle Savings Data',
+    desc='omit')
+vtable(LifeCycleSavings,data.title='Intercountry Life-Cycle Savings Data',
+    desc='Data on the savings ratio 1960–1970. omit')
+vtable(LifeCycleSavings,data.title='Intercountry Life-Cycle Savings Data',
+    desc='Data on the savings ratio 1960–1970',
+    note='Data from Belsley, Kuh, and Welsch (1980)')
+```
+
+
+## `col.width`
+
+`vtable()` will select default column widths for the variable table depending on which measures `(name, class, label, values, summ)` are included. `col.width`, as a vector of percentage column widths on the 0-100 scale, will override these defaults. 
+
+```{r, eval=FALSE}
+library(sjlabelled)
+data(efc)
+#The variable names in this data set are pretty short, and the value labels are
+#a little cramped, so let's move that over.
+vtable(efc,col.width=c(10,10,40,40))
+```
+
+## `col.align`
+
+`col.align` can be used to adjust text alignment in HTML output. Set to 'left', 'right', or 'center' to align all columns, or give a vector of column alignments to do each column separately.
+
+This option is only for HTML output and will only work with `out` values of 'browser', 'viewer', or 'htmlreturn'. 
+
+```{r, eval = FALSE}
+library(sjlabelled)
+data(efc)
+vtable(efc,col.align = 'right')
+```
+
+## `align`
+
+This is a single string, used only with LaTeX output (`out` is 'latex' or 'latexpage'), which will be used as column alignment in standard LaTeX syntax, for example 'lccc' for the left column left-aligned and the other three centered. Accepts 'p{}' and other LaTeX column types.
+
+Be sure to escape special characters, in particular backslashes.
+
+Defaults to using all 'p{}' columns, with widths set by `col.width` (or the default values of `col.width`).
+
+```{r, eval = FALSE}
+library(sjlabelled)
+data(efc)
+vtable(efc,align = 'p{.3\\textwidth}cc', out = 'latex')
+```
+
+## `summ`
+
+`summ` will calculate summary statistics for all variables that report valid output on the given summary statistics functions. `summ` is very flexible. It takes a character vector in which each element is of the form `function(x)`, where `function(x)` is any function that takes a vector and returns a single numeric value. For example, `summ=c('mean(x)','median(x)','mean(log(x))')` would calculate the mean, median, and mean of the log for each variable.
+
+`summ` treats as special two `vtable` functions: `propNA(x)` and `countNA(x)`, which give the proportion and count of NA values, and the count of non-NA values in the variable, respectively. These two functions are always reported first, and are the only functions that include NA values in their calculations.
+
+```{r}
+library(sjlabelled)
+data(efc)
+
+vtable(efc,summ=c('mean(x)','countNA(x)'))
+```
+
+
+## `lush`
+
+The default `vtable` settings may not be to your liking, and in particular you may prefer more information. Setting `lush = TRUE` is an easy way to get more information. It will force `char.values` and `missing` to `TRUE`, and will also set a default `summ` value of `c('mean(x)', 'sd(x)', 'nuniq(x)')`.
+
+## `opts`
+
+You can create a named list where the names are the above options and the values are the settings for those options, and input it into `vtable` using `opts=`. This is an easy way to set the same options for many `vtable`s.

@@ -9,7 +9,7 @@
 #' If you would like to include a \code{sumtable} in an RMarkdown document, use \code{out="latexfrag"} if outputting to LaTeX (note this will just capture the table itself, not the header information). If outputting to another format, use \code{out="return"}, and send the result to \code{knitr::kable()}, perhaps followed by \code{kableExtra::kable_styling()} for styling control. Alternately, if you want the full page and not just the table and are exporting to HTML, save the \code{vtable} to file with \code{file='filename.html'}, and then put the page in your RMarkdown document with \code{<iframe>}.
 #'
 #' @param data Data set; accepts any format with column names. If variable labels are set with the haven package, \code{set_label()} from sjlabelled, or \code{label()} from Hmisc, \code{vtable} will extract them automatically.
-#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R. Use \code{"return"} to return the completed variable table to R in data frame form or \code{"kable"} to return it as a \code{knitr::kable()}. Additional options include \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running and \code{"browser"} if it isn't.
+#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R. Use \code{"return"} to return the completed variable table to R in data frame form or \code{"kable"} to return it as a \code{knitr::kable()}. Additional options include \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.
 #' @param file Saves the completed variable table file to HTML or .tex with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard vtable HTML file as with \code{out = "viewer"} or \code{out = "browser"}.
 #' @param labels Variable labels. labels will accept three formats: (1) A vector of the same length as the number of variables in the data, in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, or (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels. Setting the labels parameter will override any variable labels already in the data. Set to \code{"omit"} if the data set has embedded labels but you don't want any labels in the table.
 #' @param class Set to \code{TRUE} to include variable classes in the variable table. Defaults to \code{TRUE}.
@@ -24,8 +24,8 @@
 #' @param anchor Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
 #' @param col.align For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to all left-aligned.
-#' @param align For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to all \code{p{}} columns with widths set using the same defaults as with \code{col.width}.
-#' @param summ Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)}, \code{countNA(x)}, and  \code{notNA(x)}.
+#' @param align For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to all \code{p{}} columns with widths set using the same defaults as with \code{col.width}.  Be sure to escape special characters, in particular backslashes (i.e. \code{p{.25\\\\textwidth}} instead of \code{p{.25\\textwidth}}).
+#' @param summ Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)} and \code{countNA(x)}.
 #' @param lush Set to \code{TRUE} to select a set of options with more information: sets \code{char.values} and \code{missing} to \code{TRUE}, and sets summ to \code{c('mean(x)', 'sd(x)', 'nuniq(x)')}. \code{summ} can be overwritten by setting \code{summ} to something else.
 #' @param opts The same \code{vtable} options as above, but in a named list format. Useful for applying the same set of options to multiple \code{vtable}s.
 #' @examples
@@ -528,8 +528,21 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     col.align <- rep('left',ncol(vt))
   }
 
+  #Do we have a summary?
+  if ('Summary' %in% names(vt)) {
+    # Don't escape any line breaking stuff in there
+    no.escape <- which(names(vt) == 'Summary')
+  } else {
+    no.escape <- NA
+  }
+
   ####### LATEX OUTPUT
   if (!identical(out, NA) & out %in% c('latex','latexpage')) {
+    #Some <br/>s are hardcoded in there
+    if ('Summary' %in% names(vt)) {
+      vt$Summary <- gsub('<br/>',' \\\\\\\\ ',vt$Summary)
+      vt$Summary <- paste0('\\begin{tabular}[c]{@{}c@{}}',vt$Summary,'\\end{tabular}')
+    }
     if (is.na(align)) {
       col.width <- col.width/100
       align <- paste0(paste0('p{',col.width,'\\textwidth}'),collapse='')
@@ -537,7 +550,10 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
     #Table only
     if (out == 'latex') {
-      return(dftoLaTeX(vt, file = file, align = align, note = note, anchor = anchor, title = 'Variable Table'))
+      return(dftoLaTeX(vt, file = file,
+                       align = align, note = note,
+                       anchor = anchor, title = 'Variable Table',
+                       no.escape = no.escape))
     }
 
     #Now for the full page
@@ -572,7 +588,10 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     }
 
     #And bring in the table itself
-    out.latex <- paste(out.latex,dftoLaTeX(vt, align = align, anchor = anchor, note = note, title = 'Variable Table'),'\n\n\\end{document}',sep='')
+    out.latex <- paste(out.latex,dftoLaTeX(vt, align = align,
+                                           anchor = anchor, note = note,
+                                           title = 'Variable Table',
+                                           no.escape = no.escape),'\n\n\\end{document}',sep='')
 
     ####### APPLICATION OF FILE OPTION
     if (!is.na(file)) {
@@ -666,7 +685,11 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
   out.html <- paste(out.html,'<h3>Variable Table</h3>',sep='')
 
   #And bring in the table itself
-  out.html <- paste(out.html,dftoHTML(vt,out='htmlreturn',col.width=col.width,col.align=col.align, note = note, anchor=anchor),'</body></html>',sep='')
+  out.html <- paste(out.html,dftoHTML(vt,out='htmlreturn',
+                                      col.width=col.width,
+                                      col.align=col.align,
+                                      note = note, anchor=anchor,
+                                      no.escape = no.escape),'</body></html>',sep='')
 
 
   ####### APPLICATION OF FILE OPTION
@@ -701,10 +724,16 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
   #Either print the variable table to the help window
   #or return a variable table to the screen, as desired
-  if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {
+  #Default to kable if in knitr
+  if (out == 'kable' | (isTRUE(getOption('knitr.in.progress')) & out == '')) {
+    for (i in 1:ncol(vt)) {
+      vt[[i]] <- gsub('<br/>','<br>',vt[[i]])
+    }
+    return(knitr::kable(vt))
+  } else if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {
     rstudioapi::viewer(htmlpath)
   } else if (Sys.getenv('RSTUDIO')=='' & out == 'viewer') {
-    stop('out = viewer is not a valid option if RStudio is not running.')
+    stop('out = "viewer" is not a valid option if RStudio is not running.')
   } else if ((Sys.getenv('RSTUDIO')=='' & out == '') | (out == 'browser')) {
     utils::browseURL(htmlpath)
   } else if (out == 'return') {
@@ -712,11 +741,6 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
       vt[[i]] <- gsub('<br/>','; ',vt[[i]])
     }
     return(vt)
-  } else if (out == 'kable') {
-    for (i in 1:ncol(vt)) {
-      vt[[i]] <- gsub('<br/>','<br>',vt[[i]])
-    }
-    return(knitr::kable(vt))
   } else if (out == 'htmlreturn') {
     return(out.html)
   }

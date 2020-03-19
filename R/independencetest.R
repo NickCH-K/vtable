@@ -84,7 +84,7 @@ independence.test <- function(x,y,
 
 # Internal chi-square and group-F tests that return things in independence.test format
 chisq.it <- function(x,y) {
-  suppressWarnings(result <- chisq.test(x,y))
+  suppressWarnings(result <- stats::chisq.test(x,y))
 
   return(list(
     'X2',
@@ -93,7 +93,7 @@ chisq.it <- function(x,y) {
   ))
 }
 groupf.it <- function(x,y) {
-  result <- anova(lm(y~factor(x)))
+  result <- stats::anova(stats::lm(y~factor(x)))
 
   return(list(
     'F',

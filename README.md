@@ -72,7 +72,7 @@ love. Output will be to `kable` since this is an RMarkdown document.
 data(iris)
 
 # Basic vtable
-vt(iris, out = 'kable')
+vt(iris)
 ```
 
 | Name         | Class   | Values                            |
@@ -84,11 +84,10 @@ vt(iris, out = 'kable')
 | Species      | factor  | ‘setosa’ ‘versicolor’ ‘virginica’ |
 
 There are plenty of options if we want to go nuts, but let’s keep it
-simple and just ask for a little more with
-`lush`
+simple and just ask for a little more with `lush`
 
 ``` r
-vt(iris, lush = TRUE, out = 'kable')
+vt(iris, lush = TRUE)
 ```
 
 | Name         | Class   | Values                            | Missing | Summary                               |
@@ -105,7 +104,7 @@ Let’s stick with `iris`\!
 
 ``` r
 # Basic summary stats
-st(iris, out = 'kable')
+st(iris)
 ```
 
 | Variable     | N   | Mean  | Std.Dev. | Min | Pctl.25 | Pctl.75 | Max |
@@ -129,17 +128,16 @@ with an option to add a group test.
 ``` r
 st(iris, 
    group = 'Species', 
-   group.test = TRUE, 
-   out = 'kable')
+   group.test = TRUE)
 ```
 
-| Variable     | N      | Mean  | SD    | N          | Mean  | SD    | N         | Mean  | SD    | Test             |
-| :----------- | :----- | :---- | :---- | :--------- | :---- | :---- | :-------- | :---- | :---- | :--------------- |
-| Species      | setosa |       |       | versicolor |       |       | virginica |       |       |                  |
-| Sepal.Length | 50     | 5.006 | 0.352 | 50         | 5.936 | 0.516 | 50        | 6.588 | 0.636 | F=119.265\*\*\*  |
-| Sepal.Width  | 50     | 3.428 | 0.379 | 50         | 2.77  | 0.314 | 50        | 2.974 | 0.322 | F=49.16\*\*\*    |
-| Petal.Length | 50     | 1.462 | 0.174 | 50         | 4.26  | 0.47  | 50        | 5.552 | 0.552 | F=1180.161\*\*\* |
-| Petal.Width  | 50     | 0.246 | 0.105 | 50         | 1.326 | 0.198 | 50        | 2.026 | 0.275 | F=960.007\*\*\*  |
+| Variable     | N      | Mean  | SD    | N          | Mean  | SD    | N         | Mean  | SD    | Test                        |
+| :----------- | :----- | :---- | :---- | :--------- | :---- | :---- | :-------- | :---- | :---- | :-------------------------- |
+| Species      | setosa |       |       | versicolor |       |       | virginica |       |       |                             |
+| Sepal.Length | 50     | 5.006 | 0.352 | 50         | 5.936 | 0.516 | 50        | 6.588 | 0.636 | F=119.265<sup>\*\*\*</sup>  |
+| Sepal.Width  | 50     | 3.428 | 0.379 | 50         | 2.77  | 0.314 | 50        | 2.974 | 0.322 | F=49.16<sup>\*\*\*</sup>    |
+| Petal.Length | 50     | 1.462 | 0.174 | 50         | 4.26  | 0.47  | 50        | 5.552 | 0.552 | F=1180.161<sup>\*\*\*</sup> |
+| Petal.Width  | 50     | 0.246 | 0.105 | 50         | 1.326 | 0.198 | 50        | 2.026 | 0.275 | F=960.007<sup>\*\*\*</sup>  |
 
 ## labeltable Example
 
@@ -149,7 +147,7 @@ For this we’ll need labeled values.
 data(efc, package = 'sjlabelled')
 
 # Now shoot - how was gender coded?
-labeltable(efc$e16sex, out = 'kable')
+labeltable(efc$e16sex)
 ```
 
 | e16sex | Label  |
@@ -163,7 +161,7 @@ variable is a recode, simplification, or lost-labels version of another,
 but hey, go nuts.
 
 ``` r
-labeltable(efc$e15relat,efc$e16sex,efc$e42dep, out = 'kable')
+labeltable(efc$e15relat,efc$e16sex,efc$e42dep)
 ```
 
 | e15relat | e16sex   | e42dep         |

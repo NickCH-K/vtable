@@ -114,6 +114,7 @@ dftoHTML <- function(data,out=NA,file=NA,note=NA,anchor=NA,col.width=NA,col.alig
   rowprocess <- function(x,celltype) {
     x <- unname(x)
     x <- as.character(x)
+    x[is.na(x)] <- ''
     rowstyle <- style[x != 'DELETECELL']
     # How many DELETECELLs follow each cell? Necessary for MULTICOL_X_all
     # Only bother if we have DELETECELLs
@@ -122,7 +123,7 @@ dftoHTML <- function(data,out=NA,file=NA,note=NA,anchor=NA,col.width=NA,col.alig
       #Start with 1s and only override if you are right next to a DELETECELL
       maxall <- rep(1,length(x))
       #Add 1 because we want to include both DELETECELLs and the original multicol
-      maxall[which(x != 'DELETECELL' & c(tail(x,-1) == 'DELETECELL',FALSE))] <-
+      maxall[which(x != 'DELETECELL' & c(utils::tail(x,-1) == 'DELETECELL',FALSE))] <-
         rl$lengths[rl$values == 'DELETECELL'] + 1
       maxall <- maxall[x != 'DELETECELL']
     } else {
@@ -143,8 +144,6 @@ dftoHTML <- function(data,out=NA,file=NA,note=NA,anchor=NA,col.width=NA,col.alig
 
   #Get the column headers
   heads <- colnames(data)
-  #And center them unless it's a "variable" column
-  heads[heads != 'Variable'] <- paste0(heads[heads != 'Variable'],'_MULTICOL_c_1')
   headrow <- rowprocess(heads,'th')
 
   #Header row
@@ -227,10 +226,11 @@ dftoHTML <- function(data,out=NA,file=NA,note=NA,anchor=NA,col.width=NA,col.alig
 #'
 #' @param data Data set; accepts any format with column names.
 #' @param file Saves the completed table to LaTeX with this filepath.
+#' @param frag Set to TRUE to produce only the LaTeX table itself, or FALSE to produce a fully buildable LaTeX. Defaults to TRUE.
 #' @param title Character variable with the title of the table.
 #' @param note Table note to go after the last row of the table.
 #' @param anchor Character variable to be used to set a label tag for the table.
-#' @param align Character variable with standard LaTeX formatting for alignment, for example \code{'lccc'}. You can also use this to force column widths with \code{p} in standard LaTeX style. Defaults to the first column being left-aligned and all others centered.
+#' @param align Character variable with standard LaTeX formatting for alignment, for example \code{'lccc'}. You can also use this to force column widths with \code{p} in standard LaTeX style. Defaults to the first column being left-aligned and all others centered. Be sure to escape special characters, in particular backslashes (i.e. \code{p{.25\\\\textwidth}} instead of \code{p{.25\\textwidth}}).
 #' @param row.names Flag determining whether or not the row names should be included in the table. Defaults to \code{FALSE}.
 #' @param no.escape Vector of column indices for which special characters should not be escaped (perhaps they include markup text of their own).
 #' @examples
@@ -289,6 +289,8 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,note=NA,anchor=NA,align=NA
 
   # Process multicols
   multicol.row <- function(x) {
+    x <- as.character(x)
+    x[is.na(x)] <- ''
     # How many DELETECELLs follow each cell? Necessary for MULTICOL_X_all
     # Only bother if we have DELETECELLs
     if (any(x == 'DELETECELL')) {
@@ -296,7 +298,7 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,note=NA,anchor=NA,align=NA
       #Start with 1s and only override if you are right next to a DELETECELL
       maxall <- rep(1,length(x))
       #Add 1 because we want to include both DELETECELLs and the original multicol
-      maxall[which(x != 'DELETECELL' & c(tail(x,-1) == 'DELETECELL',FALSE))] <-
+      maxall[which(x != 'DELETECELL' & c(utils::tail(x,-1) == 'DELETECELL',FALSE))] <-
         rl$lengths[rl$values == 'DELETECELL'] + 1
     } else {
       maxall <- rep(0,length(x))
@@ -342,8 +344,6 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,note=NA,anchor=NA,align=NA
 
   #Get the column headers
   heads <- colnames(data)
-  #And center them unless it's a "variable" column
-  heads[heads != 'Variable'] <- paste0(heads[heads != 'Variable'],'_MULTICOL_c_1')
   #Process
   heads <- multicol.row(heads)
 

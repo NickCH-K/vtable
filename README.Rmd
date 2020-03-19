@@ -37,10 +37,10 @@ All three main **vtable** functions can produce HTML, LaTeX, `data.frame`, or `k
 
 ## Installation
 
-You can install pmdplyr from CRAN: 
+You can install vtable from CRAN: 
 
 ```r
-install.packages("pmdplyr")
+install.packages("vtable")
 ```
 
 ### Development version 
@@ -49,7 +49,7 @@ The development version can be installed from [GitHub](https://github.com/):
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("NickCH-K/pmdplyr")
+devtools::install_github("NickCH-K/vtable")
 ```
 ## vtable Example
 
@@ -59,13 +59,13 @@ I'll just do a brief example here, using the `iris` we all know and love. Output
 data(iris)
 
 # Basic vtable
-vt(iris, out = 'kable')
+vt(iris)
 ```
 
 There are plenty of options if we want to go nuts, but let's keep it simple and just ask for a little more with `lush`
 
 ```{r}
-vt(iris, lush = TRUE, out = 'kable')
+vt(iris, lush = TRUE)
 ```
 
 ## sumtable Example
@@ -74,16 +74,19 @@ Let's stick with `iris`!
 
 ```{r}
 # Basic summary stats
-st(iris, out = 'kable')
+st(iris)
 ```
 
 Note that `sumtable` allows for much more customization than `vtable` since there's a heightened chance you want it for a paper or something. But I'll leave that to the more detailed documentation. For now just note it does by-group stats, either in "`group.long`" format (multiple `sumtable`s stacked on top of each other), or by default, in columns, with an option to add a group test.
 
+Grouped `sumtables` look a little nicer in formats that suport multi-column cells like HTML and LaTeX. 
+
+**These tables include multi-column cells, which are not supported in the `kable` output, but are supported by `vtable`'s `dftoHTML` and `dftoLaTeX` functions. They look nicer in the HTML or LaTeX output.**
+
 ```{r}
 st(iris, 
    group = 'Species', 
-   group.test = TRUE, 
-   out = 'kable')
+   group.test = TRUE)
 ```
 
 ## labeltable Example
@@ -94,11 +97,11 @@ For this we'll need labeled values.
 data(efc, package = 'sjlabelled')
 
 # Now shoot - how was gender coded?
-labeltable(efc$e16sex, out = 'kable')
+labeltable(efc$e16sex)
 ```
 
 `labeltable` can also be used to see, for values of one variable, what values are present of other variables. This is intended for use if one variable is a recode, simplification, or lost-labels version of another, but hey, go nuts.
 
 ```{r}
-labeltable(efc$e15relat,efc$e16sex,efc$e42dep, out = 'kable')
+labeltable(efc$e15relat,efc$e16sex,efc$e42dep)
 ```

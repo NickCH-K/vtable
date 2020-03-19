@@ -1,0 +1,326 @@
+---
+title: "sumtable: Summary Statistics"
+author: "Nick Huntington-Klein"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+<!-- output: rmarkdown::html_vignette. pdf_document -->
+vignette: >
+  %\VignetteIndexEntry{sumtable: Summary Statistics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The `vtable` package serves the purpose of outputting automatic variable documentation that can be easily viewed while continuing to work with data.
+
+`vtable` contains four main functions: `vtable()` (or `vt()`), `sumtable()` (or `st()`),  `labeltable()`, and `dftoHTML()`/`dftoLaTeX()`. This vignette focuses on `sumtable()`. 
+
+`sumtable()` takes a dataset and outputs a formatted summary statistics table. Summary statistics an be for the whole data set at once or by-group.
+
+There are a huge number of R packages that will make a summary statistics table for you. What does `vtable::sumtable()` bring that isn't already there?
+
+First, like other `vtable` functions, `sumtable()` by default prints its results to Viewer (in RStudio) or the browser (elsewhere), making it easy to look at information about your data while continuing to work on it.
+
+Second, `sumtable()` is designed to *have nice defaults* and be *fast to work with*. By fast to work with that's both in the sense that you should just be able to ask for a sumtable and have it pretty much be what you want immediately, and also in the sense of trying to keep the number of keystrokes low (thus the `st()` shortcut, and the intent of not having to set a bunch of options). 
+
+`sumtable()` has customization options, but they're certainly not as extensive as with a package like `gtsummary` or `arsenal`. Nor should they be! If you want full control over your table, those packages are already great, we don't need another package that does that.
+
+However, if you want the kind of table `sumtable()` produces (and I think a lot of you do!) then it's perfect and easy. This makes `sumtable()` very similar in spirit to the summary statistics functionality of `stargazer::stargazer()`, except with some additional important bonuses, like working with `tibble`s, factor variables, producing summary statistics by group, and being a summary-statistics-only function so the documentation isn't entwined with a bunch of regression-table functionality.
+
+Like, look at this. Isn't this what you basically already want? After loading the package this took eight keystrokes and no option-setting:
+
+```{r}
+library(vtable)
+st(iris)
+```
+
+-----
+
+# The `sumtable()` function
+
+`sumtable()` (or `st()` for short) syntax follows the following outline:
+
+```{r, eval=FALSE}
+sumtable(data,
+         vars=NA,
+         out=NA,
+         file=NA,
+         summ=NA,
+         summ.names=NA,
+         group=NA,
+         group.long=FALSE,
+         group.test=FALSE,
+         col.breaks=NA,
+         digits=NA,
+         fixed.digits=FALSE,
+         factor.percent=TRUE,
+         factor.counts=TRUE,
+         factor.numeric=FALSE,
+         logical.numeric=FALSE,
+         labels=NA,
+         title='Summary Statistics',
+         note = NA, 
+         anchor=NA,
+         col.width=NA,
+         col.align=NA,
+         align=NA,
+         opts=list())
+```
+
+The goal of `sumtable()` is to take a data set `data` and output a usually-HTML (but `data.frame`, `kable`, and `latex` options are there too) file with summary statistics for each of the variables in `data`. There are several options as to how the table will be constructed, and each of these options are explained below. Throughout, the output will be built as `kable`s since this is an RMarkdown document. However, generally you can leave `out` at its default and it will publish an HTML table to Viewer (in RStudio) or the browser (otherwise). This will also include some additional information about your data that can't be demonstrated in this vignette:
+
+## `data` and `vars`
+
+The `data` argument can take any `data.frame`, `data.table`, `tibble`, or `matrix`, as long as it has a valid set of variable names stored in the `colnames()` attribute.
+
+By default, `sumtable` will include in the summary statistics table every variable in the data set that is (1) numeric, (2) factor, (3) logical, or (4) a character variable with six or fewer unique values (as a factor), and it will include them in the order they're in the data.
+
+You can override that variable list with `vars`, which is just a vector of variable names to include. You can use this to force `sumtable` to ignore variables you don't want, or to include variables it doesn't by default.
+
+```{r, eval = FALSE}
+data(LifeCycleSavings)
+st(LifeCycleSavings, vars = c('pop15','pop75'))
+```
+
+## `out`
+
+The `out` option determines what will be done with the resulting summary statistics table. There are several options for `out`:
+
+| Option     | Result |
+|------------| -----------------------------------------|
+| browser    | Loads output in web browser. |
+| viewer     | Loads output in Viewer pane (RStudio only). |
+| htmlreturn | Returns HTML code for output file. |
+| return     | Returns summary table in data frame format. Depending on options, the data frame may be entirely character variables. |
+| kable      | Returns a `knitr::kable()` |
+| latex      | Returns a LaTeX table. |
+| latexpage  | Returns an independently-buildable LaTeX document. |
+
+By default, `sumtable` will select 'viewer' if running in RStudio, and 'browser' otherwise. If it's being built in an RMarkdown document with `knitr`, it will default to 'kable'.
+
+```{r, eval = FALSE}
+data(LifeCycleSavings)
+sumtable(LifeCycleSavings)
+vartable <- vtable(LifeCycleSavings,out='return')
+
+#I can easily \input this into my LaTeX doc:
+vt(LifeCycleSavings,out='latex',file='mytable1.tex')
+```
+
+
+## `file`
+
+The `file` argument will write the variable documentation file to an HTML or LaTeX file and save it. Will automatically append 'html' or 'tex' filetype if the filename does not include a period.
+
+```{r, eval=FALSE}
+data(LifeCycleSavings)
+st(LifeCycleSavings,file='lifecycle_summary')
+```
+
+## `summ` and `summ.names`
+
+`summ` is the set of summary statistics functions to run and include in the table. It is very flexible, hopefully without being difficult to use. 
+
+It takes a character vector in which each element is of the form `function(x)`, where `function(x)` is any function that takes a vector and returns a single numeric value. For example, `summ=c('mean(x)','median(x)','mean(log(x))')` would calculate the mean, median, and mean of the log for each variable. `summ.names` is just the heading-title of the corresponding `summ`. So in this example that might be `summ.names=c('Mean','Median','Mean of Log')`.
+
+Factor variables largely ignore `summ` (unless `factor.numeric = TRUE`) and will just report counts in the first column and means/percentages in the second. You may want to consider this when selecting the order you put your `summ` in if you have both factor and numeric variables.
+
+`summ` treats as special two `vtable` functions: `propNA(x)` and `countNA(x)`, which give the proportion and count of NA values, and the count of non-NA values in the variable, respectively. These two functions are the only functions that include NA values in their calculations.
+
+By default, `summ` is `c('notNA(x)', 'mean(x)',   'sd(x)', 'min(x)', 'pctile(x)[25]', 'pctile(x)[75]', 'max(x)')` in 'one-column' tables. If there's more than one column either due to the `col.breaks` option or the `group` option, it defaults to `c('notNA(x)', 'mean(x)', 'sd(x)')`. Alternately, if a given column of variables is entirely made up of factor variables, it defaults to `c('sum(x)','mean(x)')`. These precise defaults have corresponding default `summ.names`. If you set your own `summ` but not `summ.names`, it will try to guess the name by taking your function, removing `(x)`, and capitalizing. so 'mean(x)' becomes 'Mean'.
+
+If you want to get complex you can. If there are multiple 'columns' of summary statistics and you want different statistics in each column, make `summ` and `summ.names` into a list, where each entry is a character vector of the calculations/names you want in that column.
+
+```{r}
+sumtable(iris,
+         summ=c('notNA(x)',
+                'mean(x)',
+                'median(x)',
+                'propNA(x)'))
+```
+
+```{r}
+#Getting complex
+st(iris, col.breaks = 4,
+   summ = list(
+     c('notNA(x)','mean(x)','sd(x^2)','min(x)','max(x)'),
+     c('notNA(x)','mean(x)')
+   ),
+   summ.names = list(
+     c('N','Mean','SD of X^2','Min','Max'),
+     c('Count','Percent')
+   ))
+```
+
+## `group`, `group.long`, and `group.test`
+
+`sumtable()` allows for the calculation of summary statistics by group. 
+
+`group` is a character variable containing the column name in `data` that you want to calculate summary statistics separately for. At the moment this supports only a single variable, although you can combine multiple variables into a single one yourself before using `sumtable`.
+
+`group.long` is a flag for whether you want the different group summary statistics stacked side-by-side (`group.long = FALSE`), making for easier comparisons, or on top of each other (`group.long = TRUE`), giving things a bit more room to breathe and allowing space for more statistics. Defaults to `FALSE`.
+
+`group.test`, which is only compatible with `group.long = FALSE`, performs a test of independence between the variable in `group` and each of the variables in your summary statistics table. Defaults to `FALSE`. Default `group.test = TRUE` behavior is to perform a group F-test (with `anova(lm())`) for numeric variables, and a chi-squared test (with `chisq.test`) for factor, logical, and character variables, returning results in the format 'Test statistic name = Test statistic^significance stars'. If you want to change any of that, instead of `group.test = TRUE`, set `group.test` equal to a named list of options that will be send to the `opts` argument of `independence.test`. See `help(independence.test)`.
+
+Be aware that the table produced with `group` uses multi-column cells. So it will not look quite as nice when outputting to a format that does not support multi-column cells, like `out='kable'` (as you see below) or `out='return'`.
+
+```{r}
+st(iris, group = 'Species', group.test = TRUE)
+```
+
+```{r}
+st(iris, group = 'Species', group.long = TRUE)
+```
+
+## `col.breaks`
+
+Sometimes you don't need all that much information on each variable, but you have a lot of variables and your table gets long! `col.breaks` will break up the variables in your table into multiple columns, and put them side by side. Also handy if you want to mix numeric and factor variables - put all your factors in a second column to economize on space. Incompatible with `group` unless `group.long = TRUE`.
+
+Set `col.breaks` to be a numeric vector. `sumtable()` will start a new column after that many variables have been processed.
+
+```{r}
+#Let's put species in a column by itself
+#There are five variables here, Species is last,
+#so break the column after the first four variables.
+st(iris, col.breaks = 4)
+```
+
+```{r}
+#Why not three columns?
+sumtable(mtcars, col.breaks = c(4,8))
+```
+
+## `digits` and `fixed.digits`
+
+`digits` indicates how many digits after the decimal place should be displayed. `fixed.digits` determines whether trailing zeros are maintained.
+
+```{r}
+st(iris, digits = 5)
+```
+
+```{r}
+st(iris, digits = 3, fixed.digits = TRUE)
+```
+
+## Factor, Logical, and Character Display Options
+
+How should factor, logical, and character variables (all of which get turned into factors in the `sumtable`-making process) be shown on the `sumtable()`?
+
+In all `sumtable()s`, there is one row for the name of the factor variable, with the number of nonmissing observations of the variable. Then there's one row for each of the values (for logicals, TRUE and FALSE become 'Yes' and 'No'), showing the count and percentage (i.e. 50%) of observations with that value.
+
+Set `factor.percent = FALSE` to report the proportion of observations (.5) instead of the percentage (50%) for the values.
+
+Set `factor.counts = FALSE` to omit the count for the individual values. So you'll see the number of nonmissing observations for the variable overall, and then just the percentage/proportion for each of the values.
+
+Set `factor.numeric = TRUE` and/or `logical.numeric = TRUE` to ignore all this special treatment for factor/logical variables (respectively), and just treat each of the values as numeric binary variables. `factor.numeric` also covers character variables.
+
+```{r}
+st(iris, factor.percent = FALSE, factor.counts = FALSE)
+```
+
+```{r}
+st(iris, factor.numeric = TRUE)
+```
+
+
+## `labels`
+
+The `labels` argument will attach variable labels to the variables in `data`. If variable labels are embedded in `data` and those labels are what you want, then set `labels = TRUE`.
+
+If you'd like to set your own labels that aren't embedded in the data, there are three formats available:
+
+### `labels` as a vector
+
+`labels` can be set to be a vector of equal length to the number of variables in `data` (or in `vars` if that's set), and in the same order. You can use `NA`s for padding if you only want labels for some varibles and just want to use the regular variable names for others.
+
+This option is not recommended if you have set `group`, as it gets tricky to figure out what order to put the labels in.
+
+```{r}
+#Note that LifeCycleSavings has five variables
+data(LifeCycleSavings)
+#These variable labels are taken from help(LifeCycleSavings)
+labs <- c('numeric aggregate personal savings',
+    'numeric % of population under 15',
+    'numeric % of population over 75',
+    NA,
+    'numeric % growth rate of dpi')
+sumtable(LifeCycleSavings,labels=labs)
+```
+
+### `labels` as a two-column data set
+
+`labels` can be set to a two-column data set (any type will do) where the first column has the variable names, and the second column has the labels. The column names don't matter.
+
+This approach does __not__ require that every variable name in `data` has a matching label.
+
+```{r}
+#Note that LifeCycleSavings has five variables
+#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'
+labs <- data.frame(nonsensename1 = c('sr', 'pop15', 'pop75'),
+nonsensename2 = c('numeric aggregate personal savings',
+    'numeric % of population under 15',
+    'numeric % of population over 75'))
+st(LifeCycleSavings,labels=labs)
+```
+
+### `labels` as a one-row data set
+
+`labels` can be set to a one-row data set in which the column names are the variable names in `data` and the first row is the variable names. The `labels` argument can take any data type including data frame, data table, tibble, or matrix, as long as it has a valid set of variable names stored in the `colnames()` attribute.
+
+This approach does __not__ require that every variable name in `data` has a matching label.
+
+```{r}
+labs <- data.frame(sr = 'numeric aggregate personal savings',
+    pop15 = 'numeric % of population under 15',
+    pop75 = 'numeric % of population over 75')
+sumtable(LifeCycleSavings,labels=labs)
+```
+
+## `title`, `note`, and `anchor`
+
+`title` will include a title for your table.
+
+`note` will add a table note in the last row.
+
+`anchor` will add an anchor ID (`<a name = ` in HTML or `\label{}` in LaTeX) to allow other parts of your document to link to it, if you are including your `sumtable` in a larger document.
+
+`title` will only show up in output formats with titles That is, you won't get them with `out = 'kable'` or `out = 'return'`. `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so they won't work with  `out = 'kable'` or `out = 'return'` either.
+
+
+## `col.width`
+
+`sumtable()` will select default column widths by basically just giving the column with the variable name a little more space than the `summ`-based columns. `col.width`, as a vector of percentage column widths on the 0-100 scale, will override these defaults. 
+
+Doesn't apply to `out = 'kable'` or `out = 'return'`.
+
+```{r, eval=FALSE}
+#The variable names in this data set are pretty short, and the value labels are
+#a little cramped, so let's move that over.
+st(LifeCycleSavings,
+   col.width=c(9,rep(13,7)))
+```
+
+## `col.align`
+
+`col.align` can be used to adjust text alignment in HTML output. Set to 'left', 'right', or 'center' to align all columns, or give a vector of column alignments to do each column separately.
+
+This option is only for HTML output and will only work with `out` values of 'browser', 'viewer', or 'htmlreturn'. 
+
+```{r, eval = FALSE}
+st(LifeCycleSavings,col.align = 'right')
+```
+
+## `align`
+
+This is a single string, used only with LaTeX output (`out` is 'latex' or 'latexpage'), which will be used as column alignment in standard LaTeX syntax, for example 'lccc' for the left column left-aligned and the other three centered. Accepts 'p{}' and other LaTeX column types.
+
+Be sure to escape special characters, in particular backslashes.
+
+Defaults to left-aligned 'Variable' columns and right-aligned everything else. If `col.widths` is specified, defaults to 'p{}' columns, with widths set by `col.width`.
+
+```{r, eval = FALSE}
+sumtable(iris,align = 'p{.3\\textwidth}ccccccc', out = 'latex')
+```
+
+## `opts`
+
+You can create a named list where the names are the above options and the values are the settings for those options, and input it into `sumtable` using `opts=`. This is an easy way to set the same options for many `sumtable`s.

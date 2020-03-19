@@ -1,0 +1,91 @@
+---
+title: "labeltable: Label Table"
+author: "Nick Huntington-Klein"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+<!-- output: rmarkdown::html_vignette. pdf_document -->
+vignette: >
+  %\VignetteIndexEntry{labeltable: Label Table}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The `vtable` package serves the purpose of outputting automatic variable documentation that can be easily viewed while continuing to work with data.
+
+`vtable` contains four main functions: `vtable()` (or `vt()`), `sumtable()` (or `st()`),  `labeltable()`, and `dftoHTML()`/`dftoLaTeX()`. This vignette focuses on `labeltable()`. 
+
+`labeltable()` is designed to take a single variable and show the values it is associated with. This can also be used to generate data documentation if desired, or can just be an easy way to look at label values, or learn more about the data you're working with.
+
+If that variable has value labels from the `sjlabelled` or `haven` packages, it will show how the values in the data correspond to the value labels.
+
+Alternately, you can include other variables as well, and `labeltable()` will show, for each value of the variable you're interested in, the values that those other variables take. This can be handy, for example, if you used some variables to create a numeric ID and want to remember what original values correspond to each ID. It can also act as sort of a cross-tabulation.
+
+-----
+
+
+# The `labeltable()` function
+
+`vtable()` syntax follows the following outline:
+
+```{r, eval=FALSE}
+labeltable(var,
+    ...,
+    out=NA,
+    file=NA, 
+    desc=NA,
+    note=NA)
+```
+
+`labeltable()` is a function that shows the values that correspond to `var`. This could be value label values, or it could be the values found in the data for the `...` variables.
+
+```{r}
+#Include a single labelled variable to show how the values of that variable correspond to its value labels.
+library(vtable)
+library(sjlabelled)
+data(efc)
+labeltable(efc$e15relat)
+```
+
+```{r}
+#Include more than one variable to show, for each value of the first, what values of the others are present in the data.
+data(mtcars)
+labeltable(mtcars$cyl,mtcars$carb,mtcars$am)
+```
+
+## `out`
+
+The `out` option determines what will be done with the resulting label table file. There are several options for `out`:
+
+| Option     | Result |
+|------------| -----------------------------------------|
+| browser    | Loads output in web browser. |
+| viewer     | Loads output in Viewer pane (RStudio only). |
+| htmlreturn | Returns HTML code for output file. |
+| return     | Returns output table in data frame format. |
+| kable      | Returns a `knitr::kable()` |
+| latex      | Returns a LaTeX table. |
+| latexpage  | Returns an independently-buildable LaTeX document. |
+
+By default, `vtable` will select 'viewer' if running in RStudio, and 'browser' otherwise. If it's being built in an RMarkdown document with `knitr`, it will default to 'kable'.
+
+## `file`
+
+The `file` argument will write the variable documentation file to an HTML file and save it. Will automatically append 'html' filetype if the filename does not include a period.
+
+```{r, eval=FALSE}
+library(vtable)
+
+data(LifeCycleSavings)
+labeltable(efc$e15relat,file='lifecycle_variabledocumentation')
+```
+
+## `desc`, `note`, and `anchor`.
+
+`desc` will include a description of the data set (or whatever you like) in the file, which may be useful for documentation purposes.
+
+`note` will add a table note in the last row.
+
+`anchor` will add an anchor ID (`<a name = ` in HTML or `\label{}` in LaTeX) to allow other parts of your document to link to it, if you are including your vtable in a larger document.
+
+`desc` will only show up in full-page `labeltable`s. That is, you won't get them with `out = 'kable'`, `out = 'return'`, or `out = 'latex'` (although `out = 'latexpage'` works). `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so they won't work with  `out = 'kable'` or `out = 'return'`.
+

@@ -24,6 +24,7 @@ sumtable(
   logical.numeric = FALSE,
   labels = NA,
   title = "Summary Statistics",
+  note = NA,
   anchor = NA,
   col.width = NA,
   col.align = NA,
@@ -50,6 +51,7 @@ st(
   logical.numeric = FALSE,
   labels = NA,
   title = "Summary Statistics",
+  note = NA,
   anchor = NA,
   col.width = NA,
   col.align = NA,
@@ -62,11 +64,11 @@ st(
 
 \item{vars}{Character vector of column names to include, in the order you'd like them included. Defaults to all numeric, factor, and logical variables, plus any character variables with six or fewer unique values. You can include strings that aren't columns in the data (including blanks) - these will create rows that are blank except for the string (left-aligned), for spacers or subtitles.}
 
-\item{out}{Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"latex"} to return LaTeX code to R (use \code{"latexdoc"} to get a full buildable document rather than a fragment), \code{"return"} to return the completed summary table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Defaults to \code{"viewer"} if RStudio is running and \code{"browser"} if it isn't.}
+\item{out}{Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"latex"} to return LaTeX code to R (use \code{"latexdoc"} to get a full buildable document rather than a fragment), \code{"return"} to return the completed summary table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.}
 
 \item{file}{Saves the completed summary table file to file with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard sumtable HTML file as with \code{out = "viewer"} or \code{out = "browser"}.}
 
-\item{summ}{Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. Defaults to \code{c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')} if there's one column, or \code{c('notNA(x)','mean(x)','sd(x)')} if there's more than one. If all variables in a column are factors it defaults to \code{c('sum(x)','mean(x)')} for the factor dummies. If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)}, \code{countNA(x)}, and  \code{notNA(x)}.}
+\item{summ}{Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. Defaults to \code{c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')} if there's one column, or \code{c('notNA(x)','mean(x)','sd(x)')} if there's more than one. If all variables in a column are factors it defaults to \code{c('sum(x)','mean(x)')} for the factor dummies. If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)} and \code{countNA(x)}.}
 
 \item{summ.names}{Character vector of names for the summary statistics included. If \code{summ} is at default, defaults to \code{c('N','Mean','Std.Dev.','Min','Pctl.25','Pctl.75','Max')} (or the appropriate shortened version with multiple columns) unless all variables in the column are factors in which case it defaults to \code{c('N','Percent')}. If \code{summ} has been set but \code{summ.names} has not, defaults to \code{summ} with the \code{(x)}s removed and the first letter capitalized.  If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead.}
 
@@ -93,6 +95,8 @@ st(
 \item{labels}{Variable labels. labels will accept four formats: (1) A vector of the same length as the number of variables in the data that will be included in the table (tricky to use if many are being dropped, also won't work for your \code{group} variable), in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels, or (4) TRUE to look in the data for variable labels set by the haven package, \code{set_label()} from sjlabelled, or \code{label()} from Hmisc.}
 
 \item{title}{Character variable with the title of the table.}
+
+\item{note}{Table note to go after the last row of the table. Will follow significance star note if \code{group.test = TRUE}.}
 
 \item{anchor}{Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.}
 

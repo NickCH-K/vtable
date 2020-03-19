@@ -73,7 +73,7 @@ notNA <- function(x) {
 #' median(x)
 #' @export
 pctile <- function(x) {
-  quantile(x,1:100/100)
+  stats::quantile(x,1:100/100)
 }
 
 # Evaluate a series of functions
@@ -113,7 +113,7 @@ parsefcn <- function(x,y) {
 # Evaluate a function allowing it to not work
 # Special version for sumtable that does the NA-dropping internally
 parsefcn_summ <- function(x,y) {
-  if (!any(sapply(c('anyNA','propNA','sumNA'),function(z) grepl(z,y)))) {
+  if (!any(sapply(c('anyNA','propNA','countNA'),function(z) grepl(z,y)))) {
     x <- x[!is.na(x)]
   }
 
@@ -177,7 +177,7 @@ summary.row <- function(data,var,st,
     #Get data
     va <- data[,var]
     #Create dummies to treat as numeric
-    mat <- model.matrix(~-1+va)
+    mat <- stats::model.matrix(~-1+va)
     #And names
     facnames <- paste('...',levels(va))
     #Run each of the functions on the variable and get results
@@ -198,7 +198,7 @@ summary.row <- function(data,var,st,
     st <- rbind(st,results)
   } else {
     #Get data
-    va <- data[,var]
+    va <- data[[var]]
     #Run each of the functions on the variable and get results
     results <- sapply(summ, function(y) parsefcn_summ(va,y))
     #Round
@@ -246,5 +246,6 @@ clean_multicol <- function(df) {
   for (i in 1:ncol(df)) {
     df[[i]] <- clean_content(df[[i]])
   }
+  names(df) <- clean_content(names(df))
   return(df)
 }
