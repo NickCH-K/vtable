@@ -729,6 +729,10 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     for (i in 1:ncol(vt)) {
       vt[[i]] <- gsub('<br/>','<br>',vt[[i]])
     }
+    #kable can't handle blank rows. These should not occur in vtable but just in case
+    vt <- vt[!apply(vt,MARGIN=1,FUN=function(x) !any(!(x==rep('',ncol(vt))))),]
+    #I don't know how this would happen but just in case
+    vt <- vt[!apply(vt,MARGIN=1,FUN=function(x) propNA(x) == 1),]
     return(knitr::kable(vt))
   } else if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {
     rstudioapi::viewer(htmlpath)

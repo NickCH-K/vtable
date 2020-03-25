@@ -2,7 +2,7 @@ Package: vtable
 Type: Package
 Title: Variable Table for Variable Documentation
 Version: 1.0.0
-Date: 2020-03-09
+Date: 2020-03-25
 Authors@R: c(person(given = "Nick", family = "Huntington-Klein", role = c("aut","cre"), email = "nhuntington-klein@fullerton.edu"))
 Description: Automatically generates HTML variable documentation including variable names, labels, classes, value labels (if applicable), value ranges, and summary statistics. See the vignette "vtable" for a package overview.
 License: MIT + file LICENSE
