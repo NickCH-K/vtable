@@ -845,6 +845,10 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   #Either print the variable table to the help window
   #or return a variable table to the screen, as desired
   if (out == 'kable' | (isTRUE(getOption('knitr.in.progress')) & out == '')) {
+    #kable can't handle the blank rows group.long makes
+    st <- st[!apply(st,MARGIN=1,FUN=function(x) !any(!(x==rep('',ncol(st))))),]
+    #I don't know how this would happen but just in case
+    st <- st[!apply(st,MARGIN=1,FUN=function(x) propNA(x) == 1),]
     return(knitr::kable(clean_multicol(st)))
   } else if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {
     rstudioapi::viewer(htmlpath)
