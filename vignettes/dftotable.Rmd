@@ -107,7 +107,9 @@ dftoHTML(LifeCycleSavings,col.width=c(60,10,10,10,10))
 
 ## `col.align`
 
-`col.align` can be used to adjust text alignment in HTML output. Set to 'left', 'right', or 'center' to align all columns, or give a vector of column alignments to do each column separately.
+`col.align` can be used to adjust text alignment in HTML output. Set to 'left', 'right', or 'center' to align all columns, or give a vector of column alignments to do each column separately. 
+
+While this is not intended usage, you can add additional CSS arguments (i.e. `'left; padding:5px'`) and it will apply that CSS to every cell in the column.
 
 ## `row.names`
 

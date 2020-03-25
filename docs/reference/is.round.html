@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Data Frame to LaTeX Function — dftoLaTeX • vtable</title>
+<title>Checks if information is lost by rounding — is.round • vtable</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Data Frame to LaTeX Function — dftoLaTeX" />
-<meta property="og:description" content="This function takes a data frame or matrix with column names and outputs a lightly-formatted LaTeX table version of that data frame." />
+<meta property="og:title" content="Checks if information is lost by rounding — is.round" />
+<meta property="og:description" content="This function takes a vector and checks if any information is lost by rounding to a certain number of digits." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,79 +127,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Data Frame to LaTeX Function</h1>
+    <h1>Checks if information is lost by rounding</h1>
     
-    <div class="hidden name"><code>dftoLaTeX.Rd</code></div>
+    <div class="hidden name"><code>is.round.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function takes a data frame or matrix with column names and outputs a lightly-formatted LaTeX table version of that data frame.</p>
+    <p>This function takes a vector and checks if any information is lost by rounding to a certain number of digits.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dftoLaTeX</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>file</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>frag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>note</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>anchor</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>align</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>no.escape</span> <span class='kw'>=</span> <span class='fl'>NA</span>
-)</pre>
+    <pre class="usage"><span class='fu'>is.round</span>(<span class='no'>x</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>Data set; accepts any format with column names.</p></td>
+      <th>x</th>
+      <td><p>A vector.</p></td>
     </tr>
     <tr>
-      <th>file</th>
-      <td><p>Saves the completed table to LaTeX with this filepath.</p></td>
-    </tr>
-    <tr>
-      <th>frag</th>
-      <td><p>Set to TRUE to produce only the LaTeX table itself, or FALSE to produce a fully buildable LaTeX. Defaults to TRUE.</p></td>
-    </tr>
-    <tr>
-      <th>title</th>
-      <td><p>Character variable with the title of the table.</p></td>
-    </tr>
-    <tr>
-      <th>note</th>
-      <td><p>Table note to go after the last row of the table.</p></td>
-    </tr>
-    <tr>
-      <th>anchor</th>
-      <td><p>Character variable to be used to set a label tag for the table.</p></td>
-    </tr>
-    <tr>
-      <th>align</th>
-      <td><p>Character variable with standard LaTeX formatting for alignment, for example <code>'lccc'</code>. You can also use this to force column widths with <code>p</code> in standard LaTeX style. Defaults to the first column being left-aligned and all others centered. Be sure to escape special characters, in particular backslashes (i.e. <code>p{.25\\textwidth}</code> instead of <code>p{.25\textwidth}</code>).</p></td>
-    </tr>
-    <tr>
-      <th>row.names</th>
-      <td><p>Flag determining whether or not the row names should be included in the table. Defaults to <code>FALSE</code>.</p></td>
-    </tr>
-    <tr>
-      <th>no.escape</th>
-      <td><p>Vector of column indices for which special characters should not be escaped (perhaps they include markup text of their own).</p></td>
+      <th>digits</th>
+      <td><p>How many digits to round to.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function is designed to feed LaTeX versions of variable tables to <code><a href='vtable.html'>vtable()</a></code>, <code><a href='sumtable.html'>sumtable()</a></code>, and <code><a href='labeltable.html'>labeltable()</a></code>.</p>
-<p>Multi-column cells are supported. Wrap the cell's contents in a <code>multicolumn</code> tag as normal, and then fill in any cells that need to be deleted to make room for the multi-column cell with "DELETECELL". Or use the MULTICOL syntax of <code>dftoHTML</code>, that works too.</p>
-<p>If the first column and row begins with the text "HEADERROW", then the first row will be put above the column names.</p>
+    <p>Returns <code>TRUE</code> if rounding to <code>digits</code> digits after the decimal can be done without losing information.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>var1</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>,<span class='kw'>var2</span><span class='kw'>=</span><span class='fl'>5</span>:<span class='fl'>8</span>,<span class='kw'>var3</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'D'</span>),
-    <span class='kw'>var4</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'C'</span>)),<span class='kw'>var5</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>,<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>))
-<span class='fu'>dftoLaTeX</span>(<span class='no'>df</span>, <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>'ccccc'</span>)</div><div class='output co'>#&gt; [1] "\\begin{table}[!htbp] \\centering \n \\renewcommand*{\\arraystretch}{1.1} \n\n\\begin{tabular}{ccccc}\n\\hline\n\\hline\nvar1 &amp; var2 &amp; var3 &amp; var4 &amp; var5 \\\\ \n\\hline\n1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\\\ \n1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\\\ \n1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\\\ \n1 &amp; 1 &amp; 1 &amp; 1 &amp; 1\\\\ \n\\hline\n\\hline\n\\end{tabular}\n\\end{table}"</div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>is.round</span>(<span class='fl'>1</span>:<span class='fl'>5</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1.2</span>, <span class='fl'>1.23</span>)
+<span class='fu'>is.round</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is.round</span>(<span class='no'>x</span>,<span class='kw'>digits</span><span class='kw'>=</span><span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

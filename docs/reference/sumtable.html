@@ -215,7 +215,7 @@
     </tr>
     <tr>
       <th>summ.names</th>
-      <td><p>Character vector of names for the summary statistics included. If <code>summ</code> is at default, defaults to <code><a href='https://rdrr.io/r/base/c.html'>c('N','Mean','Std.Dev.','Min','Pctl.25','Pctl.75','Max')</a></code> (or the appropriate shortened version with multiple columns) unless all variables in the column are factors in which case it defaults to <code><a href='https://rdrr.io/r/base/c.html'>c('N','Percent')</a></code>. If <code>summ</code> has been set but <code>summ.names</code> has not, defaults to <code>summ</code> with the <code>(x)</code>s removed and the first letter capitalized.  If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead.</p></td>
+      <td><p>Character vector of names for the summary statistics included. If <code>summ</code> is at default, defaults to <code><a href='https://rdrr.io/r/base/c.html'>c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 75','Max')</a></code> (or the appropriate shortened version with multiple columns) unless all variables in the column are factors in which case it defaults to <code><a href='https://rdrr.io/r/base/c.html'>c('N','Percent')</a></code>. If <code>summ</code> has been set but <code>summ.names</code> has not, defaults to <code>summ</code> with the <code>(x)</code>s removed and the first letter capitalized.  If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead.</p></td>
     </tr>
     <tr>
       <th>group</th>
@@ -279,11 +279,11 @@
     </tr>
     <tr>
       <th>col.align</th>
-      <td><p>For HTML output, a character vector indicating the HTML <code>text-align</code> attributes to be used in the table (for example <code>col.align = c('left','center','center')</code>. Defaults to variable-name columns left-aligned and all others right-aligned.</p></td>
+      <td><p>For HTML output, a character vector indicating the HTML <code>text-align</code> attributes to be used in the table (for example <code>col.align = c('left','center','center')</code>. Defaults to variable-name columns left-aligned and all others right-aligned (with a little extra padding between columns with <code>col.breaks</code>). If you want to get tricky, you can add a <code>";"</code> afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.</p></td>
     </tr>
     <tr>
       <th>align</th>
-      <td><p>For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. <code>l|ccc</code>). Defaults to left in the first column and right-aligned afterwards, or if <code>col.width</code> is specified, defaults to all <code>p{}</code> columns with widths set by <code>col.width</code>. If you want the columns aligned on a decimal point, see [this explainer](https://tex.stackexchange.com/questions/2746/aligning-numbers-by-decimal-points-in-table-columns#2747) of how to use the <code>siunitx</code> package and <code>S</code>-type columns.</p></td>
+      <td><p>For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. <code>l|ccc</code>). Defaults to left in the first column and right-aligned afterwards, with <code>@{\hskip .2in}</code> spacers if you have <code>col.breaks</code>. If <code>col.width</code> is specified, defaults to all <code>p{}</code> columns with widths set by <code>col.width</code>. If you want the columns aligned on a decimal point, see [this explainer](https://tex.stackexchange.com/questions/2746/aligning-numbers-by-decimal-points-in-table-columns#2747) of how to use the <code>siunitx</code> package and <code>S</code>-type columns.</p></td>
     </tr>
     <tr>
       <th>opts</th>

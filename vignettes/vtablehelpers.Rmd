@@ -36,6 +36,11 @@ These three functions are shortcuts for dealing with missing data. You have prob
 | `propNA()`     | `mean(is.na())` |
 | `notNA()` | `sum(!is.na())` |
 
+## `is.round`
+
+This function is a shortcut for `!any(!(x == round(x,digits)))`.
+
+It takes two arguments: a vector `x` and a number of `digits` (0 by default). It checks whether you can round to `digits` digits without losing any information.
 
 -----
 

@@ -188,17 +188,185 @@
 <span class='co'>#Values not present in the data will be included in the table but moved to the end.</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sjlabelled</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
-<span class='fu'>labeltable</span>(<span class='no'>efc</span>$<span class='no'>e15relat</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; [1] "\n                    &lt;html style=\"font-family:Helvetica,Arial,Sans\"&gt;\n                    &lt;head&gt;&lt;title&gt;e15relat Label Table&lt;/title&gt;&lt;style type = \"text/css\"&gt;\n                    p {\n                    font-size:smaller;\n                    }\n                    table {\n                    border: 0px;\n                    border-collapse:collapse;\n                    font-size:smaller;\n                    table-layout:fixed;\n                    margin-left:0%;\n                    margin-right:auto;\n                    }\n                    .headtab {\n                    width: 100%;\n                    margin-left:auto;\n                    margin-right:auto;\n                    }\n                    th {\n                    background-color: #FFFFFF;\n                    font-weight:bold;\n                    text-align:left;\n                    }\n                    table tr:nth-child(odd) td {\n                    background-color: #FFFFFF;\n                    padding:4px;\n                    word-wrap: break-word;\n                    word-break:break-all;\n                    }\n                    table tr:nth-child(even) td {\n                    background-color: #D3D3D3;\n                    padding:4px;\n                    word-wrap: break-word;\n                    word-break:break-all;\n                    }&lt;/style&gt;&lt;/head&gt;&lt;body&gt; &lt;table class=\"headtab\"&gt; &lt;tr&gt;&lt;td style=\"text-align:left\"&gt;labeltable {vtable}&lt;/td&gt; &lt;td style=\"text-align:right\"&gt;Variable Documentation: Label Table&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;h1&gt; e15relat &lt;/h1&gt;&lt;h3&gt;Label Table&lt;/h3&gt;&lt;table&gt;&lt;tr&gt;&lt;th style = \"width:50%; text-align:left\"&gt;e15relat&lt;/th&gt;&lt;th style = \"width:50%; text-align:left\"&gt;Label&lt;/th&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;1&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;spouse/partner&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;2&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;child&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;3&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;sibling&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;4&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;daughter or son -in-law&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;5&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;ancle/aunt&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;6&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;nephew/niece&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;7&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;cousin&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;8&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;other, specify&lt;/td&gt;&lt;/tr&gt;\n&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;"</div><div class='input'>
+<span class='fu'>labeltable</span>(<span class='no'>efc</span>$<span class='no'>e15relat</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+#&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
+#&gt;                     &lt;head&gt;&lt;title&gt;e15relat Label Table&lt;/title&gt;&lt;style type = "text/css"&gt;
+#&gt;                     p {
+#&gt;                     font-size:smaller;
+#&gt;                     }
+#&gt;                     table {
+#&gt;                     border: 0px;
+#&gt;                     border-collapse:collapse;
+#&gt;                     font-size:smaller;
+#&gt;                     table-layout:fixed;
+#&gt;                     margin-left:0%;
+#&gt;                     margin-right:auto;
+#&gt;                     }
+#&gt;                     .headtab {
+#&gt;                     width: 100%;
+#&gt;                     margin-left:auto;
+#&gt;                     margin-right:auto;
+#&gt;                     }
+#&gt;                     th {
+#&gt;                     background-color: #FFFFFF;
+#&gt;                     font-weight:bold;
+#&gt;                     text-align:left;
+#&gt;                     }
+#&gt;                     table tr:nth-child(odd) td {
+#&gt;                     background-color: #FFFFFF;
+#&gt;                     padding:4px;
+#&gt;                     word-wrap: break-word;
+#&gt;                     word-break:break-all;
+#&gt;                     }
+#&gt;                     table tr:nth-child(even) td {
+#&gt;                     background-color: #D3D3D3;
+#&gt;                     padding:4px;
+#&gt;                     word-wrap: break-word;
+#&gt;                     word-break:break-all;
+#&gt;                     }&lt;/style&gt;&lt;/head&gt;&lt;body&gt; &lt;table class="headtab"&gt; &lt;tr&gt;&lt;td style="text-align:left"&gt;labeltable {vtable}&lt;/td&gt; &lt;td style="text-align:right"&gt;Variable Documentation: Label Table&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;h1&gt; e15relat &lt;/h1&gt;&lt;h3&gt;Label Table&lt;/h3&gt;&lt;table&gt;&lt;tr&gt;&lt;th style = "width:50%; text-align:left"&gt;e15relat&lt;/th&gt;&lt;th style = "width:50%; text-align:left"&gt;Label&lt;/th&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;1&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;spouse/partner&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;2&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;child&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;3&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;sibling&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;4&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;daughter or son -in-law&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;5&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;ancle/aunt&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;6&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;nephew/niece&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;7&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;cousin&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;8&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;other, specify&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'>
 <span class='co'>#Include multiple variables to see, for each value of the first variable,</span>
 <span class='co'>#each value of the others present in the data.</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
-<span class='fu'>labeltable</span>(<span class='no'>efc</span>$<span class='no'>e15relat</span>,<span class='no'>efc</span>$<span class='no'>e16sex</span>,<span class='no'>efc</span>$<span class='no'>e42dep</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; [1] "\n                    &lt;html style=\"font-family:Helvetica,Arial,Sans\"&gt;\n                    &lt;head&gt;&lt;title&gt;e15relat Label Table&lt;/title&gt;&lt;style type = \"text/css\"&gt;\n                    p {\n                    font-size:smaller;\n                    }\n                    table {\n                    border: 0px;\n                    border-collapse:collapse;\n                    font-size:smaller;\n                    table-layout:fixed;\n                    margin-left:0%;\n                    margin-right:auto;\n                    }\n                    .headtab {\n                    width: 100%;\n                    margin-left:auto;\n                    margin-right:auto;\n                    }\n                    th {\n                    background-color: #FFFFFF;\n                    font-weight:bold;\n                    text-align:left;\n                    }\n                    table tr:nth-child(odd) td {\n                    background-color: #FFFFFF;\n                    padding:4px;\n                    word-wrap: break-word;\n                    word-break:break-all;\n                    }\n                    table tr:nth-child(even) td {\n                    background-color: #D3D3D3;\n                    padding:4px;\n                    word-wrap: break-word;\n                    word-break:break-all;\n                    }&lt;/style&gt;&lt;/head&gt;&lt;body&gt; &lt;table class=\"headtab\"&gt; &lt;tr&gt;&lt;td style=\"text-align:left\"&gt;labeltable {vtable}&lt;/td&gt; &lt;td style=\"text-align:right\"&gt;Variable Documentation: Label Table&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;h1&gt; e15relat &lt;/h1&gt;&lt;h3&gt;Label Table&lt;/h3&gt;&lt;table&gt;&lt;tr&gt;&lt;th style = \"width:33%; text-align:left\"&gt;e15relat&lt;/th&gt;&lt;th style = \"width:33%; text-align:left\"&gt;e16sex&lt;/th&gt;&lt;th style = \"width:33%; text-align:left\"&gt;e42dep&lt;/th&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:33%; text-align:left\"&gt;1&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;2, 1&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;3, 4, 1, 2, NA&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:33%; text-align:left\"&gt;2&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;2, 1, NA&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;3, 4, 2, 1&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:33%; text-align:left\"&gt;3&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;1, 2&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;3, 2, 1, 4&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:33%; text-align:left\"&gt;4&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;2, 1&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;4, 3, 2, 1&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:33%; text-align:left\"&gt;5&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;2, 1&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;3, 2, 1, 4&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:33%; text-align:left\"&gt;6&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;2, 1&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;4, 3, 1, 2&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:33%; text-align:left\"&gt;7&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;2, 1&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;4, 3, 2, 1&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:33%; text-align:left\"&gt;8&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;2, 1&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;3, 4, 2, 1&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:33%; text-align:left\"&gt;NA&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;2, NA&lt;/td&gt;&lt;td style = \"width:33%; text-align:left\"&gt;3, NA&lt;/td&gt;&lt;/tr&gt;\n&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;"</div><div class='input'>
+<span class='fu'>labeltable</span>(<span class='no'>efc</span>$<span class='no'>e15relat</span>,<span class='no'>efc</span>$<span class='no'>e16sex</span>,<span class='no'>efc</span>$<span class='no'>e42dep</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+#&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
+#&gt;                     &lt;head&gt;&lt;title&gt;e15relat Label Table&lt;/title&gt;&lt;style type = "text/css"&gt;
+#&gt;                     p {
+#&gt;                     font-size:smaller;
+#&gt;                     }
+#&gt;                     table {
+#&gt;                     border: 0px;
+#&gt;                     border-collapse:collapse;
+#&gt;                     font-size:smaller;
+#&gt;                     table-layout:fixed;
+#&gt;                     margin-left:0%;
+#&gt;                     margin-right:auto;
+#&gt;                     }
+#&gt;                     .headtab {
+#&gt;                     width: 100%;
+#&gt;                     margin-left:auto;
+#&gt;                     margin-right:auto;
+#&gt;                     }
+#&gt;                     th {
+#&gt;                     background-color: #FFFFFF;
+#&gt;                     font-weight:bold;
+#&gt;                     text-align:left;
+#&gt;                     }
+#&gt;                     table tr:nth-child(odd) td {
+#&gt;                     background-color: #FFFFFF;
+#&gt;                     padding:4px;
+#&gt;                     word-wrap: break-word;
+#&gt;                     word-break:break-all;
+#&gt;                     }
+#&gt;                     table tr:nth-child(even) td {
+#&gt;                     background-color: #D3D3D3;
+#&gt;                     padding:4px;
+#&gt;                     word-wrap: break-word;
+#&gt;                     word-break:break-all;
+#&gt;                     }&lt;/style&gt;&lt;/head&gt;&lt;body&gt; &lt;table class="headtab"&gt; &lt;tr&gt;&lt;td style="text-align:left"&gt;labeltable {vtable}&lt;/td&gt; &lt;td style="text-align:right"&gt;Variable Documentation: Label Table&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;h1&gt; e15relat &lt;/h1&gt;&lt;h3&gt;Label Table&lt;/h3&gt;&lt;table&gt;&lt;tr&gt;&lt;th style = "width:33%; text-align:left"&gt;e15relat&lt;/th&gt;&lt;th style = "width:33%; text-align:left"&gt;e16sex&lt;/th&gt;&lt;th style = "width:33%; text-align:left"&gt;e42dep&lt;/th&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:33%; text-align:left"&gt;1&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;2, 1&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;3, 4, 1, 2, NA&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:33%; text-align:left"&gt;2&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;2, 1, NA&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;3, 4, 2, 1&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:33%; text-align:left"&gt;3&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;1, 2&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;3, 2, 1, 4&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:33%; text-align:left"&gt;4&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;2, 1&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;4, 3, 2, 1&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:33%; text-align:left"&gt;5&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;2, 1&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;3, 2, 1, 4&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:33%; text-align:left"&gt;6&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;2, 1&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;4, 3, 1, 2&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:33%; text-align:left"&gt;7&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;2, 1&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;4, 3, 2, 1&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:33%; text-align:left"&gt;8&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;2, 1&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;3, 4, 2, 1&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:33%; text-align:left"&gt;NA&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;2, NA&lt;/td&gt;&lt;td style = "width:33%; text-align:left"&gt;3, NA&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'>
 <span class='co'>#Commonly, the multi-variable version might be used to recover the original</span>
 <span class='co'>#values of encoded variables</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>USJudgeRatings</span>)
 <span class='no'>USJudgeRatings</span>$<span class='no'>Judge</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/row.names.html'>row.names</a></span>(<span class='no'>USJudgeRatings</span>)
 <span class='no'>USJudgeRatings</span>$<span class='no'>JudgeID</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='no'>USJudgeRatings</span>$<span class='no'>Judge</span>))
-<span class='fu'>labeltable</span>(<span class='no'>USJudgeRatings</span>$<span class='no'>JudgeID</span>,<span class='no'>USJudgeRatings</span>$<span class='no'>Judge</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; [1] "\n                    &lt;html style=\"font-family:Helvetica,Arial,Sans\"&gt;\n                    &lt;head&gt;&lt;title&gt;JudgeID Label Table&lt;/title&gt;&lt;style type = \"text/css\"&gt;\n                    p {\n                    font-size:smaller;\n                    }\n                    table {\n                    border: 0px;\n                    border-collapse:collapse;\n                    font-size:smaller;\n                    table-layout:fixed;\n                    margin-left:0%;\n                    margin-right:auto;\n                    }\n                    .headtab {\n                    width: 100%;\n                    margin-left:auto;\n                    margin-right:auto;\n                    }\n                    th {\n                    background-color: #FFFFFF;\n                    font-weight:bold;\n                    text-align:left;\n                    }\n                    table tr:nth-child(odd) td {\n                    background-color: #FFFFFF;\n                    padding:4px;\n                    word-wrap: break-word;\n                    word-break:break-all;\n                    }\n                    table tr:nth-child(even) td {\n                    background-color: #D3D3D3;\n                    padding:4px;\n                    word-wrap: break-word;\n                    word-break:break-all;\n                    }&lt;/style&gt;&lt;/head&gt;&lt;body&gt; &lt;table class=\"headtab\"&gt; &lt;tr&gt;&lt;td style=\"text-align:left\"&gt;labeltable {vtable}&lt;/td&gt; &lt;td style=\"text-align:right\"&gt;Variable Documentation: Label Table&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;h1&gt; JudgeID &lt;/h1&gt;&lt;h3&gt;Label Table&lt;/h3&gt;&lt;table&gt;&lt;tr&gt;&lt;th style = \"width:50%; text-align:left\"&gt;JudgeID&lt;/th&gt;&lt;th style = \"width:50%; text-align:left\"&gt;Judge&lt;/th&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;1&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;AARONSON,L.H.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;10&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;DANNEHY,J.F.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;11&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;DEAN,H.H.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;12&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;DEVITA,H.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;13&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;DRISCOLL,P.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;14&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;GRILLO,A.E.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;15&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;HADDEN,W.L.JR.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;16&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;HAMILL,E.C.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;17&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;HEALEY.A.H.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;18&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;HULL,T.C.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;19&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;LEVINE,I.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;2&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;ALEXANDER,J.M.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;20&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;LEVISTER,R.L.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;21&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;MARTIN,L.F.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;22&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;MCGRATH,J.F.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;23&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;MIGNONE,A.F.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;24&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;MISSAL,H.M.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;25&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;MULVEY,H.M.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;26&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;NARUK,H.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;27&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;O'BRIEN,F.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;28&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;O'SULLIVAN,T.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;29&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;PASKEY,L.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;3&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;ARMENTANO,A.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;30&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;RUBINOW,J.E.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;31&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;SADEN.G.A.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;32&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;SATANIELLO,A.G.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;33&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;SHEA,D.M.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;34&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;SHEA,J.F.JR.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;35&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;SIDOR,W.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;36&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;SPEZIALE,J.A.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;37&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;SPONZO,M.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;38&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;STAPLETON,J.F.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;39&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;TESTO,R.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;4&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;BERDON,R.I.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;40&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;TIERNEY,W.L.JR.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;41&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;WALL,R.A.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;42&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;WRIGHT,D.B.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;43&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;ZARRILLI,K.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;5&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;BRACKEN,J.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;6&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;BURNS,E.B.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;7&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;CALLAHAN,R.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;8&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;COHEN,S.S.&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td style = \"width:50%; text-align:left\"&gt;9&lt;/td&gt;&lt;td style = \"width:50%; text-align:left\"&gt;DALY,J.J.&lt;/td&gt;&lt;/tr&gt;\n&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;"</div><div class='input'><span class='co'># }</span>
+<span class='fu'>labeltable</span>(<span class='no'>USJudgeRatings</span>$<span class='no'>JudgeID</span>,<span class='no'>USJudgeRatings</span>$<span class='no'>Judge</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+#&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
+#&gt;                     &lt;head&gt;&lt;title&gt;JudgeID Label Table&lt;/title&gt;&lt;style type = "text/css"&gt;
+#&gt;                     p {
+#&gt;                     font-size:smaller;
+#&gt;                     }
+#&gt;                     table {
+#&gt;                     border: 0px;
+#&gt;                     border-collapse:collapse;
+#&gt;                     font-size:smaller;
+#&gt;                     table-layout:fixed;
+#&gt;                     margin-left:0%;
+#&gt;                     margin-right:auto;
+#&gt;                     }
+#&gt;                     .headtab {
+#&gt;                     width: 100%;
+#&gt;                     margin-left:auto;
+#&gt;                     margin-right:auto;
+#&gt;                     }
+#&gt;                     th {
+#&gt;                     background-color: #FFFFFF;
+#&gt;                     font-weight:bold;
+#&gt;                     text-align:left;
+#&gt;                     }
+#&gt;                     table tr:nth-child(odd) td {
+#&gt;                     background-color: #FFFFFF;
+#&gt;                     padding:4px;
+#&gt;                     word-wrap: break-word;
+#&gt;                     word-break:break-all;
+#&gt;                     }
+#&gt;                     table tr:nth-child(even) td {
+#&gt;                     background-color: #D3D3D3;
+#&gt;                     padding:4px;
+#&gt;                     word-wrap: break-word;
+#&gt;                     word-break:break-all;
+#&gt;                     }&lt;/style&gt;&lt;/head&gt;&lt;body&gt; &lt;table class="headtab"&gt; &lt;tr&gt;&lt;td style="text-align:left"&gt;labeltable {vtable}&lt;/td&gt; &lt;td style="text-align:right"&gt;Variable Documentation: Label Table&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; &lt;h1&gt; JudgeID &lt;/h1&gt;&lt;h3&gt;Label Table&lt;/h3&gt;&lt;table&gt;&lt;tr&gt;&lt;th style = "width:50%; text-align:left"&gt;JudgeID&lt;/th&gt;&lt;th style = "width:50%; text-align:left"&gt;Judge&lt;/th&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;1&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;AARONSON,L.H.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;10&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;DANNEHY,J.F.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;11&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;DEAN,H.H.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;12&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;DEVITA,H.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;13&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;DRISCOLL,P.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;14&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;GRILLO,A.E.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;15&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;HADDEN,W.L.JR.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;16&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;HAMILL,E.C.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;17&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;HEALEY.A.H.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;18&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;HULL,T.C.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;19&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;LEVINE,I.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;2&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;ALEXANDER,J.M.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;20&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;LEVISTER,R.L.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;21&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;MARTIN,L.F.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;22&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;MCGRATH,J.F.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;23&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;MIGNONE,A.F.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;24&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;MISSAL,H.M.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;25&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;MULVEY,H.M.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;26&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;NARUK,H.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;27&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;O'BRIEN,F.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;28&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;O'SULLIVAN,T.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;29&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;PASKEY,L.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;3&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;ARMENTANO,A.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;30&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;RUBINOW,J.E.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;31&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;SADEN.G.A.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;32&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;SATANIELLO,A.G.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;33&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;SHEA,D.M.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;34&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;SHEA,J.F.JR.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;35&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;SIDOR,W.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;36&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;SPEZIALE,J.A.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;37&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;SPONZO,M.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;38&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;STAPLETON,J.F.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;39&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;TESTO,R.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;4&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;BERDON,R.I.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;40&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;TIERNEY,W.L.JR.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;41&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;WALL,R.A.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;42&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;WRIGHT,D.B.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;43&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;ZARRILLI,K.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;5&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;BRACKEN,J.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;6&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;BURNS,E.B.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;7&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;CALLAHAN,R.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;8&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;COHEN,S.S.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;9&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;DALY,J.J.&lt;/td&gt;&lt;/tr&gt;
+#&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'><span class='co'># }</span>
 <span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()){
 <span class='co'>#Input a single labelled variable to see a table relating values to labels.</span>
 <span class='co'>#Values not present in the data will be included in the table but moved to the end.</span>

@@ -82,7 +82,7 @@ vt(
 
 \item{col.width}{Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.}
 
-\item{col.align}{For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to all left-aligned.}
+\item{col.align}{For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to all left-aligned. If you want to get tricky, you can add a \code{";"} afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.}
 
 \item{align}{For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to all \code{p{}} columns with widths set using the same defaults as with \code{col.width}.  Be sure to escape special characters, in particular backslashes (i.e. \code{p{.25\\\\textwidth}} instead of \code{p{.25\\textwidth}}).}
 

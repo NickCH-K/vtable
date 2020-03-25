@@ -23,7 +23,7 @@
 #' @param note Table note to go after the last row of the table.
 #' @param anchor Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
-#' @param col.align For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to all left-aligned.
+#' @param col.align For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to all left-aligned. If you want to get tricky, you can add a \code{";"} afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.
 #' @param align For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to all \code{p{}} columns with widths set using the same defaults as with \code{col.width}.  Be sure to escape special characters, in particular backslashes (i.e. \code{p{.25\\\\textwidth}} instead of \code{p{.25\\textwidth}}).
 #' @param summ Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)} and \code{countNA(x)}.
 #' @param lush Set to \code{TRUE} to select a set of options with more information: sets \code{char.values} and \code{missing} to \code{TRUE}, and sets summ to \code{c('mean(x)', 'sd(x)', 'nuniq(x)')}. \code{summ} can be overwritten by setting \code{summ} to something else.
@@ -550,10 +550,10 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
     #Table only
     if (out == 'latex') {
-      return(dftoLaTeX(vt, file = file,
+      return(cat(dftoLaTeX(vt, file = file,
                        align = align, note = note,
                        anchor = anchor, title = 'Variable Table',
-                       no.escape = no.escape))
+                       no.escape = no.escape)))
     }
 
     #Now for the full page
@@ -605,7 +605,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
       writeLines(out.latex,filepath)
     }
 
-    return(out.latex)
+    return(cat(out.latex))
   }
 
 
@@ -742,7 +742,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     }
     return(vt)
   } else if (out == 'htmlreturn') {
-    return(out.html)
+    return(cat(out.html))
   }
 }
 

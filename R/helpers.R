@@ -76,6 +76,25 @@ pctile <- function(x) {
   stats::quantile(x,1:100/100)
 }
 
+#' Checks if information is lost by rounding
+#'
+#' This function takes a vector and checks if any information is lost by rounding to a certain number of digits.
+#'
+#' Returns \code{TRUE} if rounding to \code{digits} digits after the decimal can be done without losing information.
+#'
+#' @param x A vector.
+#' @param digits How many digits to round to.
+#' @examples
+#' is.round(1:5)
+#'
+#' x <- c(1, 1.2, 1.23)
+#' is.round(x)
+#' is.round(x,digits=2)
+#' @export
+is.round <- function(x,digits=0) {
+  !any(!(x == round(x,digits)))
+}
+
 # Evaluate a series of functions
 #
 # Internal for summ, evaluates a function while allowing for the possibility that the class isn't right to evaluate that function
@@ -131,6 +150,7 @@ parsefcn_summ <- function(x,y) {
 summary.row <- function(data,var,st,
                         title,summ,cla,factor.percent,
                         factor.count,factor.numeric,digits,fixed.digits) {
+
   numcols <- length(summ)
   if (cla == 'header') {
     st[1,] <- c(
@@ -156,6 +176,13 @@ summary.row <- function(data,var,st,
         format(propcalc[x],
                digits=max(digits[2]-2*factor.percent,0),
                nsmall=max(digits[2]-2*factor.percent,0)))
+      mat$Freq <- sapply(1:length(mat$Freq), function(x)
+        format(as.numeric(mat$Freq[x]),
+               digits=digits[1],
+               nsmall=digits[1]))
+      st[1,2] <- format(as.numeric(st[1,2]),
+                                   digits = digits[1],
+                                   nsmall = digits[1])
     } else {
       mat$Prop <- round(propcalc,
                         digits=max(digits[2]-2*factor.percent,0))
@@ -185,7 +212,8 @@ summary.row <- function(data,var,st,
                       function(x) sapply(summ, function(y) parsefcn_summ(mat[,x],y)))
     #Round
     if (fixed.digits) {
-
+      results <- lapply(results, function(x)
+        sapply(1:length(x), function(y) format(x[y],digits=digits[y],nsmall = digits[y])))
     } else {
       results <- lapply(results, function(x)
         sapply(1:length(x), function(y) as.character(round(x[y],digits=digits[y]))))

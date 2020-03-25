@@ -17,7 +17,7 @@
 #' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"latex"} to return LaTeX code to R (use \code{"latexdoc"} to get a full buildable document rather than a fragment), \code{"return"} to return the completed summary table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.
 #' @param file Saves the completed summary table file to file with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard sumtable HTML file as with \code{out = "viewer"} or \code{out = "browser"}.
 #' @param summ Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. Defaults to \code{c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')} if there's one column, or \code{c('notNA(x)','mean(x)','sd(x)')} if there's more than one. If all variables in a column are factors it defaults to \code{c('sum(x)','mean(x)')} for the factor dummies. If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)} and \code{countNA(x)}.
-#' @param summ.names Character vector of names for the summary statistics included. If \code{summ} is at default, defaults to \code{c('N','Mean','Std.Dev.','Min','Pctl.25','Pctl.75','Max')} (or the appropriate shortened version with multiple columns) unless all variables in the column are factors in which case it defaults to \code{c('N','Percent')}. If \code{summ} has been set but \code{summ.names} has not, defaults to \code{summ} with the \code{(x)}s removed and the first letter capitalized.  If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead.
+#' @param summ.names Character vector of names for the summary statistics included. If \code{summ} is at default, defaults to \code{c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 75','Max')} (or the appropriate shortened version with multiple columns) unless all variables in the column are factors in which case it defaults to \code{c('N','Percent')}. If \code{summ} has been set but \code{summ.names} has not, defaults to \code{summ} with the \code{(x)}s removed and the first letter capitalized.  If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead.
 #' @param group Character variable with the name of a column in the data set that statistics are to be calculated over. Value labels will be used if found for numeric variables. Changes the default \code{summ} to \code{c('mean(x)','sd(x)')}.
 #' @param group.long By default, if \code{group} is specified, each group will get its own set of columns. Set \code{group.long = TRUE} to instead basically just make a regular \code{sumtable()} for each group and stack them on top of each other. Good for when you have lots of groups. You can also set it to \code{'l'}, \code{'c'}, or \code{'r'} to determine how the group names are aligned. Defaults to centered.
 #' @param group.test Set to \code{TRUE} to perform tests of whether each variable in the table varies over values of \code{group}. Only works with \code{group.long = FALSE}. Performs a joint F-test (using \code{anova(lm))}) for numeric variables, and a Chi-square test of independence (\code{chisq.test}) for categorical variables. If you want to adjust things like which tests are used, significance star levels, etc., see the help file for \code{independence.test} and pass in a named list of options for that function.
@@ -33,8 +33,8 @@
 #' @param note Table note to go after the last row of the table. Will follow significance star note if \code{group.test = TRUE}.
 #' @param anchor Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in an HTML table. Must have a number of elements equal to the number of columns in the resulting table.
-#' @param col.align For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to variable-name columns left-aligned and all others right-aligned.
-#' @param align For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to left in the first column and right-aligned afterwards, or if \code{col.width} is specified, defaults to all \code{p{}} columns with widths set by \code{col.width}. If you want the columns aligned on a decimal point, see [this explainer](https://tex.stackexchange.com/questions/2746/aligning-numbers-by-decimal-points-in-table-columns#2747) of how to use the \code{siunitx} package and \code{S}-type columns.
+#' @param col.align For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to variable-name columns left-aligned and all others right-aligned (with a little extra padding between columns with \code{col.breaks}). If you want to get tricky, you can add a \code{";"} afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.
+#' @param align For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to left in the first column and right-aligned afterwards, with \code{@{\\hskip .2in}} spacers if you have \code{col.breaks}. If \code{col.width} is specified, defaults to all \code{p{}} columns with widths set by \code{col.width}. If you want the columns aligned on a decimal point, see [this explainer](https://tex.stackexchange.com/questions/2746/aligning-numbers-by-decimal-points-in-table-columns#2747) of how to use the \code{siunitx} package and \code{S}-type columns.
 #' @param opts The same \code{sumtable} options as above, but in a named list format. Useful for applying the same set of options to multiple \code{sumtable}s.
 #' @examples
 #' # Examples are only run interactively because they open HTML pages in Viewer or a browser.
@@ -227,6 +227,33 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
         is.character(x), 'character', ifelse(
           is.numeric(x), 'numeric', 'other')))))
 
+  #Do we have factor and also a potentially-non-compliant summ?
+  factor.warning <- FALSE
+  if (any(var.classes == 'factor') & !identical(summ,NA) & !factor.numeric) {
+    if (is.list(summ) & !identical(col.breaks,NA)) {
+      ext.col.breaks <- c(1,col.breaks,ncol(data))
+      for (i in 1:length(summ)) {
+        if ((!(summ[[i]][1] %in% c('length(x)','notNA(x)')) |
+            !(summ[[i]][2] %in% 'mean(x)')) &
+            any(var.classes[ext.col.breaks[i]:ext.col.breaks[i+1]] == 'factor')) {
+          factor.warning <- TRUE
+        }
+      }
+    } else if (!is.list(summ)) {
+      if (!(summ[1] %in% c('length(x)','notNA(x)')) |
+          !(summ[2] %in% 'mean(x)')) {
+        factor.warning <- TRUE
+      }
+    } else {
+      if (!(summ[[1]][1] %in% c('length(x)','notNA(x)')) |
+          !(summ[[1]][2] %in% 'mean(x)')) {
+        factor.warning <- TRUE
+      }
+    }
+  }
+  if (factor.warning) {
+    warning('Factor variables ignore custom summ options. Cols 1 and 2 are count and percentage.\nBeware combining factors with a custom summ unless factor.numeric = TRUE.')
+  }
 
   #######DEFAULTS
   if (identical(vars,NA)) {
@@ -286,13 +313,13 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
         summ[[i]] <- c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')
 
         if (fill.sn) {
-          summ.names[[i]] <- c('N','Mean','Std.Dev.','Min','Pctl.25','Pctl.75','Max')
+          summ.names[[i]] <- c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 75','Max')
         }
       } else if ((is.na(group) | group.long == TRUE) & length(col.breaks) > 1) {
         summ[[i]] <- c('notNA(x)','mean(x)','sd(x)')
 
         if (fill.sn) {
-          summ.names[[i]] <- c('N','Mean','Std.Dev.')
+          summ.names[[i]] <- c('N','Mean','Std. Dev.')
         }
       } else {
         summ[[i]] <- c('notNA(x)','mean(x)','sd(x)')
@@ -308,6 +335,14 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     summ <- lapply(1:length(col.vars), function(x) summ)
   }
 
+  #Figure if digits started as a list or vector. If it did,
+  #ignore the auto-zero-digits for integers
+  digits.was.list <- is.list(digits)
+  if (is.vector(digits)) {
+    if (length(digits) > 1) {
+      digits.was.list <- TRUE
+    }
+  }
   #Now fill in values for digits
   if (identical(digits,NA)) {
     digits <- list()
@@ -324,6 +359,21 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
       }
     } else {
       digits <- lapply(1:length(col.breaks), function(x) digits)
+    }
+  }
+  #If we have fixed.digits and digits weren't
+  #explicitly set by list,
+  #set digits to 0 for integers
+  if (fixed.digits & !digits.was.list) {
+    for (i in 1:length(summ)) {
+      for (j in 1:length(summ[[i]])) {
+        # Attempt to calc each variable for this function
+        calcs <- sapply(vars, function(x) parsefcn_summ(data[[x]],summ[[i]][j]))
+        calcs <- calcs[!is.na(calcs)]
+        if (is.round(calcs)) {
+          digits[[i]][j] <- 0
+        }
+      }
     }
   }
 
@@ -450,7 +500,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     st <- list()
     for (i in 1:length(col.breaks)) {
       #Initialize with no rows
-      st[[i]] <- utils::read.csv(text = paste(c('Variable',summ.names[[i]]), collapse =','))
+      st[[i]] <- utils::read.csv(text = paste(c('Variable',summ.names[[i]]),
+                                              collapse =','),
+                                 check.names = FALSE)
 
       contents <- lapply(col.vars[[i]], function(x)
         summary.row(data,
@@ -478,7 +530,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
     for (i in 1:length(grouplevels)) {
       #Initialize with no rows
-      st[[i]] <- utils::read.csv(text = paste(c('Variable',summ.names[[1]]), collapse =','))
+      st[[i]] <- utils::read.csv(text = paste(c('Variable',summ.names[[1]]),
+                                              collapse =','),
+                                 check.names = FALSE)
       st[[i]][1,] <- c(paste0('HEADERROW',grouptitle),
                        paste0(grouplevels[i],'_MULTICOL_c_',length(summ.names[[1]])),
                        rep('DELETECELL',length(summ.names[[1]])-1))
@@ -499,7 +553,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
       #On the last one, if there's a test, add it
       if (group.test & i == length(grouplevels)) {
         #Redo header with a Test column
-        st[[i]] <- utils::read.csv(text = paste(c('Variable',summ.names[[1]],'Test'), collapse =','))
+        st[[i]] <- utils::read.csv(text = paste(c('Variable',summ.names[[1]],
+                                                  'Test'), collapse =','),
+                                   check.names = FALSE)
         st[[i]][1,] <- c(paste0('HEADERROW',grouptitle),
                          paste0(grouplevels[i],'_MULTICOL_c_',length(summ.names[[1]])),
                          rep('DELETECELL',length(summ.names[[1]])-1),'')
@@ -566,7 +622,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     for (j in 1:length(grouplevels)) {
       for (i in 1:length(col.breaks)) {
         #Initialize with no rows
-        st[[i]] <- utils::read.csv(text = paste(c('Variable',summ.names[[i]]), collapse =','))
+        st[[i]] <- utils::read.csv(text = paste(c('Variable',summ.names[[i]]),
+                                                collapse =','),
+                                   check.names = FALSE)
 
         contents <- lapply(col.vars[[i]], function(x)
           summary.row(data[data[[group]] == grouplevels[j],],
@@ -606,12 +664,19 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   if (identical(col.width,NA) & identical(align,NA)) {
     align <- rep('r',ncol(st))
     align[names(st) == 'Variable'] <- 'l'
+    #Padding only for non-first Variables, for col.breaks
+    align[names(st) == 'Variable'] <- '@{\\hskip .1in}l'
+    if (names(st)[1] == 'Variable') {
+      align[1] <- 'l'
+    }
     if (group.test) {
       align[names(st) == 'Test'] <- 'l'
     }
     align <- paste0(align, collapse = '')
   } else {
-    align <- paste0(paste0('p{',col.width/100,'\\textwidth}'),collapse='')
+    align <- paste0('p{',col.width/100,'\\textwidth}')
+    align[2:length(align)][names(st) == 'Variable'] <- paste0('@{\\hskip .2in}',align[2:length(align)][names(st) == 'Variable'])
+    align <- paste0(align,collapse='')
   }
   if (identical(col.width,NA)) {
     col.width <- rep(1,ncol(st))
@@ -637,7 +702,11 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   #col.align defaults
   if (identical(col.align, NA)) {
     col.align <- rep('right',ncol(st))
-    col.align[names(st) == 'Variable'] <- 'left'
+    #Padding only for non-first Variables, for col.breaks
+    col.align[names(st) == 'Variable'] <- 'left; padding-left:10px'
+    if (names(st)[1] == 'Variable') {
+      col.align[1] <- 'left'
+    }
     if (group.test) {
       col.align[names(st) == 'Test'] <- 'left'
     }
@@ -659,11 +728,11 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
     #Table only
     if (out == 'latex') {
-      return(dftoLaTeX(st, file = file,
+      return(cat(dftoLaTeX(st, file = file,
                        align = align, anchor = anchor,
                        title = title,
                        note = note,
-                       no.escape = ifelse(group.test,ncol(st),NA)))
+                       no.escape = ifelse(group.test,ncol(st),NA))))
     }
 
     #Now for the full page
@@ -686,7 +755,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
       writeLines(out.latex,filepath)
     }
 
-    return(out.latex)
+    return(cat(out.latex))
   }
 
 
@@ -786,7 +855,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   } else if (out == 'return') {
     return(clean_multicol(st))
   }  else if (out == 'htmlreturn') {
-    return(out.html)
+    return(cat(out.html))
   }
 }
 

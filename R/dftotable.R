@@ -14,7 +14,7 @@
 #' @param file Saves the completed variable table file to HTML with this filepath. May be combined with any value of \code{out}.
 #' @param note Table note to go after the last row of the table.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
-#' @param col.align Vector of 'left', 'right', 'center', etc. to be used with the HTML table text-align attribute in each column.
+#' @param col.align Vector of 'left', 'right', 'center', etc. to be used with the HTML table text-align attribute in each column. If you want to get tricky, you can add a \code{";"} afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.
 #' @param row.names Flag determining whether or not the row names should be included in the table. Defaults to \code{FALSE}.
 #' @param no.escape Vector of column indices for which special characters should not be escaped (perhaps they include markup text of their own).
 #' @examples
@@ -309,7 +309,8 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,note=NA,anchor=NA,align=NA
   }
 
   for (i in 1:nrow(data)) {
-    data[i,] <- multicol.row(as.character(data[i,]))
+    # Do data.frame(t()) for tibble 3.0.0
+    data[i,] <- data.frame(t(multicol.row(as.character(data[i,]))))
   }
 
   #Escape characters (Do this after multicol since that has _)

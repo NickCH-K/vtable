@@ -144,12 +144,12 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,anchor=NA) {
 
     #Table only
     if (out == 'latex') {
-      return(dftoLaTeX(lt,
+      return(cat(dftoLaTeX(lt,
                        file = file,
                        align = align,
                        title = 'Label Table',
                        note = note,
-                       anchor=anchor))
+                       anchor=anchor)))
     }
 
     #Now for the full page
@@ -181,7 +181,7 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,anchor=NA) {
       writeLines(out.latex,filepath)
     }
 
-    return(out.latex)
+    return(cat(out.latex))
   }
 
   ####### CONSTRUCTION OF HTML
@@ -285,7 +285,7 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,anchor=NA) {
   } else if (out == 'return') {
     return(lt)
   } else if (out == 'htmlreturn') {
-    return(out.html)
+    return(cat(out.html))
   }
 
 }

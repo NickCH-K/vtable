@@ -303,6 +303,8 @@ st(LifeCycleSavings,
 
 `col.align` can be used to adjust text alignment in HTML output. Set to 'left', 'right', or 'center' to align all columns, or give a vector of column alignments to do each column separately.
 
+If you want to get tricky, you can add a \code{";"} afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.
+
 This option is only for HTML output and will only work with `out` values of 'browser', 'viewer', or 'htmlreturn'. 
 
 ```{r, eval = FALSE}
