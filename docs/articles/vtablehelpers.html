@@ -84,13 +84,13 @@
 
       
 
-      </header><script src="vtablehelpers_files/header-attrs-2.1/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>vtable Bonus Functions</h1>
                         <h4 class="author">Nick Huntington-Klein</h4>
             
-            <h4 class="date">2020-03-25</h4>
+            <h4 class="date">2020-03-28</h4>
       
       
       <div class="hidden name"><code>vtablehelpers.Rmd</code></div>
@@ -164,8 +164,8 @@
 <span id="cb1-5"><a href="#cb1-5"></a></span>
 <span id="cb1-6"><a href="#cb1-6"></a><span class="co">#25th, 50th, 75th percentile</span></span>
 <span id="cb1-7"><a href="#cb1-7"></a>pc[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">25</span>,<span class="dv">50</span>,<span class="dv">75</span>)]</span></code></pre></div>
-<pre><code>##         25%         50%         75% 
-## -0.67686775  0.01407605  0.70680505</code></pre>
+<pre><code>##          25%          50%          75% 
+## -0.670245269 -0.000875773  0.722182467</code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">#Inverse normal CDF with 100 points of articulation</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(pc)</span></code></pre></div>
 <p><img src="vtablehelpers_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
@@ -250,22 +250,19 @@
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li>
-<a href="#shortcut-helper-functions">Shortcut Helper Functions</a>
-      <ul class="nav nav-pills nav-stacked">
+<a href="#shortcut-helper-functions">Shortcut Helper Functions</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#nuniq"><code>nuniq</code></a></li>
       <li><a href="#countna-propna-and-notna"><code>countNA</code>, <code>propNA</code>, and <code>notNA</code></a></li>
       <li><a href="#is-round"><code>is.round</code></a></li>
       </ul>
 </li>
       <li>
-<a href="#other-helper-functions">Other Helper Functions</a>
-      <ul class="nav nav-pills nav-stacked">
+<a href="#other-helper-functions">Other Helper Functions</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#pctile"><code>pctile</code></a></li>
       </ul>
 </li>
       <li>
-<a href="#independence-test"><code>independence.test</code></a>
-      <ul class="nav nav-pills nav-stacked">
+<a href="#independence-test"><code>independence.test</code></a><ul class="nav nav-pills nav-stacked">
 <li><a href="#factor-test-and-numeric-test"><code>factor.test</code> and <code>numeric.test</code></a></li>
       <li><a href="#star-cutoffs-and-star-markers"><code>star.cutoffs</code> and <code>star.markers</code></a></li>
       <li><a href="#digits-and-fixed-digits"><code>digits</code> and <code>fixed.digits</code></a></li>

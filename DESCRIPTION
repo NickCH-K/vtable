@@ -17,5 +17,5 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.0.9000
 VignetteBuilder: knitr

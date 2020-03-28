@@ -1,11 +1,11 @@
 ---
-title: "vtable: Variable Table"
+title: "vtable for Data Exploration"
 author: "Nick Huntington-Klein"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 <!-- output: rmarkdown::html_vignette. pdf_document -->
 vignette: >
-  %\VignetteIndexEntry{Variable Table (vtable)}
+  %\VignetteIndexEntry{vtable for Data Exploration}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
