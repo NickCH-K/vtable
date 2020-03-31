@@ -370,7 +370,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
         # Attempt to calc each variable for this function
         calcs <- sapply(vars, function(x) parsefcn_summ(data[[x]],summ[[i]][j]))
         calcs <- calcs[!is.na(calcs)]
-        if (is.round(calcs)) {
+        if (is.round(calcs) | summ[[i]][j] == 'notNA(x)') {
           digits[[i]][j] <- 0
         }
       }

@@ -254,6 +254,11 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,note=NA,anchor=NA,align=NA
     stop('The row.names option must be TRUE or FALSE.')
   }
 
+  # tibble 3.0.0 and <3.0.0 each break on different code
+  if ('tbl_df' %in% class(data)) {
+    data <- as.data.frame(data)
+  }
+
   #If row.names = TRUE, the row names must be included as their own column
   if (row.names==TRUE) {
     data <- cbind(row.names(data),data)
@@ -309,8 +314,7 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,note=NA,anchor=NA,align=NA
   }
 
   for (i in 1:nrow(data)) {
-    # Do data.frame(t()) for tibble 3.0.0
-    data[i,] <- data.frame(t(multicol.row(as.character(data[i,]))))
+    data[i,] <- multicol.row(as.character(data[i,]))
   }
 
   #Escape characters (Do this after multicol since that has _)

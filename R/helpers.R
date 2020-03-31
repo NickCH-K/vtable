@@ -175,14 +175,17 @@ summary.row <- function(data,var,st,
       mat$Prop <- sapply(1:length(propcalc), function(x)
         format(propcalc[x],
                digits=max(digits[2]-2*factor.percent,0),
-               nsmall=max(digits[2]-2*factor.percent,0)))
+               nsmall=max(digits[2]-2*factor.percent,0),
+               scientific = FALSE))
       mat$Freq <- sapply(1:length(mat$Freq), function(x)
         format(as.numeric(mat$Freq[x]),
                digits=digits[1],
-               nsmall=digits[1]))
+               nsmall=digits[1],
+               scientific = FALSE))
       st[1,2] <- format(as.numeric(st[1,2]),
                                    digits = digits[1],
-                                   nsmall = digits[1])
+                                   nsmall = digits[1],
+                        scientific = FALSE)
     } else {
       mat$Prop <- round(propcalc,
                         digits=max(digits[2]-2*factor.percent,0))
@@ -213,7 +216,7 @@ summary.row <- function(data,var,st,
     #Round
     if (fixed.digits) {
       results <- lapply(results, function(x)
-        sapply(1:length(x), function(y) format(x[y],digits=digits[y],nsmall = digits[y])))
+        sapply(1:length(x), function(y) format(x[y],digits=digits[y],nsmall = digits[y],scientific=FALSE)))
     } else {
       results <- lapply(results, function(x)
         sapply(1:length(x), function(y) as.character(round(x[y],digits=digits[y]))))
@@ -231,7 +234,7 @@ summary.row <- function(data,var,st,
     results <- sapply(summ, function(y) parsefcn_summ(va,y))
     #Round
     if (fixed.digits) {
-      results <- sapply(1:length(results), function(y) format(results[y],digits=digits[y],nsmall = digits[y]))
+      results <- sapply(1:length(results), function(y) format(results[y],digits=digits[y],nsmall = digits[y],scientific = FALSE))
     } else {
       results <- sapply(1:length(results), function(y) round(results[y],digits=digits[y]))
     }
