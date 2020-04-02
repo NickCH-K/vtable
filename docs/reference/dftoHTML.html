@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -196,9 +196,12 @@
 <p>If the first column and row begins with the text "HEADERROW", then the first row will be put above the column names.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>var1</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>,<span class='kw'>var2</span><span class='kw'>=</span><span class='fl'>5</span>:<span class='fl'>8</span>,<span class='kw'>var3</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'D'</span>),
+    <pre class="examples"><div class='input'>
+<span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()) {
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>var1</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>,<span class='kw'>var2</span><span class='kw'>=</span><span class='fl'>5</span>:<span class='fl'>8</span>,<span class='kw'>var3</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'D'</span>),
     <span class='kw'>var4</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'C'</span>)),<span class='kw'>var5</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>,<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>))
-<span class='fu'>dftoHTML</span>(<span class='no'>df</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>"browser"</span>)</div></pre>
+<span class='fu'>dftoHTML</span>(<span class='no'>df</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>"browser"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
