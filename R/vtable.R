@@ -733,7 +733,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     vt <- vt[!apply(vt,MARGIN=1,FUN=function(x) !any(!(x==rep('',ncol(vt))))),]
     #I don't know how this would happen but just in case
     vt <- vt[!apply(vt,MARGIN=1,FUN=function(x) propNA(x) == 1),]
-    return(knitr::kable(vt))
+    return(knitr::kable(vt, caption = data.title, row.names = FALSE))
   } else if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {
     rstudioapi::viewer(htmlpath)
   } else if (Sys.getenv('RSTUDIO')=='' & out == 'viewer') {

@@ -28,6 +28,7 @@
 #' @param factor.counts Set to \code{TRUE} to show a count of each factor level in the first column. Defaults to \code{TRUE}.
 #' @param factor.numeric By default, factor variable dummies basically ignore the \code{summ} argument and show count (or nothing) in the first column and percent or proportion in the second. Set this to \code{TRUE} to instead treat the dummies like numeric binary variables with values 0 and 1.
 #' @param logical.numeric By default, logical variables are treated as factors with \code{TRUE = "Yes"} and \code{FALSE = "No"}. Set this to \code{FALSE} to instead treat them as numeric variables rather than factors, with \code{TRUE = 1} and \code{FALSE = 0}.
+#' @param logical.labels When turning logicals into factors, use these labels for \code{FALSE} and \code{TRUE}, respectively, rather than "No" and "Yes".
 #' @param labels Variable labels. labels will accept four formats: (1) A vector of the same length as the number of variables in the data that will be included in the table (tricky to use if many are being dropped, also won't work for your \code{group} variable), in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels, or (4) TRUE to look in the data for variable labels set by the haven package, \code{set_label()} from sjlabelled, or \code{label()} from Hmisc.
 #' @param title Character variable with the title of the table.
 #' @param note Table note to go after the last row of the table. Will follow significance star note if \code{group.test = TRUE}.
@@ -35,6 +36,7 @@
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in an HTML table. Must have a number of elements equal to the number of columns in the resulting table.
 #' @param col.align For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to variable-name columns left-aligned and all others right-aligned (with a little extra padding between columns with \code{col.breaks}). If you want to get tricky, you can add a \code{";"} afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.
 #' @param align For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to left in the first column and right-aligned afterwards, with \code{@{\\hskip .2in}} spacers if you have \code{col.breaks}. If \code{col.width} is specified, defaults to all \code{p{}} columns with widths set by \code{col.width}. If you want the columns aligned on a decimal point, see [this explainer](https://tex.stackexchange.com/questions/2746/aligning-numbers-by-decimal-points-in-table-columns#2747) of how to use the \code{siunitx} package and \code{S}-type columns.
+#' @param simple.kable For \code{out = 'kable'}, if you want the \code{kable} printed to console rather than HTML or PDF, then the multi-column headers and table notes won't work. Set \code{simple.kable = TRUE} to skip both.
 #' @param opts The same \code{sumtable} options as above, but in a named list format. Useful for applying the same set of options to multiple \code{sumtable}s.
 #' @examples
 #' # Examples are only run interactively because they open HTML pages in Viewer or a browser.
@@ -86,9 +88,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                      col.breaks=NA,
                      digits=NA,fixed.digits=FALSE,factor.percent=TRUE,
                      factor.counts=TRUE,factor.numeric=FALSE,
-                     logical.numeric=FALSE,labels=NA,title='Summary Statistics',
+                     logical.numeric=FALSE,logical.labels=c("No","Yes"),labels=NA,title='Summary Statistics',
                      note = NA, anchor=NA,col.width=NA,col.align=NA,
-                     align=NA,opts=list()) {
+                     align=NA,simple.kable=FALSE,opts=list()) {
   #Bring in opts
   list2env(opts,envir=environment())
   #######CHECK INPUTS
@@ -199,7 +201,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
         data[[c]] <- as.numeric(data[[c]])
       } else {
         # Otherwise make them factors
-        data[[c]] <- factor(data[[c]], labels = c("No","Yes"))
+        data[[c]] <- factor(data[[c]], levels = c(FALSE,TRUE), labels = logical.labels)
       }
     } else if (var.classes[c] == 'numeric') {
       # If a numeric variable has value labels, turn this into a factor
@@ -408,9 +410,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     group.test.opts <- group.test
     group.test <- TRUE
   }
-  if (!group.test) {
-    starnote <- NA_character_
-  }
+  starnote <- NA_character_
 
   ####### APPLY LABELS OPTION
   vartitles <- vars
@@ -849,7 +849,11 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     st <- st[!apply(st,MARGIN=1,FUN=function(x) !any(!(x==rep('',ncol(st))))),]
     #I don't know how this would happen but just in case
     st <- st[!apply(st,MARGIN=1,FUN=function(x) propNA(x) == 1),]
-    return(knitr::kable(clean_multicol(st)))
+    if (!simple.kable) {
+      return(clean_multicol_kable(st,title,note))
+    } else {
+      return(knitr::kable(clean_multicol(st),caption=title))
+    }
   } else if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {
     rstudioapi::viewer(htmlpath)
   } else if (Sys.getenv('RSTUDIO')=='' & out == 'viewer') {

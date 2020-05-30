@@ -243,7 +243,9 @@ vtable(USJudgeRatings,char.values=c('Judge','SecondCharacter'))
 
 `anchor` will add an anchor ID (`<a name = ` in HTML or `\label{}` in LaTeX) to allow other parts of your document to link to it, if you are including your `vtable` in a larger document.
 
-`data.title` and `desc` will only show up in full-page `vtable`s. That is, you won't get them with `out = 'kable'`, `out = 'return'`, or `out = 'latex'` (although `out = 'latexpage'` works). `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so they won't work with  `out = 'kable'` or `out = 'return'`.
+`data.title` and `desc` will only show up in full-page `vtable`s. That is, you won't get them with `out = 'return'`, or `out = 'latex'` (although `out = 'latexpage'` works). `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so they won't work with `out = 'return'`.
+
+`out = 'kable'` is a half-exception in that it will use `data.title` as the caption for the `kable`, and will use the `note` as a footnote, but won't use `desc` or `anchor`.
 
 ```{r, eval=FALSE}
 library(vtable)

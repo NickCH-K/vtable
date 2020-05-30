@@ -161,7 +161,7 @@ st(iris, col.breaks = 4,
 
 `group.test`, which is only compatible with `group.long = FALSE`, performs a test of independence between the variable in `group` and each of the variables in your summary statistics table. Defaults to `FALSE`. Default `group.test = TRUE` behavior is to perform a group F-test (with `anova(lm())`) for numeric variables, and a chi-squared test (with `chisq.test`) for factor, logical, and character variables, returning results in the format 'Test statistic name = Test statistic^significance stars'. If you want to change any of that, instead of `group.test = TRUE`, set `group.test` equal to a named list of options that will be send to the `opts` argument of `independence.test`. See `help(independence.test)`.
 
-Be aware that the table produced with `group` uses multi-column cells. So it will not look quite as nice when outputting to a format that does not support multi-column cells, like `out='kable'` (as you see below) or `out='return'`.
+Be aware that the table produced with `group` uses multi-column cells. So it will not look quite as nice when outputting to a format that does not support multi-column cells, like `out='return'`. Multi-column cells are supported in `out='kable'` for `group`, as below, but are not supported on other rows of the `kable`.
 
 ```{r}
 st(iris, group = 'Species', group.test = TRUE)
@@ -205,7 +205,7 @@ st(iris, digits = 3, fixed.digits = TRUE)
 
 How should factor, logical, and character variables (all of which get turned into factors in the `sumtable`-making process) be shown on the `sumtable()`?
 
-In all `sumtable()s`, there is one row for the name of the factor variable, with the number of nonmissing observations of the variable. Then there's one row for each of the values (for logicals, TRUE and FALSE become 'Yes' and 'No'), showing the count and percentage (i.e. 50%) of observations with that value.
+In all `sumtable()s`, there is one row for the name of the factor variable, with the number of nonmissing observations of the variable. Then there's one row for each of the values (for logicals, FALSE and TRUE become 'No' and 'Yes', or pick your own labels with `logical.labels`), showing the count and percentage (i.e. 50%) of observations with that value.
 
 Set `factor.percent = FALSE` to report the proportion of observations (.5) instead of the percentage (50%) for the values.
 
@@ -283,7 +283,7 @@ sumtable(LifeCycleSavings,labels=labs)
 
 `anchor` will add an anchor ID (`<a name = ` in HTML or `\label{}` in LaTeX) to allow other parts of your document to link to it, if you are including your `sumtable` in a larger document.
 
-`title` will only show up in output formats with titles That is, you won't get them with `out = 'kable'` or `out = 'return'`. `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so they won't work with  `out = 'kable'` or `out = 'return'` either.
+`title` will only show up in output formats with titles. That is, you won't get them with `out = 'return'`. `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so `anchor` won't work with `out = 'kable'` and neither will work with `out = 'return'`.
 
 
 ## `col.width`

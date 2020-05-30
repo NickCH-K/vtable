@@ -280,3 +280,61 @@ clean_multicol <- function(df) {
   names(df) <- clean_content(names(df))
   return(df)
 }
+
+#For a table that is going to be seen "raw", remove all the multicolumn stuff
+#Except for the top row which can become a multi-column header. Good for groups!
+clean_multicol_kable <- function(df,title,note=NA) {
+  # If the first row is a header, chop it off and save for later
+  hasheader <- FALSE
+  if (grepl('HEADERROW',df[1,1])) {
+    headerrow <- df[1,]
+    df <- df[2:nrow(df),]
+    hasheader <- TRUE
+  }
+  df[1,1] <- gsub('HEADERROW','',df[1,1])
+
+  clean_content <- function(x) {
+    x <- sapply(x, function(y) gsub('DELETECELL','',y))
+
+    x <- sapply(x, function(y) ifelse(grepl('_MULTICOL_',y),
+                                      substr(y,1,gregexpr('_MULTICOL_',y)[[1]]-1),
+                                      y))
+  }
+
+  for (i in 1:ncol(df)) {
+    df[[i]] <- clean_content(df[[i]])
+  }
+  names(df) <- clean_content(names(df))
+
+  # For this one, directly return the kable
+  kb <- knitr::kable(df, caption = title, row.names = FALSE)
+
+  # And now add the header
+  if (hasheader) {
+    # Get rid of deleted cells
+    headerrow <- headerrow[headerrow != 'DELETECELL']
+    # HEADERROW itself is blank
+    headerrow <- gsub('HEADERROW','',headerrow)
+
+    # No alignment control anyway
+    headerrow <- gsub('_c_','_l_',headerrow)
+    headerrow <- gsub('_r_','_l_',headerrow)
+
+    headercol <- eval(parse(text=paste('c(',
+      paste(
+      sapply(headerrow, FUN = function(x)
+        ifelse(grepl('_MULTICOL_l_',x),
+               paste0('"',strsplit(x,'_MULTICOL_l_')[[1]][1],'"=',strsplit(x,'_MULTICOL_l_')[[1]][2]),
+               paste0('"',x,'"'))),
+      collapse = ','),
+      ')')))
+
+    kb <- kableExtra::add_header_above(kb,headercol)
+  }
+
+  if (!is.na(note)) {
+    kb <- kableExtra::add_footnote(kb, note)
+  }
+
+  return(kb)
+}
