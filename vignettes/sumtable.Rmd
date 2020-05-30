@@ -56,6 +56,7 @@ sumtable(data,
          factor.counts=TRUE,
          factor.numeric=FALSE,
          logical.numeric=FALSE,
+         logical.labels=c('No','Yes'),
          labels=NA,
          title='Summary Statistics',
          note = NA, 
@@ -63,6 +64,7 @@ sumtable(data,
          col.width=NA,
          col.align=NA,
          align=NA,
+         simple.kable=FALSE,
          opts=list())
 ```
 

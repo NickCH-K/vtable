@@ -226,6 +226,7 @@
          <span class="kw">factor.counts</span><span class="kw">=</span><span class="fl">TRUE</span>,
          <span class="kw">factor.numeric</span><span class="kw">=</span><span class="fl">FALSE</span>,
          <span class="kw">logical.numeric</span><span class="kw">=</span><span class="fl">FALSE</span>,
+         <span class="kw">logical.labels</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'No'</span>,<span class="st">'Yes'</span>),
          <span class="kw">labels</span><span class="kw">=</span><span class="fl">NA</span>,
          <span class="kw">title</span><span class="kw">=</span><span class="st">'Summary Statistics'</span>,
          <span class="kw">note</span> <span class="kw">=</span> <span class="fl">NA</span>,
@@ -233,6 +234,7 @@
          <span class="kw">col.width</span><span class="kw">=</span><span class="fl">NA</span>,
          <span class="kw">col.align</span><span class="kw">=</span><span class="fl">NA</span>,
          <span class="kw">align</span><span class="kw">=</span><span class="fl">NA</span>,
+         <span class="kw">simple.kable</span><span class="kw">=</span><span class="fl">FALSE</span>,
          <span class="kw">opts</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>())</pre></body></html></div>
 <p>The goal of <code><a href="../reference/sumtable.html">sumtable()</a></code> is to take a data set <code>data</code> and output a usually-HTML (but <code>data.frame</code>, <code>kable</code>, and <code>latex</code> options are there too) file with summary statistics for each of the variables in <code>data</code>. There are several options as to how the table will be constructed, and each of these options are explained below. Throughout, the output will be built as <code>kable</code>s since this is an RMarkdown document. However, generally you can leave <code>out</code> at its default and it will publish an HTML table to Viewer (in RStudio) or the browser (otherwise). This will also include some additional information about your data that can’t be demonstrated in this vignette:</p>
 <div id="data-and-vars" class="section level2">
