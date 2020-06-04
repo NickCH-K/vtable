@@ -34,7 +34,7 @@ independence.test(
 
 \item{fixed.digits}{\code{FALSE} will cut off trailing \code{0}s when rounding. \code{TRUE} retains them. Defaults to \code{FALSE}.}
 
-\item{format}{The way in which the four elements returned by (or calculated after) the test - \code{{name}}, \code{{stat}}, \code{{pval}}, and \code{{stars}} - will be arranged in the string output. Note that the default \code{'{name}={stat}{stars}'} does not contain the p-value, and also does not contain superscript for the stars since it doesn't know what markup language you're aiming for. For LaTeX you may prefer \code{'{name}$={stat}^{stars}$'}, and for HTML \code{'{name}={stat}<sup>{stars}</sup>'}.}
+\item{format}{The way in which the four elements returned by (or calculated after) the test - \code{{name}}, \code{{stat}}, \code{{pval}}, and \code{{stars}} - will be arranged in the string output. Note that the default \code{'{name}={stat}{stars}'} does not contain the p-value, and also does not contain superscript for the stars since it doesn't know what markup language you're aiming for. For LaTeX you may prefer \code{'{name}$={stat}^{{stars}}$'}, and for HTML \code{'{name}={stat}<sup>{stars}</sup>'}.}
 
 \item{opts}{The options listed above, entered in named-list format.}
 }

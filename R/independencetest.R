@@ -12,7 +12,7 @@
 #' @param star.markers A character vector indicating the symbols to use to indicate significance cutoffs associated with \code{star.cuoffs}. Defaults to \code{c('***','**','*')}. If you don't want stars, remove them from the \code{format} argument.
 #' @param digits Number of digits after the decimal to round the test statistic and p-value to.
 #' @param fixed.digits \code{FALSE} will cut off trailing \code{0}s when rounding. \code{TRUE} retains them. Defaults to \code{FALSE}.
-#' @param format The way in which the four elements returned by (or calculated after) the test - \code{{name}}, \code{{stat}}, \code{{pval}}, and \code{{stars}} - will be arranged in the string output. Note that the default \code{'{name}={stat}{stars}'} does not contain the p-value, and also does not contain superscript for the stars since it doesn't know what markup language you're aiming for. For LaTeX you may prefer \code{'{name}$={stat}^{stars}$'}, and for HTML \code{'{name}={stat}<sup>{stars}</sup>'}.
+#' @param format The way in which the four elements returned by (or calculated after) the test - \code{{name}}, \code{{stat}}, \code{{pval}}, and \code{{stars}} - will be arranged in the string output. Note that the default \code{'{name}={stat}{stars}'} does not contain the p-value, and also does not contain superscript for the stars since it doesn't know what markup language you're aiming for. For LaTeX you may prefer \code{'{name}$={stat}^{{stars}}$'}, and for HTML \code{'{name}={stat}<sup>{stars}</sup>'}.
 #' @param opts The options listed above, entered in named-list format.
 #' @examples
 #'
