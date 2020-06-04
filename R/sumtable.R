@@ -399,10 +399,10 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   #group.test defaults
   #send the options to .opts, and make group.test be logical
   if (identical(group.test,TRUE)) {
-    if (out %in% c('latex','latexpage') | (isTRUE(getOption('knitr.in.progress')) & out == '' & knitr::is_latex_output())) {
+    if (out %in% c('latex','latexpage') | (isTRUE(getOption('knitr.in.progress')) & out == '' & isTRUE(knitr::is_latex_output()))) {
       group.test.opts <- list(format = '{name}$={stat}^{{stars}}$')
     } else if (out %in% c('return','kable') |
-               (isTRUE(getOption('knitr.in.progress')) & out == '' & !(knitr::is_latex_output()) & !(knitr::is_html_output()))) {
+               (isTRUE(getOption('knitr.in.progress')) & out == '' & isFALSE(knitr::is_latex_output()) & isFALSE(knitr::is_html_output()))) {
       group.test.opts <- list(format = '{name}={stat}{stars}')
     } else {
       group.test.opts <- list(format = '{name}={stat}<sup>{stars}</sup>')
