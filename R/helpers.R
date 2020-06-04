@@ -307,10 +307,24 @@ clean_multicol_kable <- function(df,title,note=NA) {
   names(df) <- clean_content(names(df))
 
   # For this one, directly return the kable
-  kb <- knitr::kable(df, caption = title, row.names = FALSE)
+  if (knitr::is_html_output()) {
+    fmt <- 'html'
+  } else if (knitr::is_latex_output()) {
+    fmt <- 'latex'
+  } else {
+    fmt <- NULL
+  }
+
+  if (fmt == 'html') {
+    kb <- knitr::kable(df, caption = title, row.names = FALSE, format = fmt)
+  } else if (fmt == 'latex') {
+    kb <- knitr::kable(df, caption = title, row.names = FALSE, format = fmt, booktabs = TRUE)
+  } else {
+    kb <- knitr::kable(df, caption = title, row.names = FALSE)
+  }
 
   # And now add the header
-  if (hasheader) {
+  if (hasheader & !is.null(fmt)) {
     # Get rid of deleted cells
     headerrow <- headerrow[headerrow != 'DELETECELL']
     # HEADERROW itself is blank
@@ -333,7 +347,7 @@ clean_multicol_kable <- function(df,title,note=NA) {
   }
 
   if (!is.na(note)) {
-    kb <- kableExtra::add_footnote(kb, note)
+    kb <- kableExtra::add_footnote(kb, note, notation = 'none')
   }
 
   return(kb)

@@ -163,7 +163,7 @@ st(iris, col.breaks = 4,
 
 `group.test`, which is only compatible with `group.long = FALSE`, performs a test of independence between the variable in `group` and each of the variables in your summary statistics table. Defaults to `FALSE`. Default `group.test = TRUE` behavior is to perform a group F-test (with `anova(lm())`) for numeric variables, and a chi-squared test (with `chisq.test`) for factor, logical, and character variables, returning results in the format 'Test statistic name = Test statistic^significance stars'. If you want to change any of that, instead of `group.test = TRUE`, set `group.test` equal to a named list of options that will be send to the `opts` argument of `independence.test`. See `help(independence.test)`.
 
-Be aware that the table produced with `group` uses multi-column cells. So it will not look quite as nice when outputting to a format that does not support multi-column cells, like `out='return'`. Multi-column cells are supported in `out='kable'` for `group`, as below, but are not supported on other rows of the `kable`.
+Be aware that the table produced with `group` uses multi-column cells. So it will not look quite as nice when outputting to a format that does not support multi-column cells, like `out='return'`. Multi-column cells are supported in `out='kable'` for `group`, as below, but are not supported on other rows of the `kable`. Multi-column cells are supported for `out='kable'` only for HTML and LaTeX output.
 
 ```{r}
 st(iris, group = 'Species', group.test = TRUE)
