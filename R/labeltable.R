@@ -279,7 +279,20 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,anchor=NA) {
     lt <- lt[!apply(lt,MARGIN=1,FUN=function(x) !any(!(x==rep('',ncol(lt))))),]
     #I don't know how this would happen but just in case
     lt <- lt[!apply(lt,MARGIN=1,FUN=function(x) propNA(x) == 1),]
-    return(knitr::kable(lt))
+    if (knitr::is_latex_output()) {
+      kb <- knitr::kable(lt, booktabs = TRUE, format = 'latex')
+      if (!is.na(note)) {
+        kb <- kableExtra::add_footnote(kb, note, notation = 'none')
+      }
+    } else if(knitr::is_html_output()) {
+      kb <- knitr::kable(lt, format = 'html')
+      if (!is.na(note)) {
+        kb <- kableExtra::add_footnote(kb, note, notation = 'none')
+      }
+    } else {
+      kb <- knitr::kable(lt)
+    }
+    return(kb)
   } else if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {
     rstudioapi::viewer(htmlpath)
   } else if (Sys.getenv('RSTUDIO')=='' & out == 'viewer') {

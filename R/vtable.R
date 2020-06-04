@@ -733,7 +733,20 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     vt <- vt[!apply(vt,MARGIN=1,FUN=function(x) !any(!(x==rep('',ncol(vt))))),]
     #I don't know how this would happen but just in case
     vt <- vt[!apply(vt,MARGIN=1,FUN=function(x) propNA(x) == 1),]
-    return(knitr::kable(vt, caption = data.title, row.names = FALSE))
+    if (knitr::is_latex_output()) {
+      kb <- knitr::kable(vt, caption = data.title, row.names = FALSE, booktabs = TRUE, format = 'latex')
+      if (!is.na(note)) {
+        kb <- kableExtra::add_footnote(kb, note, notation = 'none')
+      }
+    } else if(knitr::is_html_output()) {
+      kb <- knitr::kable(vt, caption = data.title, row.names = FALSE, format = 'html')
+      if (!is.na(note)) {
+        kb <- kableExtra::add_footnote(kb, note, notation = 'none')
+      }
+    } else {
+      kb <- knitr::kable(vt, caption = data.title, row.names = FALSE)
+    }
+    return(kb)
   } else if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {
     rstudioapi::viewer(htmlpath)
   } else if (Sys.getenv('RSTUDIO')=='' & out == 'viewer') {

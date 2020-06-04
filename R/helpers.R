@@ -315,12 +315,12 @@ clean_multicol_kable <- function(df,title,note=NA) {
     fmt <- NULL
   }
 
-  if (fmt == 'html') {
+  if (is.null(fmt)) {
+    kb <- knitr::kable(df, caption = title, row.names = FALSE)
+  } else if (fmt == 'html') {
     kb <- knitr::kable(df, caption = title, row.names = FALSE, format = fmt, escape = FALSE)
   } else if (fmt == 'latex') {
     kb <- knitr::kable(df, caption = title, row.names = FALSE, format = fmt, booktabs = TRUE, escape = FALSE)
-  } else {
-    kb <- knitr::kable(df, caption = title, row.names = FALSE)
   }
 
   # And now add the header
