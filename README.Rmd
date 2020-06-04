@@ -1,5 +1,6 @@
 ---
 output: github_document
+always_allow_html: true
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -37,7 +38,7 @@ All three main **vtable** functions can produce HTML, LaTeX, `data.frame`, or `k
 
 ## Installation
 
-You can install vtable from CRAN: 
+You can install vtable from CRAN. Note that the documentation on this site refers to the development version, and so may not work perfectly for the CRAN version. But the two will usually be the same.: 
 
 ```r
 install.packages("vtable")
@@ -48,8 +49,8 @@ install.packages("vtable")
 The development version can be installed from [GitHub](https://github.com/):
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("NickCH-K/vtable")
+# install.packages("remotes")
+remotes::install_github("NickCH-K/vtable")
 ```
 ## vtable Example
 
