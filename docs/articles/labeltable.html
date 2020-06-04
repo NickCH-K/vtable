@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@
       <h1 data-toc-skip>labeltable: Label Table</h1>
                         <h4 class="author">Nick Huntington-Klein</h4>
             
-            <h4 class="date">2020-06-03</h4>
+            <h4 class="date">2020-06-04</h4>
       
       
       <div class="hidden name"><code>labeltable.Rmd</code></div>
@@ -117,8 +117,9 @@
     <span class="kw">note</span><span class="kw">=</span><span class="fl">NA</span>)</pre></body></html></div>
 <p><code><a href="../reference/labeltable.html">labeltable()</a></code> is a function that shows the values that correspond to <code>var</code>. This could be value label values, or it could be the values found in the data for the <code>...</code> variables.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co">#Include a single labelled variable to show how the values of that variable correspond to its value labels.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">vtable</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sjlabelled</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">vtable</span>)</pre></body></html></div>
+<pre><code>## Loading required package: kableExtra</code></pre>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sjlabelled</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">efc</span>)
 <span class="fu"><a href="../reference/labeltable.html">labeltable</a></span>(<span class="no">efc</span>$<span class="no">e15relat</span>)</pre></body></html></div>
 <table class="table">
@@ -197,7 +198,7 @@ other, specify
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co">#Include more than one variable to show, for each value of the first, what values of the others are present in the data.</span>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co">#Include more than one variable to show, for each value of the first, what values of the others are present in the data.</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">mtcars</span>)
 <span class="fu"><a href="../reference/labeltable.html">labeltable</a></span>(<span class="no">mtcars</span>$<span class="no">cyl</span>,<span class="no">mtcars</span>$<span class="no">carb</span>,<span class="no">mtcars</span>$<span class="no">am</span>)</pre></body></html></div>
 <table class="table">
@@ -297,7 +298,7 @@ am
 <a href="#file" class="anchor"></a><code>file</code>
 </h2>
 <p>The <code>file</code> argument will write the variable documentation file to an HTML file and save it. Will automatically append ‘html’ filetype if the filename does not include a period.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">vtable</span>)
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">vtable</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">LifeCycleSavings</span>)
 <span class="fu"><a href="../reference/labeltable.html">labeltable</a></span>(<span class="no">efc</span>$<span class="no">e15relat</span>,<span class="kw">file</span><span class="kw">=</span><span class="st">'lifecycle_variabledocumentation'</span>)</pre></body></html></div>

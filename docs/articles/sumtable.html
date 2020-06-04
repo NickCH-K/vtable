@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@
       <h1 data-toc-skip>sumtable: Summary Statistics</h1>
                         <h4 class="author">Nick Huntington-Klein</h4>
             
-            <h4 class="date">2020-06-03</h4>
+            <h4 class="date">2020-06-04</h4>
       
       
       <div class="hidden name"><code>sumtable.Rmd</code></div>
@@ -108,8 +108,9 @@
 <p><code><a href="../reference/sumtable.html">sumtable()</a></code> has customization options, but they’re certainly not as extensive as with a package like <code>gtsummary</code> or <code>arsenal</code>. Nor should they be! If you want full control over your table, those packages are already great, we don’t need another package that does that.</p>
 <p>However, if you want the kind of table <code><a href="../reference/sumtable.html">sumtable()</a></code> produces (and I think a lot of you do!) then it’s perfect and easy. This makes <code><a href="../reference/sumtable.html">sumtable()</a></code> very similar in spirit to the summary statistics functionality of <code><a href="https://rdrr.io/pkg/stargazer/man/stargazer.html">stargazer::stargazer()</a></code>, except with some additional important bonuses, like working with <code>tibble</code>s, factor variables, producing summary statistics by group, and being a summary-statistics-only function so the documentation isn’t entwined with a bunch of regression-table functionality.</p>
 <p>Like, look at this. Isn’t this what you basically already want? After loading the package this took eight keystrokes and no option-setting:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">vtable</span>)
-<span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">vtable</span>)</pre></body></html></div>
+<pre><code>## Loading required package: kableExtra</code></pre>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>)</pre></body></html></div>
 <table class="table">
 <caption>
 Summary Statistics
@@ -335,7 +336,7 @@ Species
 <h1 class="hasAnchor">
 <a href="#the-sumtable-function" class="anchor"></a>The <code>sumtable()</code> function</h1>
 <p><code><a href="../reference/sumtable.html">sumtable()</a></code> (or <code><a href="../reference/sumtable.html">st()</a></code> for short) syntax follows the following outline:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">sumtable</a></span>(<span class="no">data</span>,
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">sumtable</a></span>(<span class="no">data</span>,
          <span class="kw">vars</span><span class="kw">=</span><span class="fl">NA</span>,
          <span class="kw">out</span><span class="kw">=</span><span class="fl">NA</span>,
          <span class="kw">file</span><span class="kw">=</span><span class="fl">NA</span>,
@@ -369,7 +370,7 @@ Species
 <p>The <code>data</code> argument can take any <code>data.frame</code>, <code>data.table</code>, <code>tibble</code>, or <code>matrix</code>, as long as it has a valid set of variable names stored in the <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code> attribute.</p>
 <p>By default, <code>sumtable</code> will include in the summary statistics table every variable in the data set that is (1) numeric, (2) factor, (3) logical, or (4) a character variable with six or fewer unique values (as a factor), and it will include them in the order they’re in the data.</p>
 <p>You can override that variable list with <code>vars</code>, which is just a vector of variable names to include. You can use this to force <code>sumtable</code> to ignore variables you don’t want, or to include variables it doesn’t by default.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">LifeCycleSavings</span>)
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">LifeCycleSavings</span>)
 <span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">LifeCycleSavings</span>, <span class="kw">vars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'pop15'</span>,<span class="st">'pop75'</span>))</pre></body></html></div>
 </div>
 <div id="out" class="section level2">
@@ -419,7 +420,7 @@ Species
 </tbody>
 </table>
 <p>By default, <code>sumtable</code> will select ‘viewer’ if running in RStudio, and ‘browser’ otherwise. If it’s being built in an RMarkdown document with <code>knitr</code>, it will default to ‘kable’.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">LifeCycleSavings</span>)
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">LifeCycleSavings</span>)
 <span class="fu"><a href="../reference/sumtable.html">sumtable</a></span>(<span class="no">LifeCycleSavings</span>)
 <span class="no">vartable</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/vtable.html">vtable</a></span>(<span class="no">LifeCycleSavings</span>,<span class="kw">out</span><span class="kw">=</span><span class="st">'return'</span>)
 
@@ -431,7 +432,7 @@ Species
 <a href="#file" class="anchor"></a><code>file</code>
 </h2>
 <p>The <code>file</code> argument will write the variable documentation file to an HTML or LaTeX file and save it. Will automatically append ‘html’ or ‘tex’ filetype if the filename does not include a period.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">LifeCycleSavings</span>)
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">LifeCycleSavings</span>)
 <span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">LifeCycleSavings</span>,<span class="kw">file</span><span class="kw">=</span><span class="st">'lifecycle_summary'</span>)</pre></body></html></div>
 </div>
 <div id="summ-and-summ-names" class="section level2">
@@ -444,7 +445,7 @@ Species
 <p><code>summ</code> treats as special two <code>vtable</code> functions: <code><a href="../reference/propNA.html">propNA(x)</a></code> and <code><a href="../reference/countNA.html">countNA(x)</a></code>, which give the proportion and count of NA values, and the count of non-NA values in the variable, respectively. These two functions are the only functions that include NA values in their calculations.</p>
 <p>By default, <code>summ</code> is <code><a href="https://rdrr.io/r/base/c.html">c('notNA(x)', 'mean(x)',   'sd(x)', 'min(x)', 'pctile(x)[25]', 'pctile(x)[75]', 'max(x)')</a></code> in ‘one-column’ tables. If there’s more than one column either due to the <code>col.breaks</code> option or the <code>group</code> option, it defaults to <code><a href="https://rdrr.io/r/base/c.html">c('notNA(x)', 'mean(x)', 'sd(x)')</a></code>. Alternately, if a given column of variables is entirely made up of factor variables, it defaults to <code><a href="https://rdrr.io/r/base/c.html">c('sum(x)','mean(x)')</a></code>. These precise defaults have corresponding default <code>summ.names</code>. If you set your own <code>summ</code> but not <code>summ.names</code>, it will try to guess the name by taking your function, removing <code>(x)</code>, and capitalizing. so ‘mean(x)’ becomes ‘Mean’.</p>
 <p>If you want to get complex you can. If there are multiple ‘columns’ of summary statistics and you want different statistics in each column, make <code>summ</code> and <code>summ.names</code> into a list, where each entry is a character vector of the calculations/names you want in that column.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">sumtable</a></span>(<span class="no">iris</span>,
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">sumtable</a></span>(<span class="no">iris</span>,
          <span class="kw">summ</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'notNA(x)'</span>,
                 <span class="st">'mean(x)'</span>,
                 <span class="st">'median(x)'</span>,
@@ -600,7 +601,7 @@ Species
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co">#Getting complex</span>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="co">#Getting complex</span>
 <span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">col.breaks</span> <span class="kw">=</span> <span class="fl">4</span>,
    <span class="kw">summ</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
      <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'notNA(x)'</span>,<span class="st">'mean(x)'</span>,<span class="st">'sd(x^2)'</span>,<span class="st">'min(x)'</span>,<span class="st">'max(x)'</span>),
@@ -771,7 +772,7 @@ Petal.Width
 <p><code>group.long</code> is a flag for whether you want the different group summary statistics stacked side-by-side (<code>group.long = FALSE</code>), making for easier comparisons, or on top of each other (<code>group.long = TRUE</code>), giving things a bit more room to breathe and allowing space for more statistics. Defaults to <code>FALSE</code>.</p>
 <p><code>group.test</code>, which is only compatible with <code>group.long = FALSE</code>, performs a test of independence between the variable in <code>group</code> and each of the variables in your summary statistics table. Defaults to <code>FALSE</code>. Default <code>group.test = TRUE</code> behavior is to perform a group F-test (with <code><a href="https://rdrr.io/r/stats/anova.html">anova(lm())</a></code>) for numeric variables, and a chi-squared test (with <code>chisq.test</code>) for factor, logical, and character variables, returning results in the format ‘Test statistic name = Test statistic^significance stars’. If you want to change any of that, instead of <code>group.test = TRUE</code>, set <code>group.test</code> equal to a named list of options that will be send to the <code>opts</code> argument of <code>independence.test</code>. See <code><a href="../reference/independence.test.html">help(independence.test)</a></code>.</p>
 <p>Be aware that the table produced with <code>group</code> uses multi-column cells. So it will not look quite as nice when outputting to a format that does not support multi-column cells, like <code>out='return'</code>. Multi-column cells are supported in <code>out='kable'</code> for <code>group</code>, as below, but are not supported on other rows of the <code>kable</code>. Multi-column cells are supported for <code>out='kable'</code> only for HTML and LaTeX output.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'Species'</span>, <span class="kw">group.test</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'Species'</span>, <span class="kw">group.test</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 <table class="table">
 <caption>
 Summary Statistics
@@ -985,7 +986,7 @@ F=960.007<sup>***</sup>
 </td>
 </tr></tfoot>
 </table>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'Species'</span>, <span class="kw">group.long</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'Species'</span>, <span class="kw">group.long</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 <table class="table">
 <caption>
 Summary Statistics
@@ -1395,7 +1396,7 @@ Petal.Width
 </h2>
 <p>Sometimes you don’t need all that much information on each variable, but you have a lot of variables and your table gets long! <code>col.breaks</code> will break up the variables in your table into multiple columns, and put them side by side. Also handy if you want to mix numeric and factor variables - put all your factors in a second column to economize on space. Incompatible with <code>group</code> unless <code>group.long = TRUE</code>.</p>
 <p>Set <code>col.breaks</code> to be a numeric vector. <code><a href="../reference/sumtable.html">sumtable()</a></code> will start a new column after that many variables have been processed.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="co">#Let's put species in a column by itself</span>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="co">#Let's put species in a column by itself</span>
 <span class="co">#There are five variables here, Species is last,</span>
 <span class="co">#so break the column after the first four variables.</span>
 <span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">col.breaks</span> <span class="kw">=</span> <span class="fl">4</span>)</pre></body></html></div>
@@ -1520,7 +1521,7 @@ Petal.Width
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="co">#Why not three columns?</span>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="co">#Why not three columns?</span>
 <span class="fu"><a href="../reference/sumtable.html">sumtable</a></span>(<span class="no">mtcars</span>, <span class="kw">col.breaks</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>,<span class="fl">8</span>))</pre></body></html></div>
 <table class="table">
 <caption>
@@ -1721,7 +1722,7 @@ vs
 <a href="#digits-and-fixed-digits" class="anchor"></a><code>digits</code> and <code>fixed.digits</code>
 </h2>
 <p><code>digits</code> indicates how many digits after the decimal place should be displayed. <code>fixed.digits</code> determines whether trailing zeros are maintained.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">digits</span> <span class="kw">=</span> <span class="fl">5</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">digits</span> <span class="kw">=</span> <span class="fl">5</span>)</pre></body></html></div>
 <table class="table">
 <caption>
 Summary Statistics
@@ -1942,7 +1943,7 @@ Species
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">digits</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">fixed.digits</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">digits</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">fixed.digits</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 <table class="table">
 <caption>
 Summary Statistics
@@ -2172,7 +2173,7 @@ Species
 <p>Set <code>factor.percent = FALSE</code> to report the proportion of observations (.5) instead of the percentage (50%) for the values.</p>
 <p>Set <code>factor.counts = FALSE</code> to omit the count for the individual values. So you’ll see the number of nonmissing observations for the variable overall, and then just the percentage/proportion for each of the values.</p>
 <p>Set <code>factor.numeric = TRUE</code> and/or <code>logical.numeric = TRUE</code> to ignore all this special treatment for factor/logical variables (respectively), and just treat each of the values as numeric binary variables. <code>factor.numeric</code> also covers character variables.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">factor.percent</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">factor.counts</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">factor.percent</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">factor.counts</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
 <table class="table">
 <caption>
 Summary Statistics
@@ -2390,7 +2391,7 @@ Species
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">factor.numeric</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">iris</span>, <span class="kw">factor.numeric</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 <table class="table">
 <caption>
 Summary Statistics
@@ -2637,7 +2638,7 @@ Species
 <a href="#labels-as-a-vector" class="anchor"></a><code>labels</code> as a vector</h3>
 <p><code>labels</code> can be set to be a vector of equal length to the number of variables in <code>data</code> (or in <code>vars</code> if that’s set), and in the same order. You can use <code>NA</code>s for padding if you only want labels for some varibles and just want to use the regular variable names for others.</p>
 <p>This option is not recommended if you have set <code>group</code>, as it gets tricky to figure out what order to put the labels in.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="co">#Note that LifeCycleSavings has five variables</span>
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="co">#Note that LifeCycleSavings has five variables</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">LifeCycleSavings</span>)
 <span class="co">#These variable labels are taken from help(LifeCycleSavings)</span>
 <span class="no">labs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'numeric aggregate personal savings'</span>,
@@ -2815,7 +2816,7 @@ numeric % growth rate of dpi
 <a href="#labels-as-a-two-column-data-set" class="anchor"></a><code>labels</code> as a two-column data set</h3>
 <p><code>labels</code> can be set to a two-column data set (any type will do) where the first column has the variable names, and the second column has the labels. The column names don’t matter.</p>
 <p>This approach does <strong>not</strong> require that every variable name in <code>data</code> has a matching label.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="co">#Note that LifeCycleSavings has five variables</span>
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="co">#Note that LifeCycleSavings has five variables</span>
 <span class="co">#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'</span>
 <span class="no">labs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">nonsensename1</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'sr'</span>, <span class="st">'pop15'</span>, <span class="st">'pop75'</span>),
 <span class="kw">nonsensename2</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'numeric aggregate personal savings'</span>,
@@ -2991,7 +2992,7 @@ ddpi
 <a href="#labels-as-a-one-row-data-set" class="anchor"></a><code>labels</code> as a one-row data set</h3>
 <p><code>labels</code> can be set to a one-row data set in which the column names are the variable names in <code>data</code> and the first row is the variable names. The <code>labels</code> argument can take any data type including data frame, data table, tibble, or matrix, as long as it has a valid set of variable names stored in the <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code> attribute.</p>
 <p>This approach does <strong>not</strong> require that every variable name in <code>data</code> has a matching label.</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">labs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">sr</span> <span class="kw">=</span> <span class="st">'numeric aggregate personal savings'</span>,
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">labs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">sr</span> <span class="kw">=</span> <span class="st">'numeric aggregate personal savings'</span>,
     <span class="kw">pop15</span> <span class="kw">=</span> <span class="st">'numeric % of population under 15'</span>,
     <span class="kw">pop75</span> <span class="kw">=</span> <span class="st">'numeric % of population over 75'</span>)
 <span class="fu"><a href="../reference/sumtable.html">sumtable</a></span>(<span class="no">LifeCycleSavings</span>,<span class="kw">labels</span><span class="kw">=</span><span class="no">labs</span>)</pre></body></html></div>
@@ -3175,7 +3176,7 @@ ddpi
 </h2>
 <p><code><a href="../reference/sumtable.html">sumtable()</a></code> will select default column widths by basically just giving the column with the variable name a little more space than the <code>summ</code>-based columns. <code>col.width</code>, as a vector of percentage column widths on the 0-100 scale, will override these defaults.</p>
 <p>Doesn’t apply to <code>out = 'kable'</code> or <code>out = 'return'</code>.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="co">#The variable names in this data set are pretty short, and the value labels are</span>
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="co">#The variable names in this data set are pretty short, and the value labels are</span>
 <span class="co">#a little cramped, so let's move that over.</span>
 <span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">LifeCycleSavings</span>,
    <span class="kw">col.width</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">9</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">13</span>,<span class="fl">7</span>)))</pre></body></html></div>
@@ -3187,7 +3188,7 @@ ddpi
 <p><code>col.align</code> can be used to adjust text alignment in HTML output. Set to ‘left’, ‘right’, or ‘center’ to align all columns, or give a vector of column alignments to do each column separately.</p>
 <p>If you want to get tricky, you can add a semicolon afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.</p>
 <p>This option is only for HTML output and will only work with <code>out</code> values of ‘browser’, ‘viewer’, or ‘htmlreturn’.</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">LifeCycleSavings</span>,<span class="kw">col.align</span> <span class="kw">=</span> <span class="st">'right'</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">st</a></span>(<span class="no">LifeCycleSavings</span>,<span class="kw">col.align</span> <span class="kw">=</span> <span class="st">'right'</span>)</pre></body></html></div>
 </div>
 <div id="align" class="section level2">
 <h2 class="hasAnchor">
@@ -3196,7 +3197,7 @@ ddpi
 <p>This is a single string, used only with LaTeX output (<code>out</code> is ‘latex’ or ‘latexpage’), which will be used as column alignment in standard LaTeX syntax, for example ‘lccc’ for the left column left-aligned and the other three centered. Accepts ‘p{}’ and other LaTeX column types.</p>
 <p>Be sure to escape special characters, in particular backslashes.</p>
 <p>Defaults to left-aligned ‘Variable’ columns and right-aligned everything else. If <code>col.widths</code> is specified, defaults to ‘p{}’ columns, with widths set by <code>col.width</code>.</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">sumtable</a></span>(<span class="no">iris</span>,<span class="kw">align</span> <span class="kw">=</span> <span class="st">'p{.3\\textwidth}ccccccc'</span>, <span class="kw">out</span> <span class="kw">=</span> <span class="st">'latex'</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="../reference/sumtable.html">sumtable</a></span>(<span class="no">iris</span>,<span class="kw">align</span> <span class="kw">=</span> <span class="st">'p{.3\\textwidth}ccccccc'</span>, <span class="kw">out</span> <span class="kw">=</span> <span class="st">'latex'</span>)</pre></body></html></div>
 </div>
 <div id="opts" class="section level2">
 <h2 class="hasAnchor">
