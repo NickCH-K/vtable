@@ -316,9 +316,9 @@ clean_multicol_kable <- function(df,title,note=NA) {
   }
 
   if (fmt == 'html') {
-    kb <- knitr::kable(df, caption = title, row.names = FALSE, format = fmt)
+    kb <- knitr::kable(df, caption = title, row.names = FALSE, format = fmt, escape = FALSE)
   } else if (fmt == 'latex') {
-    kb <- knitr::kable(df, caption = title, row.names = FALSE, format = fmt, booktabs = TRUE)
+    kb <- knitr::kable(df, caption = title, row.names = FALSE, format = fmt, booktabs = TRUE, escape = FALSE)
   } else {
     kb <- knitr::kable(df, caption = title, row.names = FALSE)
   }
