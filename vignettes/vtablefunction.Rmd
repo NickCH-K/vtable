@@ -1,5 +1,5 @@
 ---
-title: "vtable: Variable Table"
+title: "Variable Table (vtable)"
 author: "Nick Huntington-Klein"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -46,12 +46,14 @@ vtable(data,
        col.width=NA,
        col.align=NA,
        align=NA,
+       note.align='l',
+       fit.page=NA,
        summ=NA,
        lush=FALSE,
        opts=list())
 ```
 
-The goal of `vtable()` is to take a data set `data` and output a usually-HTML (but `data.frame`, `kable`, and `latex` options are there too) file with documentation concerning each of the variables in `data`. There are several options as to what will be included in the documentation file, and each of these options are explained below. Throughout, the output will be built as `kable`s since this is an RMarkdown document. However, generally you can leave `out` at its default and it will publish an HTML table to Viewer (in RStudio) or the browser (otherwise). This will also include some additional information about your data that can't be demonstrated in this vignette:
+The goal of `vtable()` is to take a data set `data` and output a usually-HTML (but `data.frame`, `kable`, `csv`, and `latex` options are there too) file with documentation concerning each of the variables in `data`. There are several options as to what will be included in the documentation file, and each of these options are explained below. Throughout, the output will be built as `kable`s since this is an RMarkdown document. However, generally you can leave `out` at its default and it will publish an HTML table to Viewer (in RStudio) or the browser (otherwise). This will also include some additional information about your data that can't be demonstrated in this vignette:
 
 ## `data`
 
@@ -85,6 +87,7 @@ The `out` option determines what will be done with the resulting variable docume
 | viewer     | Loads variable documentation in Viewer pane (RStudio only). |
 | htmlreturn | Returns HTML code for variable documentation file. |
 | return     | Returns variable documentation table in data frame format. |
+| csv        | Returns variable documentatoin in data.frame format and, with a `file` option, saves that to CSV. |
 | kable      | Returns a `knitr::kable()` |
 | latex      | Returns a LaTeX table. |
 | latexpage  | Returns an independently-buildable LaTeX document. |
@@ -243,7 +246,7 @@ vtable(USJudgeRatings,char.values=c('Judge','SecondCharacter'))
 
 `anchor` will add an anchor ID (`<a name = ` in HTML or `\label{}` in LaTeX) to allow other parts of your document to link to it, if you are including your `vtable` in a larger document.
 
-`data.title` and `desc` will only show up in full-page `vtable`s. That is, you won't get them with `out = 'return'`, or `out = 'latex'` (although `out = 'latexpage'` works). `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so they won't work with `out = 'return'`.
+`data.title` and `desc` will only show up in full-page `vtable`s. That is, you won't get them with `out = 'return'`, `out = 'csv'`, or `out = 'latex'` (although `out = 'latexpage'` works). `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so they won't work with `out = 'return'` or `out = 'csv'`.
 
 `out = 'kable'` is a half-exception in that it will use `data.title` as the caption for the `kable`, and will use the `note` as a footnote, but won't use `desc` or `anchor`.
 
@@ -288,18 +291,23 @@ data(efc)
 vtable(efc,col.align = 'right')
 ```
 
-## `align`
+## `align`, `note.align`, and `fit.page`
 
-This is a single string, used only with LaTeX output (`out` is 'latex' or 'latexpage'), which will be used as column alignment in standard LaTeX syntax, for example 'lccc' for the left column left-aligned and the other three centered. Accepts 'p{}' and other LaTeX column types.
+These options are used only with LaTeX output (`out` is 'latex' or 'latexpage').
 
-Be sure to escape special characters, in particular backslashes.
+`align` and `note.align` are single strings used for alignment. `align` will be used as column alignment in standard LaTeX syntax, for example 'lccc' for the left column left-aligned and the other three centered. `note.align` is an alignment note specifically for any table notes set with `note` (or significance stars), which enters as part of a `\multicolumn` argument. These both accept 'p{}' and other LaTeX column types.
 
-Defaults to using all 'p{}' columns, with widths set by `col.width` (or the default values of `col.width`).
+Defaults to left-aligned 'Variable' columns and right-aligned everything else. If `col.widths` is specified, `align` defaults to 'p{}' columns, with widths set by `col.width`.
+
+`fit.page` can be used to ensure that the table is a certain width, and will be used as an entry to a `\resizebox{}`. Set to `\\textwidth` to set the table to text width, or `.9\\textwidth` for 90% of the page, and so on, or any recognized width value in LaTeX.
+
+For all of these, be sure to escape special characters, in particular backslashes.
+
 
 ```{r, eval = FALSE}
 library(sjlabelled)
 data(efc)
-vtable(efc,align = 'p{.3\\textwidth}cc', out = 'latex')
+vtable(efc,align = 'p{.3\\textwidth}cc', fit.page = '\\textwidth', out = 'latex')
 ```
 
 ## `summ`

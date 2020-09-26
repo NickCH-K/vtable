@@ -19,10 +19,12 @@ vtable(
   data.title = NA,
   desc = NA,
   note = NA,
+  note.align = "l",
   anchor = NA,
   col.width = NA,
   col.align = NA,
   align = NA,
+  fit.page = NA,
   summ = NA,
   lush = FALSE,
   opts = list()
@@ -42,10 +44,12 @@ vt(
   data.title = NA,
   desc = NA,
   note = NA,
+  note.align = "l",
   anchor = NA,
   col.width = NA,
   col.align = NA,
   align = NA,
+  fit.page = NA,
   summ = NA,
   lush = FALSE,
   opts = list()
@@ -54,7 +58,7 @@ vt(
 \arguments{
 \item{data}{Data set; accepts any format with column names. If variable labels are set with the haven package, \code{set_label()} from sjlabelled, or \code{label()} from Hmisc, \code{vtable} will extract them automatically.}
 
-\item{out}{Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R. Use \code{"return"} to return the completed variable table to R in data frame form or \code{"kable"} to return it as a \code{knitr::kable()}. Additional options include \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.}
+\item{out}{Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R. Use \code{"return"} to return the completed variable table to R in data frame form or \code{"kable"} to return it as a \code{knitr::kable()}. Additional options include \code{"csv"} to write to CSV in conjunction with \code{file} (although this will drop most additional formatting), \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.}
 
 \item{file}{Saves the completed variable table file to HTML or .tex with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard vtable HTML file as with \code{out = "viewer"} or \code{out = "browser"}.}
 
@@ -78,6 +82,8 @@ vt(
 
 \item{note}{Table note to go after the last row of the table.}
 
+\item{note.align}{Set the alignment for the multi-column table note. Usually "l", but if you have a long note in LaTeX you might want to set it with "p{}"}
+
 \item{anchor}{Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.}
 
 \item{col.width}{Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.}
@@ -85,6 +91,8 @@ vt(
 \item{col.align}{For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to all left-aligned. If you want to get tricky, you can add a \code{";"} afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.}
 
 \item{align}{For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to all \code{p{}} columns with widths set using the same defaults as with \code{col.width}.  Be sure to escape special characters, in particular backslashes (i.e. \code{p{.25\\\\textwidth}} instead of \code{p{.25\\textwidth}}).}
+
+\item{fit.page}{For LaTeX output, uses a resizebox to force the table to a certain width. Set to \code{NA} to omit. Often \code{'\\textwidth'}.}
 
 \item{summ}{Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)} and \code{countNA(x)}.}
 

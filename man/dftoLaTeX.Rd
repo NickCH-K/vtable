@@ -7,9 +7,11 @@
 dftoLaTeX(
   data,
   file = NA,
+  fit.page = NA,
   frag = TRUE,
   title = NA,
   note = NA,
+  note.align = "l",
   anchor = NA,
   align = NA,
   row.names = FALSE,
@@ -21,11 +23,15 @@ dftoLaTeX(
 
 \item{file}{Saves the completed table to LaTeX with this filepath.}
 
+\item{fit.page}{uses a LaTeX resizebox to force the table to a certain width. Often \code{'\\textwidth'}.}
+
 \item{frag}{Set to TRUE to produce only the LaTeX table itself, or FALSE to produce a fully buildable LaTeX. Defaults to TRUE.}
 
 \item{title}{Character variable with the title of the table.}
 
 \item{note}{Table note to go after the last row of the table.}
+
+\item{note.align}{Set the alignment for the multi-column table note. Usually "l", but if you have a long note you might want to set it with "p{}"}
 
 \item{anchor}{Character variable to be used to set a label tag for the table.}
 

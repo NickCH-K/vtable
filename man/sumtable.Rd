@@ -30,6 +30,8 @@ sumtable(
   col.width = NA,
   col.align = NA,
   align = NA,
+  note.align = "l",
+  fit.page = "\\\\textwidth",
   simple.kable = FALSE,
   opts = list()
 )
@@ -59,6 +61,8 @@ st(
   col.width = NA,
   col.align = NA,
   align = NA,
+  note.align = "l",
+  fit.page = "\\\\textwidth",
   simple.kable = FALSE,
   opts = list()
 )
@@ -68,7 +72,7 @@ st(
 
 \item{vars}{Character vector of column names to include, in the order you'd like them included. Defaults to all numeric, factor, and logical variables, plus any character variables with six or fewer unique values. You can include strings that aren't columns in the data (including blanks) - these will create rows that are blank except for the string (left-aligned), for spacers or subtitles.}
 
-\item{out}{Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"latex"} to return LaTeX code to R (use \code{"latexdoc"} to get a full buildable document rather than a fragment), \code{"return"} to return the completed summary table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.}
+\item{out}{Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"latex"} to return LaTeX code to R (use \code{"latexdoc"} to get a full buildable document rather than a fragment), \code{"return"} to return the completed summary table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Combine \code{out = "csv"} with \code{file} to write to CSV (dropping most formatting). Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.}
 
 \item{file}{Saves the completed summary table file to file with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard sumtable HTML file as with \code{out = "viewer"} or \code{out = "browser"}.}
 
@@ -111,6 +115,10 @@ st(
 \item{col.align}{For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to variable-name columns left-aligned and all others right-aligned (with a little extra padding between columns with \code{col.breaks}). If you want to get tricky, you can add a \code{";"} afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.}
 
 \item{align}{For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to left in the first column and right-aligned afterwards, with \code{@{\\hskip .2in}} spacers if you have \code{col.breaks}. If \code{col.width} is specified, defaults to all \code{p{}} columns with widths set by \code{col.width}. If you want the columns aligned on a decimal point, see [this explainer](https://tex.stackexchange.com/questions/2746/aligning-numbers-by-decimal-points-in-table-columns#2747) of how to use the \code{siunitx} package and \code{S}-type columns.}
+
+\item{note.align}{Set the alignment for the multi-column table note. Usually "l", but if you have a long note in LaTeX you might want to set it with "p{}"}
+
+\item{fit.page}{For LaTeX output, uses a resizebox to force the table to a certain width. Set to \code{NA} to omit.}
 
 \item{simple.kable}{For \code{out = 'kable'}, if you want the \code{kable} printed to console rather than HTML or PDF, then the multi-column headers and table notes won't work. Set \code{simple.kable = TRUE} to skip both.}
 

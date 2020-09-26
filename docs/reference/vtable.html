@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.6</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@
       <a href="../articles/sumtable.html">sumtable: Summary Statistics</a>
     </li>
     <li>
-      <a href="../articles/vtablefunction.html">vtable: Variable Table</a>
+      <a href="../articles/vtablefunction.html">Variable Table (vtable)</a>
     </li>
     <li>
       <a href="../articles/vtablehelpers.html">vtable Bonus Functions</a>
@@ -139,62 +139,66 @@
     <p>This function will output a descriptive variable table either to the console or as an HTML file that can be viewed continuously while working with data. <code>vt()</code> is the same thing but requires fewer key presses to type.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>vtable</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>out</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>file</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>class</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>values</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>missing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>index</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>factor.limit</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>char.values</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>data.title</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>desc</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>note</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>anchor</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>col.width</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>col.align</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>align</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>summ</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>lush</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>opts</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-)
+    <pre class="usage"><span class='fu'>vtable</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  out <span class='op'>=</span> <span class='cn'>NA</span>,
+  file <span class='op'>=</span> <span class='cn'>NA</span>,
+  labels <span class='op'>=</span> <span class='cn'>NA</span>,
+  class <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  values <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  missing <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  index <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  factor.limit <span class='op'>=</span> <span class='fl'>5</span>,
+  char.values <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  data.title <span class='op'>=</span> <span class='cn'>NA</span>,
+  desc <span class='op'>=</span> <span class='cn'>NA</span>,
+  note <span class='op'>=</span> <span class='cn'>NA</span>,
+  note.align <span class='op'>=</span> <span class='st'>"l"</span>,
+  anchor <span class='op'>=</span> <span class='cn'>NA</span>,
+  col.width <span class='op'>=</span> <span class='cn'>NA</span>,
+  col.align <span class='op'>=</span> <span class='cn'>NA</span>,
+  align <span class='op'>=</span> <span class='cn'>NA</span>,
+  fit.page <span class='op'>=</span> <span class='cn'>NA</span>,
+  summ <span class='op'>=</span> <span class='cn'>NA</span>,
+  lush <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  opts <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>vt</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>out</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>file</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>class</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>values</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>missing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>index</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>factor.limit</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>char.values</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>data.title</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>desc</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>note</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>anchor</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>col.width</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>col.align</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>align</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>summ</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>lush</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>opts</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-)</pre>
+<span class='fu'>vt</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  out <span class='op'>=</span> <span class='cn'>NA</span>,
+  file <span class='op'>=</span> <span class='cn'>NA</span>,
+  labels <span class='op'>=</span> <span class='cn'>NA</span>,
+  class <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  values <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  missing <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  index <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  factor.limit <span class='op'>=</span> <span class='fl'>5</span>,
+  char.values <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  data.title <span class='op'>=</span> <span class='cn'>NA</span>,
+  desc <span class='op'>=</span> <span class='cn'>NA</span>,
+  note <span class='op'>=</span> <span class='cn'>NA</span>,
+  note.align <span class='op'>=</span> <span class='st'>"l"</span>,
+  anchor <span class='op'>=</span> <span class='cn'>NA</span>,
+  col.width <span class='op'>=</span> <span class='cn'>NA</span>,
+  col.align <span class='op'>=</span> <span class='cn'>NA</span>,
+  align <span class='op'>=</span> <span class='cn'>NA</span>,
+  fit.page <span class='op'>=</span> <span class='cn'>NA</span>,
+  summ <span class='op'>=</span> <span class='cn'>NA</span>,
+  lush <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  opts <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>Data set; accepts any format with column names. If variable labels are set with the haven package, <code>set_label()</code> from sjlabelled, or <code>label()</code> from Hmisc, <code>vtable</code> will extract them automatically.</p></td>
+      <td><p>Data set; accepts any format with column names. If variable labels are set with the haven package, <code><a href='https://strengejacke.github.io/sjlabelled/reference/set_label.html'>set_label()</a></code> from sjlabelled, or <code>label()</code> from Hmisc, <code>vtable</code> will extract them automatically.</p></td>
     </tr>
     <tr>
       <th>out</th>
-      <td><p>Determines where the completed table is sent. Set to <code>"browser"</code> to open HTML file in browser using <code><a href='https://rdrr.io/r/utils/browseURL.html'>browseURL()</a></code>, <code>"viewer"</code> to open in RStudio viewer using <code>viewer()</code>, if available. Use <code>"htmlreturn"</code> to return the HTML code to R. Use <code>"return"</code> to return the completed variable table to R in data frame form or <code>"kable"</code> to return it as a <code><a href='https://rdrr.io/pkg/knitr/man/kable.html'>knitr::kable()</a></code>. Additional options include <code>"latex"</code> for a LaTeX table or <code>"latexpage"</code> for a full buildable LaTeX page. Defaults to <code>"viewer"</code> if RStudio is running, <code>"browser"</code> if it isn't, or <code>"kable"</code> if it's an RMarkdown document being built with <code>knitr</code>.</p></td>
+      <td><p>Determines where the completed table is sent. Set to <code>"browser"</code> to open HTML file in browser using <code><a href='https://rdrr.io/r/utils/browseURL.html'>browseURL()</a></code>, <code>"viewer"</code> to open in RStudio viewer using <code>viewer()</code>, if available. Use <code>"htmlreturn"</code> to return the HTML code to R. Use <code>"return"</code> to return the completed variable table to R in data frame form or <code>"kable"</code> to return it as a <code><a href='https://rdrr.io/pkg/knitr/man/kable.html'>knitr::kable()</a></code>. Additional options include <code>"csv"</code> to write to CSV in conjunction with <code>file</code> (although this will drop most additional formatting), <code>"latex"</code> for a LaTeX table or <code>"latexpage"</code> for a full buildable LaTeX page. Defaults to <code>"viewer"</code> if RStudio is running, <code>"browser"</code> if it isn't, or <code>"kable"</code> if it's an RMarkdown document being built with <code>knitr</code>.</p></td>
     </tr>
     <tr>
       <th>file</th>
@@ -241,6 +245,10 @@
       <td><p>Table note to go after the last row of the table.</p></td>
     </tr>
     <tr>
+      <th>note.align</th>
+      <td><p>Set the alignment for the multi-column table note. Usually "l", but if you have a long note in LaTeX you might want to set it with "p"</p></td>
+    </tr>
+    <tr>
       <th>anchor</th>
       <td><p>Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.</p></td>
     </tr>
@@ -255,6 +263,10 @@
     <tr>
       <th>align</th>
       <td><p>For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. <code>l|ccc</code>). Defaults to all <code>p{}</code> columns with widths set using the same defaults as with <code>col.width</code>.  Be sure to escape special characters, in particular backslashes (i.e. <code>p{.25\\textwidth}</code> instead of <code>p{.25\textwidth}</code>).</p></td>
+    </tr>
+    <tr>
+      <th>fit.page</th>
+      <td><p>For LaTeX output, uses a resizebox to force the table to a certain width. Set to <code>NA</code> to omit. Often <code>'\textwidth'</code>.</p></td>
     </tr>
     <tr>
       <th>summ</th>
@@ -283,13 +295,14 @@
 <span class='co'>#but a browser window is not opened during testing.</span>
 <span class='co'>#This process is identical to regular operation except that</span>
 <span class='co'>#HTML is written to the R output rather than a browser.</span>
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>var1</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>,<span class='kw'>var2</span><span class='kw'>=</span><span class='fl'>5</span>:<span class='fl'>8</span>,<span class='kw'>var3</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'D'</span>),
-    <span class='kw'>var4</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'C'</span>)),<span class='kw'>var5</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>,<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>))
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>var1 <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>,var2<span class='op'>=</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>8</span>,var3<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'D'</span><span class='op'>)</span>,
+    var4<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'C'</span><span class='op'>)</span><span class='op'>)</span>,var5<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>,<span class='cn'>TRUE</span>,<span class='cn'>FALSE</span>,<span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>#Demonstrating different options:</span>
-<span class='fu'>vtable</span>(<span class='no'>df</span>,<span class='kw'>labels</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'Some Letters'</span>,
-    <span class='st'>'Some Labels'</span>,<span class='st'>'You Good?'</span>),
-    <span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>df</span>,labels<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'Some Letters'</span>,
+    <span class='st'>'Some Labels'</span>,<span class='st'>'You Good?'</span><span class='op'>)</span>,
+    out<span class='op'>=</span><span class='st'>'htmlreturn'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
 #&gt;                     &lt;head&gt;&lt;title&gt;df&lt;/title&gt;&lt;style type = "text/css"&gt;
 #&gt;                     p {
@@ -330,9 +343,10 @@
 #&gt; &lt;tr&gt;&lt;td style = "width:22%; text-align:left"&gt;var3&lt;/td&gt;&lt;td style = "width:11%; text-align:left"&gt;character&lt;/td&gt;&lt;td style = "width:39%; text-align:left"&gt;Some Letters&lt;/td&gt;&lt;td style = "width:28%; text-align:left"&gt;&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;tr&gt;&lt;td style = "width:22%; text-align:left"&gt;var4&lt;/td&gt;&lt;td style = "width:11%; text-align:left"&gt;factor&lt;/td&gt;&lt;td style = "width:39%; text-align:left"&gt;Some Labels&lt;/td&gt;&lt;td style = "width:28%; text-align:left"&gt;'A' 'B' 'C'&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;tr&gt;&lt;td style = "width:22%; text-align:left"&gt;var5&lt;/td&gt;&lt;td style = "width:11%; text-align:left"&gt;logical&lt;/td&gt;&lt;td style = "width:39%; text-align:left"&gt;You Good?&lt;/td&gt;&lt;td style = "width:28%; text-align:left"&gt;TRUE FALSE&lt;/td&gt;&lt;/tr&gt;
-#&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'><span class='fu'>vtable</span>(<span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>df</span>,<span class='kw'>select</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>5</span>)),
-    <span class='kw'>labels</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'You Good?'</span>),<span class='kw'>class</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>values</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
-    <span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+#&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'><span class='fu'>vtable</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>df</span>,select<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>,
+    labels<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'You Good?'</span><span class='op'>)</span>,class<span class='op'>=</span><span class='cn'>FALSE</span>,values<span class='op'>=</span><span class='cn'>FALSE</span>,
+    out<span class='op'>=</span><span class='st'>'htmlreturn'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
 #&gt;                     &lt;head&gt;&lt;title&gt;subset(df, select = c(1, 2, 5))&lt;/title&gt;&lt;style type = "text/css"&gt;
 #&gt;                     p {
@@ -371,10 +385,11 @@
 #&gt; &lt;tr&gt;&lt;td style = "width:29%; text-align:left"&gt;var1&lt;/td&gt;&lt;td style = "width:51%; text-align:left"&gt;Number 1&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;tr&gt;&lt;td style = "width:29%; text-align:left"&gt;var2&lt;/td&gt;&lt;td style = "width:51%; text-align:left"&gt;Number 2&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;tr&gt;&lt;td style = "width:29%; text-align:left"&gt;var5&lt;/td&gt;&lt;td style = "width:51%; text-align:left"&gt;You Good?&lt;/td&gt;&lt;/tr&gt;
-#&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'><span class='fu'>vtable</span>(<span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>df</span>,<span class='kw'>select</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'var1'</span>,<span class='st'>'var4'</span>)),
-    <span class='kw'>labels</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Number 1'</span>,<span class='st'>'Some Labels'</span>),
-    <span class='kw'>factor.limit</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>col.width</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>,<span class='fl'>10</span>,<span class='fl'>40</span>,<span class='fl'>35</span>),
-    <span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+#&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'><span class='fu'>vtable</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>df</span>,select<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'var1'</span>,<span class='st'>'var4'</span><span class='op'>)</span><span class='op'>)</span>,
+    labels<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Number 1'</span>,<span class='st'>'Some Labels'</span><span class='op'>)</span>,
+    factor.limit<span class='op'>=</span><span class='fl'>1</span>,col.width<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>,<span class='fl'>10</span>,<span class='fl'>40</span>,<span class='fl'>35</span><span class='op'>)</span>,
+    out<span class='op'>=</span><span class='st'>'htmlreturn'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
 #&gt;                     &lt;head&gt;&lt;title&gt;subset(df, select = c("var1", "var4"))&lt;/title&gt;&lt;style type = "text/css"&gt;
 #&gt;                     p {
@@ -414,9 +429,10 @@
 #&gt; &lt;tr&gt;&lt;td style = "width:10%; text-align:left"&gt;var4&lt;/td&gt;&lt;td style = "width:10%; text-align:left"&gt;factor&lt;/td&gt;&lt;td style = "width:40%; text-align:left"&gt;Some Labels&lt;/td&gt;&lt;td style = "width:35%; text-align:left"&gt;'A' and more&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'>
 <span class='co'>#Different methods of applying variable labels:</span>
-<span class='no'>labelsmethod2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>var1</span><span class='kw'>=</span><span class='st'>'Number 1'</span>,<span class='kw'>var2</span><span class='kw'>=</span><span class='st'>'Number 2'</span>,
-    <span class='kw'>var3</span><span class='kw'>=</span><span class='st'>'Some Letters'</span>,<span class='kw'>var4</span><span class='kw'>=</span><span class='st'>'Some Labels'</span>,<span class='kw'>var5</span><span class='kw'>=</span><span class='st'>'You Good?'</span>)
-<span class='fu'>vtable</span>(<span class='no'>df</span>,<span class='kw'>labels</span><span class='kw'>=</span><span class='no'>labelsmethod2</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+<span class='va'>labelsmethod2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>var1<span class='op'>=</span><span class='st'>'Number 1'</span>,var2<span class='op'>=</span><span class='st'>'Number 2'</span>,
+    var3<span class='op'>=</span><span class='st'>'Some Letters'</span>,var4<span class='op'>=</span><span class='st'>'Some Labels'</span>,var5<span class='op'>=</span><span class='st'>'You Good?'</span><span class='op'>)</span>
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>df</span>,labels<span class='op'>=</span><span class='va'>labelsmethod2</span>,out<span class='op'>=</span><span class='st'>'htmlreturn'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
 #&gt;                     &lt;head&gt;&lt;title&gt;df&lt;/title&gt;&lt;style type = "text/css"&gt;
 #&gt;                     p {
@@ -457,9 +473,10 @@
 #&gt; &lt;tr&gt;&lt;td style = "width:22%; text-align:left"&gt;var3&lt;/td&gt;&lt;td style = "width:11%; text-align:left"&gt;character&lt;/td&gt;&lt;td style = "width:39%; text-align:left"&gt;Some Letters&lt;/td&gt;&lt;td style = "width:28%; text-align:left"&gt;&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;tr&gt;&lt;td style = "width:22%; text-align:left"&gt;var4&lt;/td&gt;&lt;td style = "width:11%; text-align:left"&gt;factor&lt;/td&gt;&lt;td style = "width:39%; text-align:left"&gt;Some Labels&lt;/td&gt;&lt;td style = "width:28%; text-align:left"&gt;'A' 'B' 'C'&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;tr&gt;&lt;td style = "width:22%; text-align:left"&gt;var5&lt;/td&gt;&lt;td style = "width:11%; text-align:left"&gt;logical&lt;/td&gt;&lt;td style = "width:39%; text-align:left"&gt;You Good?&lt;/td&gt;&lt;td style = "width:28%; text-align:left"&gt;TRUE FALSE&lt;/td&gt;&lt;/tr&gt;
-#&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'><span class='no'>labelsmethod3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"var1"</span>,<span class='st'>"var2"</span>,<span class='st'>"var3"</span>,<span class='st'>"var4"</span>,<span class='st'>"var5"</span>),
-    <span class='kw'>b</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'Some Letters'</span>,<span class='st'>'Some Labels'</span>,<span class='st'>'You Good?'</span>))
-<span class='fu'>vtable</span>(<span class='no'>df</span>,<span class='kw'>labels</span><span class='kw'>=</span><span class='no'>labelsmethod3</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+#&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'><span class='va'>labelsmethod3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>a <span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"var1"</span>,<span class='st'>"var2"</span>,<span class='st'>"var3"</span>,<span class='st'>"var4"</span>,<span class='st'>"var5"</span><span class='op'>)</span>,
+    b<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'Some Letters'</span>,<span class='st'>'Some Labels'</span>,<span class='st'>'You Good?'</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>df</span>,labels<span class='op'>=</span><span class='va'>labelsmethod3</span>,out<span class='op'>=</span><span class='st'>'htmlreturn'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
 #&gt;                     &lt;head&gt;&lt;title&gt;df&lt;/title&gt;&lt;style type = "text/css"&gt;
 #&gt;                     p {
@@ -502,12 +519,13 @@
 #&gt; &lt;tr&gt;&lt;td style = "width:22%; text-align:left"&gt;var5&lt;/td&gt;&lt;td style = "width:11%; text-align:left"&gt;logical&lt;/td&gt;&lt;td style = "width:39%; text-align:left"&gt;You Good?&lt;/td&gt;&lt;td style = "width:28%; text-align:left"&gt;TRUE FALSE&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'>
 <span class='co'>#Using value labels and pre-labeled data:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sjlabelled</span>)
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sjlabelled/man/set_label.html'>set_label</a></span>(<span class='no'>df</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'Some Letters'</span>,
-    <span class='st'>'Some Labels'</span>,<span class='st'>'You Good?'</span>))
-<span class='no'>df</span>$<span class='no'>var1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sjlabelled/man/set_labels.html'>set_labels</a></span>(<span class='no'>df</span>$<span class='no'>var1</span>,<span class='kw'>labels</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A little'</span>,<span class='st'>'Some more'</span>,
-<span class='st'>'Even more'</span>,<span class='st'>'A lot'</span>))
-<span class='fu'>vtable</span>(<span class='no'>df</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjlabelled'>sjlabelled</a></span><span class='op'>)</span>
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://strengejacke.github.io/sjlabelled/reference/set_label.html'>set_label</a></span><span class='op'>(</span><span class='va'>df</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'Some Letters'</span>,
+    <span class='st'>'Some Labels'</span>,<span class='st'>'You Good?'</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>df</span><span class='op'>$</span><span class='va'>var1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://strengejacke.github.io/sjlabelled/reference/set_labels.html'>set_labels</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>var1</span>,labels<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'A little'</span>,<span class='st'>'Some more'</span>,
+<span class='st'>'Even more'</span>,<span class='st'>'A lot'</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>df</span>,out<span class='op'>=</span><span class='st'>'htmlreturn'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
 #&gt;                     &lt;head&gt;&lt;title&gt;df&lt;/title&gt;&lt;style type = "text/css"&gt;
 #&gt;                     p {
@@ -550,9 +568,10 @@
 #&gt; &lt;tr&gt;&lt;td style = "width:22%; text-align:left"&gt;var5&lt;/td&gt;&lt;td style = "width:11%; text-align:left"&gt;logical&lt;/td&gt;&lt;td style = "width:39%; text-align:left"&gt;You Good?&lt;/td&gt;&lt;td style = "width:28%; text-align:left"&gt;TRUE FALSE&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'>
 <span class='co'>#efc is data with embedded variable and value labels from the sjlabelled package</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sjlabelled</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
-<span class='fu'>vtable</span>(<span class='no'>efc</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjlabelled'>sjlabelled</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span>
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>efc</span>,out<span class='op'>=</span><span class='st'>'htmlreturn'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
 #&gt;                     &lt;head&gt;&lt;title&gt;efc&lt;/title&gt;&lt;style type = "text/css"&gt;
 #&gt;                     p {
@@ -616,7 +635,8 @@
 #&gt; &lt;tr&gt;&lt;td style = "width:22%; text-align:left"&gt;nur_pst&lt;/td&gt;&lt;td style = "width:11%; text-align:left"&gt;numeric&lt;/td&gt;&lt;td style = "width:39%; text-align:left"&gt;Care level&lt;/td&gt;&lt;td style = "width:28%; text-align:left"&gt;'1: Care Level 1' '2: Care Level 2' '3: Care Level 3/3+'&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'>
 <span class='co'>#Adding summary statistics for variable mean and proportion of data that is missing.</span>
-<span class='fu'>vtable</span>(<span class='no'>efc</span>,<span class='kw'>summ</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'mean(x)'</span>,<span class='st'>'propNA(x)'</span>),<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>efc</span>,summ<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'mean(x)'</span>,<span class='st'>'propNA(x)'</span><span class='op'>)</span>,out<span class='op'>=</span><span class='st'>'htmlreturn'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
 #&gt;                     &lt;head&gt;&lt;title&gt;efc&lt;/title&gt;&lt;style type = "text/css"&gt;
 #&gt;                     p {
@@ -680,49 +700,50 @@
 #&gt; &lt;tr&gt;&lt;td style = "width:19%; text-align:left"&gt;nur_pst&lt;/td&gt;&lt;td style = "width:9%; text-align:left"&gt;numeric&lt;/td&gt;&lt;td style = "width:32%; text-align:left"&gt;Care level&lt;/td&gt;&lt;td style = "width:23%; text-align:left"&gt;'1: Care Level 1' '2: Care Level 2' '3: Care Level 3/3+'&lt;/td&gt;&lt;td style = "width:17%; text-align:left"&gt;propNA: 0.461&lt;br/&gt;&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'>
 <span class='co'># }</span>
-<span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()){
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>var1</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>,<span class='kw'>var2</span><span class='kw'>=</span><span class='fl'>5</span>:<span class='fl'>8</span>,<span class='kw'>var3</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'D'</span>),
-    <span class='kw'>var4</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'C'</span>)),<span class='kw'>var5</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>,<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>))
+<span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span>
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>var1 <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>,var2<span class='op'>=</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>8</span>,var3<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'D'</span><span class='op'>)</span>,
+    var4<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'C'</span><span class='op'>)</span><span class='op'>)</span>,var5<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>,<span class='cn'>TRUE</span>,<span class='cn'>FALSE</span>,<span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>#Demonstrating different options:</span>
-<span class='fu'>vtable</span>(<span class='no'>df</span>,<span class='kw'>labels</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'Some Letters'</span>,
-    <span class='st'>'Some Labels'</span>,<span class='st'>'You Good?'</span>))
-<span class='fu'>vtable</span>(<span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>df</span>,<span class='kw'>select</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>5</span>)),
-    <span class='kw'>labels</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'You Good?'</span>),<span class='kw'>class</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>values</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
-<span class='fu'>vtable</span>(<span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>df</span>,<span class='kw'>select</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'var1'</span>,<span class='st'>'var4'</span>)),
-    <span class='kw'>labels</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Number 1'</span>,<span class='st'>'Some Labels'</span>),
-    <span class='kw'>factor.limit</span><span class='kw'>=</span><span class='fl'>1</span>,<span class='kw'>col.width</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>,<span class='fl'>10</span>,<span class='fl'>40</span>,<span class='fl'>35</span>))
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>df</span>,labels<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'Some Letters'</span>,
+    <span class='st'>'Some Labels'</span>,<span class='st'>'You Good?'</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>vtable</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>df</span>,select<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>,
+    labels<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'You Good?'</span><span class='op'>)</span>,class<span class='op'>=</span><span class='cn'>FALSE</span>,values<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>vtable</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>df</span>,select<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'var1'</span>,<span class='st'>'var4'</span><span class='op'>)</span><span class='op'>)</span>,
+    labels<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Number 1'</span>,<span class='st'>'Some Labels'</span><span class='op'>)</span>,
+    factor.limit<span class='op'>=</span><span class='fl'>1</span>,col.width<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>,<span class='fl'>10</span>,<span class='fl'>40</span>,<span class='fl'>35</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>#Different methods of applying variable labels:</span>
-<span class='no'>labelsmethod2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>var1</span><span class='kw'>=</span><span class='st'>'Number 1'</span>,<span class='kw'>var2</span><span class='kw'>=</span><span class='st'>'Number 2'</span>,
-    <span class='kw'>var3</span><span class='kw'>=</span><span class='st'>'Some Letters'</span>,<span class='kw'>var4</span><span class='kw'>=</span><span class='st'>'Some Labels'</span>,<span class='kw'>var5</span><span class='kw'>=</span><span class='st'>'You Good?'</span>)
-<span class='fu'>vtable</span>(<span class='no'>df</span>,<span class='kw'>labels</span><span class='kw'>=</span><span class='no'>labelsmethod2</span>)
-<span class='no'>labelsmethod3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"var1"</span>,<span class='st'>"var2"</span>,<span class='st'>"var3"</span>,<span class='st'>"var4"</span>,<span class='st'>"var5"</span>),
-    <span class='kw'>b</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'Some Letters'</span>,<span class='st'>'Some Labels'</span>,<span class='st'>'You Good?'</span>))
-<span class='fu'>vtable</span>(<span class='no'>df</span>,<span class='kw'>labels</span><span class='kw'>=</span><span class='no'>labelsmethod3</span>)
+<span class='va'>labelsmethod2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>var1<span class='op'>=</span><span class='st'>'Number 1'</span>,var2<span class='op'>=</span><span class='st'>'Number 2'</span>,
+    var3<span class='op'>=</span><span class='st'>'Some Letters'</span>,var4<span class='op'>=</span><span class='st'>'Some Labels'</span>,var5<span class='op'>=</span><span class='st'>'You Good?'</span><span class='op'>)</span>
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>df</span>,labels<span class='op'>=</span><span class='va'>labelsmethod2</span><span class='op'>)</span>
+<span class='va'>labelsmethod3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>a <span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"var1"</span>,<span class='st'>"var2"</span>,<span class='st'>"var3"</span>,<span class='st'>"var4"</span>,<span class='st'>"var5"</span><span class='op'>)</span>,
+    b<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'Some Letters'</span>,<span class='st'>'Some Labels'</span>,<span class='st'>'You Good?'</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>df</span>,labels<span class='op'>=</span><span class='va'>labelsmethod3</span><span class='op'>)</span>
 
 <span class='co'>#Using value labels and pre-labeled data:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sjlabelled</span>)
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sjlabelled/man/set_label.html'>set_label</a></span>(<span class='no'>df</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'Some Letters'</span>,
-    <span class='st'>'Some Labels'</span>,<span class='st'>'You Good?'</span>))
-<span class='no'>df</span>$<span class='no'>var1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sjlabelled/man/set_labels.html'>set_labels</a></span>(<span class='no'>df</span>$<span class='no'>var1</span>,<span class='kw'>labels</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A little'</span>,<span class='st'>'Some more'</span>,
-<span class='st'>'Even more'</span>,<span class='st'>'A lot'</span>))
-<span class='fu'>vtable</span>(<span class='no'>df</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjlabelled'>sjlabelled</a></span><span class='op'>)</span>
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://strengejacke.github.io/sjlabelled/reference/set_label.html'>set_label</a></span><span class='op'>(</span><span class='va'>df</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Number 1'</span>,<span class='st'>'Number 2'</span>,<span class='st'>'Some Letters'</span>,
+    <span class='st'>'Some Labels'</span>,<span class='st'>'You Good?'</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>df</span><span class='op'>$</span><span class='va'>var1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://strengejacke.github.io/sjlabelled/reference/set_labels.html'>set_labels</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>var1</span>,labels<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'A little'</span>,<span class='st'>'Some more'</span>,
+<span class='st'>'Even more'</span>,<span class='st'>'A lot'</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>
 
 <span class='co'>#efc is data with embedded variable and value labels from the sjlabelled package</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sjlabelled</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
-<span class='fu'>vtable</span>(<span class='no'>efc</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjlabelled'>sjlabelled</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span>
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span>
 
 <span class='co'>#Displaying the values of a character vector</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>USJudgeRatings</span>)
-<span class='no'>USJudgeRatings</span>$<span class='no'>Judge</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/row.names.html'>row.names</a></span>(<span class='no'>USJudgeRatings</span>)
-<span class='fu'>vtable</span>(<span class='no'>USJudgeRatings</span>,<span class='kw'>char.values</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Judge'</span>))
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>USJudgeRatings</span><span class='op'>)</span>
+<span class='va'>USJudgeRatings</span><span class='op'>$</span><span class='va'>Judge</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/row.names.html'>row.names</a></span><span class='op'>(</span><span class='va'>USJudgeRatings</span><span class='op'>)</span>
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>USJudgeRatings</span>,char.values<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Judge'</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>#Adding summary statistics for variable mean and proportion of data that is missing.</span>
-<span class='fu'>vtable</span>(<span class='no'>efc</span>,<span class='kw'>summ</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'mean(x)'</span>,<span class='st'>'propNA(x)'</span>))
+<span class='fu'>vtable</span><span class='op'>(</span><span class='va'>efc</span>,summ<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'mean(x)'</span>,<span class='st'>'propNA(x)'</span><span class='op'>)</span><span class='op'>)</span>
 
-}</div></pre>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -738,7 +759,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

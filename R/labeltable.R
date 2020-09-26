@@ -8,10 +8,11 @@
 #'
 #' @param var A vector. Label table will show, for each of the values of this variable, its label (if labels can be found with \code{sjlabelled::get_labels()}), or the values in the \code{...} variables.
 #' @param ... As described above. If specified, will show the values of these variables, instead of the labels of var, even if labels can be found.
-#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"return"} to return the completed variable table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Additional options include \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.
+#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"return"} to return the completed variable table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Combine \code{out = "csv"} with \code{file} to write to CSV (dropping most formatting). Additional options include \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.
 #' @param file Saves the completed variable table file to HTML with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard labeltable HTML file as with \code{out = "viewer"} or \code{out = "browser"}..
 #' @param desc Description of variable (or labeling system) to be included with the table.
 #' @param note Table note to go after the last row of the table.
+#' @param note.align Set the alignment for the multi-column table note. Usually "l", but if you have a long note in LaTeX you might want to set it with "p{}"
 #' @param anchor Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.
 #' @examples
 #' \dontshow{
@@ -60,7 +61,7 @@
 #' }
 #' @export
 
-labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,anchor=NA) {
+labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,note.align = NA,anchor=NA) {
   #Just in case, noting that if ...s are labeled,
   #but a package that supports the class isn't loaded it messes things up
   comp.vars <- data.frame(lapply(list(...),function(x) sjlabelled::unlabel(x)))
@@ -73,8 +74,11 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,anchor=NA) {
   if (!is.na(desc) & !is.character(desc)) {
     stop('desc must be a character.')
   }
-  if (!identical(out,NA) & !(out %in% c('viewer', 'browser','return','htmlreturn','kable','latex','latexpage'))) {
+  if (!identical(out,NA) & !(out %in% c('viewer', 'browser','return','htmlreturn','kable','latex','latexpage','csv'))) {
     stop('out must be viewer, browser, return, htmlreturn, kable, latex, or latexpage')
+  }
+  if (identical(out, 'csv') & is.na(file)) {
+    warning('out = "csv" will just return the vtable as a data.frame unless combined with file')
   }
 
   #Get actual name of variable
@@ -149,6 +153,7 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,anchor=NA) {
                        align = align,
                        title = 'Label Table',
                        note = note,
+                       note.align = note.align,
                        anchor=anchor)))
     }
 
@@ -167,6 +172,7 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,anchor=NA) {
                                            align = align,
                                            title = 'Label Table',
                                            note = note,
+                                           note.align = note.align,
                                            anchor=anchor),'\n\n\\end{document}',sep='')
 
     ####### APPLICATION OF FILE OPTION
@@ -239,19 +245,30 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,anchor=NA) {
   out.html <- paste(out.html,'<h3>Label Table</h3>',sep='')
 
   #And bring in the table itself
-  out.html <- paste(out.html,dftoHTML(lt, note = note,
+  out.html <- paste(out.html,dftoHTML(lt, note = note, note.align = note.align,
                                       anchor=anchor, out='htmlreturn'),'</body></html>',sep='')
 
   ####### APPLICATION OF FILE OPTION
   if (!is.na(file)) {
-    #If they forgot a file extension, fill it in
-    if (!grepl("\\.",file)) {
-      file <- paste(file,'.html',sep='')
-    }
+    if (out == 'csv') {
+      #If they forgot a file extension, fill it in
+      if (!grepl("\\.csv",file)) {
+        file <- paste(file,'.csv',sep='')
+      }
 
-    filepath <- file.path(file)
-    #Create temporary html file
-    writeLines(out.html,filepath)
+      filepath <- file.path(file)
+      #Create temporary html file
+      write.csv(lt,filepath, row.names = FALSE)
+    } else {
+      #If they forgot a file extension, fill it in
+      if (!grepl("\\.htm",file)) {
+        file <- paste(file,'.html',sep='')
+      }
+
+      filepath <- file.path(file)
+      #Create temporary html file
+      writeLines(out.html,filepath)
+    }
   }
 
   #For more easily working with if statements
@@ -299,7 +316,7 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,anchor=NA) {
     stop('out = viewer is not a valid option if RStudio is not running.')
   } else if ((Sys.getenv('RSTUDIO')=='' & out == '') | (out == 'browser')) {
     utils::browseURL(htmlpath)
-  } else if (out == 'return') {
+  } else if (out == 'return'| out == 'csv') {
     return(lt)
   } else if (out == 'htmlreturn') {
     return(cat(out.html))

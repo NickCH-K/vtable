@@ -14,7 +14,7 @@
 #'
 #' @param data Data set; accepts any format with column names.
 #' @param vars Character vector of column names to include, in the order you'd like them included. Defaults to all numeric, factor, and logical variables, plus any character variables with six or fewer unique values. You can include strings that aren't columns in the data (including blanks) - these will create rows that are blank except for the string (left-aligned), for spacers or subtitles.
-#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"latex"} to return LaTeX code to R (use \code{"latexdoc"} to get a full buildable document rather than a fragment), \code{"return"} to return the completed summary table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.
+#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"latex"} to return LaTeX code to R (use \code{"latexdoc"} to get a full buildable document rather than a fragment), \code{"return"} to return the completed summary table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Combine \code{out = "csv"} with \code{file} to write to CSV (dropping most formatting). Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.
 #' @param file Saves the completed summary table file to file with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard sumtable HTML file as with \code{out = "viewer"} or \code{out = "browser"}.
 #' @param summ Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. Defaults to \code{c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')} if there's one column, or \code{c('notNA(x)','mean(x)','sd(x)')} if there's more than one. If all variables in a column are factors it defaults to \code{c('sum(x)','mean(x)')} for the factor dummies. If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)} and \code{countNA(x)}.
 #' @param summ.names Character vector of names for the summary statistics included. If \code{summ} is at default, defaults to \code{c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 75','Max')} (or the appropriate shortened version with multiple columns) unless all variables in the column are factors in which case it defaults to \code{c('N','Percent')}. If \code{summ} has been set but \code{summ.names} has not, defaults to \code{summ} with the \code{(x)}s removed and the first letter capitalized.  If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead.
@@ -32,10 +32,12 @@
 #' @param labels Variable labels. labels will accept four formats: (1) A vector of the same length as the number of variables in the data that will be included in the table (tricky to use if many are being dropped, also won't work for your \code{group} variable), in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels, or (4) TRUE to look in the data for variable labels set by the haven package, \code{set_label()} from sjlabelled, or \code{label()} from Hmisc.
 #' @param title Character variable with the title of the table.
 #' @param note Table note to go after the last row of the table. Will follow significance star note if \code{group.test = TRUE}.
+#' @param note.align Set the alignment for the multi-column table note. Usually "l", but if you have a long note in LaTeX you might want to set it with "p{}"
 #' @param anchor Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in an HTML table. Must have a number of elements equal to the number of columns in the resulting table.
 #' @param col.align For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to variable-name columns left-aligned and all others right-aligned (with a little extra padding between columns with \code{col.breaks}). If you want to get tricky, you can add a \code{";"} afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.
 #' @param align For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to left in the first column and right-aligned afterwards, with \code{@{\\hskip .2in}} spacers if you have \code{col.breaks}. If \code{col.width} is specified, defaults to all \code{p{}} columns with widths set by \code{col.width}. If you want the columns aligned on a decimal point, see [this explainer](https://tex.stackexchange.com/questions/2746/aligning-numbers-by-decimal-points-in-table-columns#2747) of how to use the \code{siunitx} package and \code{S}-type columns.
+#' @param fit.page For LaTeX output, uses a resizebox to force the table to a certain width. Set to \code{NA} to omit.
 #' @param simple.kable For \code{out = 'kable'}, if you want the \code{kable} printed to console rather than HTML or PDF, then the multi-column headers and table notes won't work. Set \code{simple.kable = TRUE} to skip both.
 #' @param opts The same \code{sumtable} options as above, but in a named list format. Useful for applying the same set of options to multiple \code{sumtable}s.
 #' @examples
@@ -90,7 +92,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                      factor.counts=TRUE,factor.numeric=FALSE,
                      logical.numeric=FALSE,logical.labels=c("No","Yes"),labels=NA,title='Summary Statistics',
                      note = NA, anchor=NA,col.width=NA,col.align=NA,
-                     align=NA,simple.kable=FALSE,opts=list()) {
+                     align=NA, note.align = 'l', fit.page = '\\textwidth', simple.kable=FALSE,opts=list()) {
   #Bring in opts
   list2env(opts,envir=environment())
   #######CHECK INPUTS
@@ -173,6 +175,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   }
   if (!is.character(title)) {
     stop('title must be a character variable.')
+  }
+  if (identical(out, 'csv') & is.na(file)) {
+    warning('out = "csv" will just return the vtable as a data.frame unless combined with file')
   }
 
   #One-column matrices run into some problems later on
@@ -402,7 +407,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     if (out %in% c('latex','latexpage') |
         (isTRUE(getOption('knitr.in.progress')) & is.na(out) & isTRUE(knitr::is_latex_output()))) {
       group.test.opts <- list(format = '{name}$={stat}^{{stars}}$')
-    } else if (out %in% c('return','kable') |
+    } else if (out %in% c('return','kable','csv') |
                (isTRUE(getOption('knitr.in.progress')) & is.na(out) & isFALSE(knitr::is_latex_output()) & isFALSE(knitr::is_html_output()))) {
       group.test.opts <- list(format = '{name}={stat}{stars}')
     } else {
@@ -677,7 +682,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     align <- paste0(align, collapse = '')
   } else {
     align <- paste0('p{',col.width/100,'\\textwidth}')
-    align[2:length(align)][names(st) == 'Variable'] <- paste0('@{\\hskip .2in}',align[2:length(align)][names(st) == 'Variable'])
+    if (sum(names(st) == 'Variable') > 1) {
+      align[names(st) == 'Variable'][-1] <- paste0('@{\\hskip .2in}',align[names(st) == 'Variable'][-1])
+    }
     align <- paste0(align,collapse='')
   }
   if (identical(col.width,NA)) {
@@ -734,6 +741,8 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                        align = align, anchor = anchor,
                        title = title,
                        note = note,
+                       note.align = note.align,
+                       fit.page = fit.page,
                        no.escape = ifelse(group.test,ncol(st),NA))))
     }
 
@@ -743,6 +752,8 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     #And bring in the table itself
     out.latex <- paste(out.latex,dftoLaTeX(st, align = align,
                                            anchor = anchor, title = title, note = note,
+                                           note.align = note.align,
+                                           fit.page = fit.page,
                                            no.escape = ifelse(group.test,ncol(st),NA)),'\n\n\\end{document}',sep='')
 
     ####### APPLICATION OF FILE OPTION
@@ -810,20 +821,31 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
   #And bring in the table itself
   out.html <- paste(out.html,dftoHTML(st,out='htmlreturn',col.width=col.width,
-                                      col.align=col.align,anchor=anchor, note = note,
+                                      col.align=col.align,anchor=anchor, note = note, note.align = note.align,
                                       no.escape = ifelse(group.test,ncol(st),NA)),'</body></html>',sep='')
 
 
   ####### APPLICATION OF FILE OPTION
   if (!is.na(file)) {
-    #If they forgot a file extension, fill it in
-    if (!grepl("\\.htm",file)) {
-      file <- paste(file,'.html',sep='')
-    }
+    if (out == 'csv') {
+      #If they forgot a file extension, fill it in
+      if (!grepl("\\.csv",file)) {
+        file <- paste(file,'.csv',sep='')
+      }
 
-    filepath <- file.path(file)
-    #Create temporary html file
-    writeLines(out.html,filepath)
+      filepath <- file.path(file)
+      #Create temporary html file
+      write.csv(clean_multicol(st),filepath, row.names = FALSE)
+    } else {
+      #If they forgot a file extension, fill it in
+      if (!grepl("\\.htm",file)) {
+        file <- paste(file,'.html',sep='')
+      }
+
+      filepath <- file.path(file)
+      #Create temporary html file
+      writeLines(out.html,filepath)
+    }
   }
 
   #For more easily working with if statements
@@ -862,7 +884,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     stop('out = viewer is not a valid option if RStudio is not running.')
   } else if ((Sys.getenv('RSTUDIO')=='' & out == '') | (out == 'browser')) {
     utils::browseURL(htmlpath)
-  } else if (out == 'return') {
+  } else if (out == 'return' | out == 'csv') {
     return(clean_multicol(st))
   }  else if (out == 'htmlreturn') {
     return(cat(out.html))

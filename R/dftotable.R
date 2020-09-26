@@ -13,6 +13,7 @@
 #' @param anchor Character variable to be used to set an \code{<a name>} tag for the table.
 #' @param file Saves the completed variable table file to HTML with this filepath. May be combined with any value of \code{out}.
 #' @param note Table note to go after the last row of the table.
+#' @param note.align Alignment of table note, l, r, or c.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
 #' @param col.align Vector of 'left', 'right', 'center', etc. to be used with the HTML table text-align attribute in each column. If you want to get tricky, you can add a \code{";"} afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.
 #' @param row.names Flag determining whether or not the row names should be included in the table. Defaults to \code{FALSE}.
@@ -27,7 +28,7 @@
 #'
 
 #' @export
-dftoHTML <- function(data,out=NA,file=NA,note=NA,anchor=NA,col.width=NA,col.align=NA,row.names=FALSE,no.escape = NA) {
+dftoHTML <- function(data,out=NA,file=NA,note = NA,note.align = 'l',anchor=NA,col.width=NA,col.align=NA,row.names=FALSE,no.escape = NA) {
   if (is.null(colnames(data))) {
     stop('Requires data with variable names or column names.')
   }
@@ -56,7 +57,7 @@ dftoHTML <- function(data,out=NA,file=NA,note=NA,anchor=NA,col.width=NA,col.alig
   }
   #Put in the note
   if (!is.na(note)) {
-    data[nrow(data)+1,] <- c(paste0(note,'_MULTICOL_l_all'),
+    data[nrow(data)+1,] <- c(paste0(note,'_MULTICOL_',note.align,'_all'),
                              rep('DELETECELL',ncol(data)-1))
   }
 
@@ -229,9 +230,11 @@ dftoHTML <- function(data,out=NA,file=NA,note=NA,anchor=NA,col.width=NA,col.alig
 #'
 #' @param data Data set; accepts any format with column names.
 #' @param file Saves the completed table to LaTeX with this filepath.
+#' @param fit.page uses a LaTeX resizebox to force the table to a certain width. Often \code{'\\textwidth'}.
 #' @param frag Set to TRUE to produce only the LaTeX table itself, or FALSE to produce a fully buildable LaTeX. Defaults to TRUE.
 #' @param title Character variable with the title of the table.
 #' @param note Table note to go after the last row of the table.
+#' @param note.align Set the alignment for the multi-column table note. Usually "l", but if you have a long note you might want to set it with "p{}"
 #' @param anchor Character variable to be used to set a label tag for the table.
 #' @param align Character variable with standard LaTeX formatting for alignment, for example \code{'lccc'}. You can also use this to force column widths with \code{p} in standard LaTeX style. Defaults to the first column being left-aligned and all others centered. Be sure to escape special characters, in particular backslashes (i.e. \code{p{.25\\\\textwidth}} instead of \code{p{.25\\textwidth}}).
 #' @param row.names Flag determining whether or not the row names should be included in the table. Defaults to \code{FALSE}.
@@ -241,9 +244,8 @@ dftoHTML <- function(data,out=NA,file=NA,note=NA,anchor=NA,col.width=NA,col.alig
 #'     var4=as.factor(c('A','B','C','C')),var5=c(TRUE,TRUE,FALSE,FALSE))
 #' dftoLaTeX(df, align = 'ccccc')
 #'
-
 #' @export
-dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,note=NA,anchor=NA,align=NA,row.names=FALSE,no.escape = NA) {
+dftoLaTeX <- function(data,file=NA,fit.page = NA, frag=TRUE,title=NA,note=NA,note.align='l',anchor=NA,align=NA,row.names=FALSE,no.escape = NA) {
   if (is.null(colnames(data))) {
     stop('Requires data with variable names or column names.')
   }
@@ -339,6 +341,12 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,note=NA,anchor=NA,align=NA
   #Begin table latex code by opening the table
   table.latex <- '\\begin{table}[!htbp] \\centering \n \\renewcommand*{\\arraystretch}{1.1} \n'
 
+  # If there's a resizebox
+  if (!is.na(fit.page)) {
+    table.latex <- paste0(table.latex,
+                          '\\resizebox{',fit.page,'}{!}{ \n')
+  }
+
   #Add a caption if there is one
   if (!is.na(title)) {
     table.latex <- paste0(table.latex,'\n\\caption{',title,'}\n')
@@ -387,9 +395,14 @@ dftoLaTeX <- function(data,file=NA,frag=TRUE,title=NA,note=NA,anchor=NA,align=NA
   table.latex <- paste0(table.latex,'\\\\ \n\\hline\n\\hline\n')
   if (!is.na(note)) {
     table.latex <- paste0(table.latex,
-                          '\\multicolumn{',ncol(data),'}{l}{',note,'}\\\\ \n')
+                          '\\multicolumn{',ncol(data),'}{',note.align,'}{',note,'}\\\\ \n')
   }
-  table.latex <- paste0(table.latex,'\\end{tabular}\n\\end{table}')
+  table.latex <- paste0(table.latex,'\\end{tabular}\n')
+
+  if (!is.na(fit.page)) {
+    table.latex <- paste0(table.latex,'}\n')
+  }
+  table.latex <- paste0(table.latex,'\\end{table}\n')
 
   #Make into a page if requested
   if (!frag) {

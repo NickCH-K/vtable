@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.6</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@
       <a href="../articles/sumtable.html">sumtable: Summary Statistics</a>
     </li>
     <li>
-      <a href="../articles/vtablefunction.html">vtable: Variable Table</a>
+      <a href="../articles/vtablefunction.html">Variable Table (vtable)</a>
     </li>
     <li>
       <a href="../articles/vtablehelpers.html">vtable Bonus Functions</a>
@@ -139,17 +139,19 @@
     <p>This function takes a data frame or matrix with column names and outputs a lightly-formatted LaTeX table version of that data frame.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dftoLaTeX</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>file</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>frag</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>note</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>anchor</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>align</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>no.escape</span> <span class='kw'>=</span> <span class='fl'>NA</span>
-)</pre>
+    <pre class="usage"><span class='fu'>dftoLaTeX</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  file <span class='op'>=</span> <span class='cn'>NA</span>,
+  fit.page <span class='op'>=</span> <span class='cn'>NA</span>,
+  frag <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  title <span class='op'>=</span> <span class='cn'>NA</span>,
+  note <span class='op'>=</span> <span class='cn'>NA</span>,
+  note.align <span class='op'>=</span> <span class='st'>"l"</span>,
+  anchor <span class='op'>=</span> <span class='cn'>NA</span>,
+  align <span class='op'>=</span> <span class='cn'>NA</span>,
+  row.names <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  no.escape <span class='op'>=</span> <span class='cn'>NA</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,6 +165,10 @@
       <td><p>Saves the completed table to LaTeX with this filepath.</p></td>
     </tr>
     <tr>
+      <th>fit.page</th>
+      <td><p>uses a LaTeX resizebox to force the table to a certain width. Often <code>'\textwidth'</code>.</p></td>
+    </tr>
+    <tr>
       <th>frag</th>
       <td><p>Set to TRUE to produce only the LaTeX table itself, or FALSE to produce a fully buildable LaTeX. Defaults to TRUE.</p></td>
     </tr>
@@ -173,6 +179,10 @@
     <tr>
       <th>note</th>
       <td><p>Table note to go after the last row of the table.</p></td>
+    </tr>
+    <tr>
+      <th>note.align</th>
+      <td><p>Set the alignment for the multi-column table note. Usually "l", but if you have a long note you might want to set it with "p"</p></td>
     </tr>
     <tr>
       <th>anchor</th>
@@ -199,9 +209,10 @@
 <p>If the first column and row begins with the text "HEADERROW", then the first row will be put above the column names.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>var1</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>,<span class='kw'>var2</span><span class='kw'>=</span><span class='fl'>5</span>:<span class='fl'>8</span>,<span class='kw'>var3</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'D'</span>),
-    <span class='kw'>var4</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'C'</span>)),<span class='kw'>var5</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>,<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>))
-<span class='fu'>dftoLaTeX</span>(<span class='no'>df</span>, <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>'ccccc'</span>)</div><div class='output co'>#&gt; [1] "\\begin{table}[!htbp] \\centering \n \\renewcommand*{\\arraystretch}{1.1} \n\n\\begin{tabular}{ccccc}\n\\hline\n\\hline\nvar1 &amp; var2 &amp; var3 &amp; var4 &amp; var5 \\\\ \n\\hline\n1 &amp; 5 &amp; A &amp; A &amp; TRUE \\\\ \n2 &amp; 6 &amp; B &amp; B &amp; TRUE \\\\ \n3 &amp; 7 &amp; C &amp; C &amp; FALSE \\\\ \n4 &amp; 8 &amp; D &amp; C &amp; FALSE\\\\ \n\\hline\n\\hline\n\\end{tabular}\n\\end{table}"</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>var1 <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>,var2<span class='op'>=</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>8</span>,var3<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'D'</span><span class='op'>)</span>,
+    var4<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'A'</span>,<span class='st'>'B'</span>,<span class='st'>'C'</span>,<span class='st'>'C'</span><span class='op'>)</span><span class='op'>)</span>,var5<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>,<span class='cn'>TRUE</span>,<span class='cn'>FALSE</span>,<span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>dftoLaTeX</span><span class='op'>(</span><span class='va'>df</span>, align <span class='op'>=</span> <span class='st'>'ccccc'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "\\begin{table}[!htbp] \\centering \n \\renewcommand*{\\arraystretch}{1.1} \n\n\\begin{tabular}{ccccc}\n\\hline\n\\hline\nvar1 &amp; var2 &amp; var3 &amp; var4 &amp; var5 \\\\ \n\\hline\n1 &amp; 5 &amp; A &amp; A &amp; TRUE \\\\ \n2 &amp; 6 &amp; B &amp; B &amp; TRUE \\\\ \n3 &amp; 7 &amp; C &amp; C &amp; FALSE \\\\ \n4 &amp; 8 &amp; D &amp; C &amp; FALSE\\\\ \n\\hline\n\\hline\n\\end{tabular}\n\\end{table}\n"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -218,7 +229,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

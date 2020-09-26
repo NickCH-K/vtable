@@ -33,7 +33,9 @@ labeltable(var,
     out=NA,
     file=NA, 
     desc=NA,
-    note=NA)
+    note=NA,
+    note.align=NA,
+    anchor=NA)
 ```
 
 `labeltable()` is a function that shows the values that correspond to `var`. This could be value label values, or it could be the values found in the data for the `...` variables.
@@ -61,7 +63,8 @@ The `out` option determines what will be done with the resulting label table fil
 | browser    | Loads output in web browser. |
 | viewer     | Loads output in Viewer pane (RStudio only). |
 | htmlreturn | Returns HTML code for output file. |
-| return     | Returns output table in data frame format. |
+| return     | Returns output table in data.frame format. |
+| csv        | Returns output table in data.frame format and, with a `file` option, saves that to CSV. |
 | kable      | Returns a `knitr::kable()` |
 | latex      | Returns a LaTeX table. |
 | latexpage  | Returns an independently-buildable LaTeX document. |
@@ -87,5 +90,10 @@ labeltable(efc$e15relat,file='lifecycle_variabledocumentation')
 
 `anchor` will add an anchor ID (`<a name = ` in HTML or `\label{}` in LaTeX) to allow other parts of your document to link to it, if you are including your vtable in a larger document.
 
-`desc` will only show up in full-page `labeltable`s. That is, you won't get them with `out = 'kable'`, `out = 'return'`, or `out = 'latex'` (although `out = 'latexpage'` works). `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so they won't work with  `out = 'kable'` or `out = 'return'`.
+`desc` will only show up in full-page `labeltable`s. That is, you won't get them with `out = 'kable'`, `out = 'return'`, `out = 'csv'`, or `out = 'latex'` (although `out = 'latexpage'` works). `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so they won't work with  `out = 'kable'`, `out = 'csv'`, or `out = 'return'`.
+
+## `note.align`
+
+This option is used only with LaTeX output (`out` is 'latex' or 'latexpage'). `note.align` is a single string used for alignment,  specifically for any table notes set with `note`, which enters as part of a `\multicolumn` argument. It accepts 'p{}' and other LaTeX column types. Be sure to escape special characters, in particular backslashes.
+
 

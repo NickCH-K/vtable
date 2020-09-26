@@ -1,5 +1,5 @@
-pandoc: 2.7.3
-pkgdown: 1.5.1
+pandoc: 2.10.1
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   dftotable: dftotable.html
@@ -8,5 +8,5 @@ articles:
   vtable: vtable.html
   vtablefunction: vtablefunction.html
   vtablehelpers: vtablehelpers.html
-last_built: 2020-06-04T19:58Z
+last_built: 2020-09-26T02:58Z
 

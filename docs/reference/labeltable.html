@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.6</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@
       <a href="../articles/sumtable.html">sumtable: Summary Statistics</a>
     </li>
     <li>
-      <a href="../articles/vtablefunction.html">vtable: Variable Table</a>
+      <a href="../articles/vtablefunction.html">Variable Table (vtable)</a>
     </li>
     <li>
       <a href="../articles/vtablehelpers.html">vtable Bonus Functions</a>
@@ -139,14 +139,23 @@
     <p>This function output a descriptive table listing, for each value of a given variable, either the label of that value, or all values of another variable associated with that value. The table is output either to the console or as an HTML file that can be viewed continuously while working with data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>labeltable</span>(<span class='no'>var</span>, <span class='no'>...</span>, <span class='kw'>out</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>desc</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>note</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>anchor</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
+    <pre class="usage"><span class='fu'>labeltable</span><span class='op'>(</span>
+  <span class='va'>var</span>,
+  <span class='va'>...</span>,
+  out <span class='op'>=</span> <span class='cn'>NA</span>,
+  file <span class='op'>=</span> <span class='cn'>NA</span>,
+  desc <span class='op'>=</span> <span class='cn'>NA</span>,
+  note <span class='op'>=</span> <span class='cn'>NA</span>,
+  note.align <span class='op'>=</span> <span class='cn'>NA</span>,
+  anchor <span class='op'>=</span> <span class='cn'>NA</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>var</th>
-      <td><p>A vector. Label table will show, for each of the values of this variable, its label (if labels can be found with <code><a href='https://rdrr.io/pkg/sjlabelled/man/get_labels.html'>sjlabelled::get_labels()</a></code>), or the values in the <code>...</code> variables.</p></td>
+      <td><p>A vector. Label table will show, for each of the values of this variable, its label (if labels can be found with <code><a href='https://strengejacke.github.io/sjlabelled/reference/get_labels.html'>sjlabelled::get_labels()</a></code>), or the values in the <code>...</code> variables.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -154,7 +163,7 @@
     </tr>
     <tr>
       <th>out</th>
-      <td><p>Determines where the completed table is sent. Set to <code>"browser"</code> to open HTML file in browser using <code><a href='https://rdrr.io/r/utils/browseURL.html'>browseURL()</a></code>, <code>"viewer"</code> to open in RStudio viewer using <code>viewer()</code>, if available. Use <code>"htmlreturn"</code> to return the HTML code to R, <code>"return"</code> to return the completed variable table to R in data frame form, or <code>"kable"</code> to return it in <code><a href='https://rdrr.io/pkg/knitr/man/kable.html'>knitr::kable()</a></code> form. Additional options include <code>"latex"</code> for a LaTeX table or <code>"latexpage"</code> for a full buildable LaTeX page. Defaults to <code>"viewer"</code> if RStudio is running, <code>"browser"</code> if it isn't, or <code>"kable"</code> if it's an RMarkdown document being built with <code>knitr</code>.</p></td>
+      <td><p>Determines where the completed table is sent. Set to <code>"browser"</code> to open HTML file in browser using <code><a href='https://rdrr.io/r/utils/browseURL.html'>browseURL()</a></code>, <code>"viewer"</code> to open in RStudio viewer using <code>viewer()</code>, if available. Use <code>"htmlreturn"</code> to return the HTML code to R, <code>"return"</code> to return the completed variable table to R in data frame form, or <code>"kable"</code> to return it in <code><a href='https://rdrr.io/pkg/knitr/man/kable.html'>knitr::kable()</a></code> form. Combine <code>out = "csv"</code> with <code>file</code> to write to CSV (dropping most formatting). Additional options include <code>"latex"</code> for a LaTeX table or <code>"latexpage"</code> for a full buildable LaTeX page. Defaults to <code>"viewer"</code> if RStudio is running, <code>"browser"</code> if it isn't, or <code>"kable"</code> if it's an RMarkdown document being built with <code>knitr</code>.</p></td>
     </tr>
     <tr>
       <th>file</th>
@@ -167,6 +176,10 @@
     <tr>
       <th>note</th>
       <td><p>Table note to go after the last row of the table.</p></td>
+    </tr>
+    <tr>
+      <th>note.align</th>
+      <td><p>Set the alignment for the multi-column table note. Usually "l", but if you have a long note in LaTeX you might want to set it with "p"</p></td>
     </tr>
     <tr>
       <th>anchor</th>
@@ -189,9 +202,10 @@
 
 <span class='co'>#Input a single labelled variable to see a table relating values to labels.</span>
 <span class='co'>#Values not present in the data will be included in the table but moved to the end.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sjlabelled</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
-<span class='fu'>labeltable</span>(<span class='no'>efc</span>$<span class='no'>e15relat</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjlabelled'>sjlabelled</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span>
+<span class='fu'>labeltable</span><span class='op'>(</span><span class='va'>efc</span><span class='op'>$</span><span class='va'>e15relat</span>,out<span class='op'>=</span><span class='st'>'htmlreturn'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
 #&gt;                     &lt;head&gt;&lt;title&gt;e15relat Label Table&lt;/title&gt;&lt;style type = "text/css"&gt;
 #&gt;                     p {
@@ -238,8 +252,9 @@
 #&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'>
 <span class='co'>#Include multiple variables to see, for each value of the first variable,</span>
 <span class='co'>#each value of the others present in the data.</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
-<span class='fu'>labeltable</span>(<span class='no'>efc</span>$<span class='no'>e15relat</span>,<span class='no'>efc</span>$<span class='no'>e16sex</span>,<span class='no'>efc</span>$<span class='no'>e42dep</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span>
+<span class='fu'>labeltable</span><span class='op'>(</span><span class='va'>efc</span><span class='op'>$</span><span class='va'>e15relat</span>,<span class='va'>efc</span><span class='op'>$</span><span class='va'>e16sex</span>,<span class='va'>efc</span><span class='op'>$</span><span class='va'>e42dep</span>,out<span class='op'>=</span><span class='st'>'htmlreturn'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
 #&gt;                     &lt;head&gt;&lt;title&gt;e15relat Label Table&lt;/title&gt;&lt;style type = "text/css"&gt;
 #&gt;                     p {
@@ -287,10 +302,11 @@
 #&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'>
 <span class='co'>#Commonly, the multi-variable version might be used to recover the original</span>
 <span class='co'>#values of encoded variables</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>USJudgeRatings</span>)
-<span class='no'>USJudgeRatings</span>$<span class='no'>Judge</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/row.names.html'>row.names</a></span>(<span class='no'>USJudgeRatings</span>)
-<span class='no'>USJudgeRatings</span>$<span class='no'>JudgeID</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='no'>USJudgeRatings</span>$<span class='no'>Judge</span>))
-<span class='fu'>labeltable</span>(<span class='no'>USJudgeRatings</span>$<span class='no'>JudgeID</span>,<span class='no'>USJudgeRatings</span>$<span class='no'>Judge</span>,<span class='kw'>out</span><span class='kw'>=</span><span class='st'>'htmlreturn'</span>)</div><div class='output co'>#&gt; 
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>USJudgeRatings</span><span class='op'>)</span>
+<span class='va'>USJudgeRatings</span><span class='op'>$</span><span class='va'>Judge</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/row.names.html'>row.names</a></span><span class='op'>(</span><span class='va'>USJudgeRatings</span><span class='op'>)</span>
+<span class='va'>USJudgeRatings</span><span class='op'>$</span><span class='va'>JudgeID</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>USJudgeRatings</span><span class='op'>$</span><span class='va'>Judge</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>labeltable</span><span class='op'>(</span><span class='va'>USJudgeRatings</span><span class='op'>$</span><span class='va'>JudgeID</span>,<span class='va'>USJudgeRatings</span><span class='op'>$</span><span class='va'>Judge</span>,out<span class='op'>=</span><span class='st'>'htmlreturn'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt;                     &lt;html style="font-family:Helvetica,Arial,Sans"&gt;
 #&gt;                     &lt;head&gt;&lt;title&gt;JudgeID Label Table&lt;/title&gt;&lt;style type = "text/css"&gt;
 #&gt;                     p {
@@ -370,25 +386,26 @@
 #&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;8&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;COHEN,S.S.&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;tr&gt;&lt;td style = "width:50%; text-align:left"&gt;9&lt;/td&gt;&lt;td style = "width:50%; text-align:left"&gt;DALY,J.J.&lt;/td&gt;&lt;/tr&gt;
 #&gt; &lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</div><div class='input'><span class='co'># }</span>
-<span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()){
+<span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span>
 <span class='co'>#Input a single labelled variable to see a table relating values to labels.</span>
 <span class='co'>#Values not present in the data will be included in the table but moved to the end.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sjlabelled</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
-<span class='fu'>labeltable</span>(<span class='no'>efc</span>$<span class='no'>e15relat</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjlabelled'>sjlabelled</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span>
+<span class='fu'>labeltable</span><span class='op'>(</span><span class='va'>efc</span><span class='op'>$</span><span class='va'>e15relat</span><span class='op'>)</span>
 
 <span class='co'>#Include multiple variables to see, for each value of the first variable,</span>
 <span class='co'>#each value of the others present in the data.</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>efc</span>)
-<span class='fu'>labeltable</span>(<span class='no'>efc</span>$<span class='no'>e15relat</span>,<span class='no'>efc</span>$<span class='no'>e16sex</span>,<span class='no'>efc</span>$<span class='no'>e42dep</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>efc</span><span class='op'>)</span>
+<span class='fu'>labeltable</span><span class='op'>(</span><span class='va'>efc</span><span class='op'>$</span><span class='va'>e15relat</span>,<span class='va'>efc</span><span class='op'>$</span><span class='va'>e16sex</span>,<span class='va'>efc</span><span class='op'>$</span><span class='va'>e42dep</span><span class='op'>)</span>
 
 <span class='co'>#Commonly, the multi-variable version might be used to recover the original</span>
 <span class='co'>#values of encoded variables</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>USJudgeRatings</span>)
-<span class='no'>USJudgeRatings</span>$<span class='no'>Judge</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/row.names.html'>row.names</a></span>(<span class='no'>USJudgeRatings</span>)
-<span class='no'>USJudgeRatings</span>$<span class='no'>JudgeID</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='no'>USJudgeRatings</span>$<span class='no'>Judge</span>))
-<span class='fu'>labeltable</span>(<span class='no'>USJudgeRatings</span>$<span class='no'>JudgeID</span>,<span class='no'>USJudgeRatings</span>$<span class='no'>Judge</span>)
-}</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>USJudgeRatings</span><span class='op'>)</span>
+<span class='va'>USJudgeRatings</span><span class='op'>$</span><span class='va'>Judge</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/row.names.html'>row.names</a></span><span class='op'>(</span><span class='va'>USJudgeRatings</span><span class='op'>)</span>
+<span class='va'>USJudgeRatings</span><span class='op'>$</span><span class='va'>JudgeID</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>USJudgeRatings</span><span class='op'>$</span><span class='va'>Judge</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>labeltable</span><span class='op'>(</span><span class='va'>USJudgeRatings</span><span class='op'>$</span><span class='va'>JudgeID</span>,<span class='va'>USJudgeRatings</span><span class='op'>$</span><span class='va'>Judge</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -404,7 +421,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -9,6 +9,7 @@ dftoHTML(
   out = NA,
   file = NA,
   note = NA,
+  note.align = "l",
   anchor = NA,
   col.width = NA,
   col.align = NA,
@@ -24,6 +25,8 @@ dftoHTML(
 \item{file}{Saves the completed variable table file to HTML with this filepath. May be combined with any value of \code{out}.}
 
 \item{note}{Table note to go after the last row of the table.}
+
+\item{note.align}{Alignment of table note, l, r, or c.}
 
 \item{anchor}{Character variable to be used to set an \code{<a name>} tag for the table.}
 

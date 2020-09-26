@@ -34,7 +34,7 @@ All three of these functions are built with the intent of being *fast*. Not so m
 
 You could almost certainly build your own highly-customized version of `vtable`, But why do that when you can just do `vt(df)` and see the information you need to see? And there are eight million packages that make summary statistics tables to your exact specifications if you tweak them. But there's a good chance that `st(df)` does what you want. If you want something real out there, that's when you can break out the big guns.
 
-All three main **vtable** functions can produce HTML, LaTeX, `data.frame`, or `knitr::kable()` output.
+All three main **vtable** functions can produce HTML, LaTeX, `data.frame`, CSV, or `knitr::kable()` output.
 
 ## Installation
 

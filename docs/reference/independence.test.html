@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.6</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@
       <a href="../articles/sumtable.html">sumtable: Summary Statistics</a>
     </li>
     <li>
-      <a href="../articles/vtablefunction.html">vtable: Variable Table</a>
+      <a href="../articles/vtablefunction.html">Variable Table (vtable)</a>
     </li>
     <li>
       <a href="../articles/vtablehelpers.html">vtable Bonus Functions</a>
@@ -139,18 +139,18 @@
     <p>This function takes in two variables of equal length, the first of which is a categorical variable, and performs a test of independence between them. It returns a character string with the results of that test for putting in a table.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>independence.test</span>(
-  <span class='no'>x</span>,
-  <span class='no'>y</span>,
-  <span class='kw'>factor.test</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>numeric.test</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>star.cutoffs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.05</span>, <span class='fl'>0.1</span>),
-  <span class='kw'>star.markers</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"***"</span>, <span class='st'>"**"</span>, <span class='st'>"*"</span>),
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>fixed.digits</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"{name}={stat}{stars}"</span>,
-  <span class='kw'>opts</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-)</pre>
+    <pre class="usage"><span class='fu'>independence.test</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
+  factor.test <span class='op'>=</span> <span class='cn'>NA</span>,
+  numeric.test <span class='op'>=</span> <span class='cn'>NA</span>,
+  star.cutoffs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.01</span>, <span class='fl'>0.05</span>, <span class='fl'>0.1</span><span class='op'>)</span>,
+  star.markers <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"***"</span>, <span class='st'>"**"</span>, <span class='st'>"*"</span><span class='op'>)</span>,
+  digits <span class='op'>=</span> <span class='fl'>3</span>,
+  fixed.digits <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  format <span class='op'>=</span> <span class='st'>"{name}={stat}{stars}"</span>,
+  opts <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,8 +203,9 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>mtcars</span>)
-<span class='fu'>independence.test</span>(<span class='no'>mtcars</span>$<span class='no'>cyl</span>,<span class='no'>mtcars</span>$<span class='no'>mpg</span>)</div><div class='output co'>#&gt; [1] "F=39.698***"</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
+<span class='fu'>independence.test</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>cyl</span>,<span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "F=39.698***"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -221,7 +222,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.6</span>
       </span>
     </div>
 
@@ -66,7 +66,7 @@
       <a href="../articles/sumtable.html">sumtable: Summary Statistics</a>
     </li>
     <li>
-      <a href="../articles/vtablefunction.html">vtable: Variable Table</a>
+      <a href="../articles/vtablefunction.html">Variable Table (vtable)</a>
     </li>
     <li>
       <a href="../articles/vtablehelpers.html">vtable Bonus Functions</a>
@@ -84,13 +84,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="vtablehelpers_files/header-attrs-2.3/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>vtable Bonus Functions</h1>
                         <h4 class="author">Nick Huntington-Klein</h4>
             
-            <h4 class="date">2020-06-04</h4>
+            <h4 class="date">2020-09-25</h4>
       
       
       <div class="hidden name"><code>vtablehelpers.Rmd</code></div>
@@ -157,18 +157,21 @@
 </h2>
 <p><code><a href="../reference/pctile.html">pctile(x)</a></code> is short for <code><a href="https://rdrr.io/r/stats/quantile.html">quantile(x,1:100/100)</a></code>. So in one sense this is another shortcut function. But this inherently lets you interact with percentiles a bit differently.</p>
 <p>While <code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code> has you specify which percentile you want in the function call, <code><a href="../reference/pctile.html">pctile()</a></code> returns an object with all integer percentiles, and you can pull out which ones you want afterwards. <code>pctile(x)[50]</code> is the 50th percentile, etc.. This can be convenient in several applications, an obvious one being in <code>sumtable</code>.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">vtable</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">vtable</span><span class="op">)</span></pre></div>
 <pre><code>## Loading required package: kableExtra</code></pre>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co">#Some random normal data, and its percentiles</span>
-<span class="no">d</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">1000</span>)
-<span class="no">pc</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/pctile.html">pctile</a></span>(<span class="no">d</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="co">#Some random normal data, and its percentiles</span>
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>
+<span class="va">pc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pctile.html">pctile</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
 
 <span class="co">#25th, 50th, 75th percentile</span>
-<span class="no">pc</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">25</span>,<span class="fl">50</span>,<span class="fl">75</span>)]</pre></body></html></div>
-<pre><code>##          25%          50%          75% 
-## -0.653525725  0.007084252  0.714691817</code></pre>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co">#Inverse normal CDF with 100 points of articulation</span>
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pc</span>)</pre></body></html></div>
+<span class="va">pc</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">25</span>,<span class="fl">50</span>,<span class="fl">75</span><span class="op">)</span><span class="op">]</span></pre></div>
+<pre><code>##         25%         50%         75% 
+## -0.70842089 -0.02434662  0.59337943</code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co">#Inverse normal CDF with 100 points of articulation</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pc</span><span class="op">)</span></pre></div>
 <p><img src="vtablehelpers_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
 </div>
@@ -179,15 +182,16 @@
 <p><code>independence.test</code> is a helper function for <code><a href="../reference/sumtable.html">sumtable(group.test=TRUE)</a></code> that tests for independence between a categorical variable <code>x</code> and another variable <code>y</code> that may be categorical or numerical.</p>
 <p>Then, it outputs a <em>formatted string</em> as its output, with significance stars, for printing.</p>
 <p>The function takes the format</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span>(<span class="no">x</span>,<span class="no">y</span>,
-                  <span class="kw">factor.test</span> <span class="kw">=</span> <span class="fl">NA</span>,
-                  <span class="kw">numeric.test</span> <span class="kw">=</span> <span class="fl">NA</span>,
-                  <span class="kw">star.cutoffs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">.01</span>,<span class="fl">.05</span>,<span class="fl">.1</span>),
-                  <span class="kw">star.markers</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'***'</span>,<span class="st">'**'</span>,<span class="st">'*'</span>),
-                  <span class="kw">digits</span> <span class="kw">=</span> <span class="fl">3</span>,
-                  <span class="kw">fixed.digits</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                  <span class="kw">format</span> <span class="kw">=</span> <span class="st">'{name}={stat}{stars}'</span>,
-                  <span class="kw">opts</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>())</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,
+                  factor.test <span class="op">=</span> <span class="cn">NA</span>,
+                  numeric.test <span class="op">=</span> <span class="cn">NA</span>,
+                  star.cutoffs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.01</span>,<span class="fl">.05</span>,<span class="fl">.1</span><span class="op">)</span>,
+                  star.markers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'***'</span>,<span class="st">'**'</span>,<span class="st">'*'</span><span class="op">)</span>,
+                  digits <span class="op">=</span> <span class="fl">3</span>,
+                  fixed.digits <span class="op">=</span> <span class="cn">FALSE</span>,
+                  format <span class="op">=</span> <span class="st">'{name}={stat}{stars}'</span>,
+                  opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></pre></div>
 <div id="factor-test-and-numeric-test" class="section level2">
 <h2 class="hasAnchor">
 <a href="#factor-test-and-numeric-test" class="anchor"></a><code>factor.test</code> and <code>numeric.test</code>
@@ -203,10 +207,11 @@
 <p>These are numeric and character vectors, respectively, used for p-value cutoffs and to create significance markers.</p>
 <p><code>star.cutoffs</code> indicates the cutoffs, and <code>star.markers</code> indicates the markers to be used with each cutoff, in the same order. So with <code>star.cutoffs = c(.01,.05,.1)</code> and <code>star.markers = c('***','**','*')</code>, each p-value below .01 will get marked with <code>'***'</code>, each from .01 to .05 will get <code>'**'</code>, and each from .05 to .1 will get <code><a href="https://rdrr.io/r/base/Arithmetic.html">*</a></code>.</p>
 <p>Defaults are set to “economics defaults” (.1, .05, .01). But these are of course easy to change.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">iris</span>)
-<span class="fu"><a href="../reference/independence.test.html">independence.test</a></span>(<span class="no">iris</span>$<span class="no">Species</span>,
-                  <span class="no">iris</span>$<span class="no">Sepal.Length</span>,
-                  <span class="kw">star.cutoffs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">.05</span>,<span class="fl">.01</span>,<span class="fl">.001</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
+<span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>,
+                  <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span>,
+                  star.cutoffs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.05</span>,<span class="fl">.01</span>,<span class="fl">.001</span><span class="op">)</span><span class="op">)</span></pre></div>
 <pre><code>## [1] "F=119.265*"</code></pre>
 </div>
 <div id="digits-and-fixed-digits" class="section level2">
@@ -214,25 +219,28 @@
 <a href="#digits-and-fixed-digits" class="anchor"></a><code>digits</code> and <code>fixed.digits</code>
 </h2>
 <p><code>digits</code> indicates how many digits after the decimal place from the test statistics and p-values should be displayed. <code>fixed.digits</code> determines whether trailing zeros are maintained.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span>(<span class="no">iris</span>$<span class="no">Species</span>,
-                  <span class="no">iris</span>$<span class="no">Sepal.Width</span>,
-                  <span class="kw">digits</span><span class="kw">=</span><span class="fl">1</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>,
+                  <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span>,
+                  digits<span class="op">=</span><span class="fl">1</span><span class="op">)</span></pre></div>
 <pre><code>## [1] "F=49.2***"</code></pre>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span>(<span class="no">iris</span>$<span class="no">Species</span>,
-                  <span class="no">iris</span>$<span class="no">Sepal.Width</span>,
-                  <span class="kw">digits</span><span class="kw">=</span><span class="fl">4</span>,
-                  <span class="kw">fixed.digits</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>,
+                  <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span>,
+                  digits<span class="op">=</span><span class="fl">4</span>,
+                  fixed.digits <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 <pre><code>## [1] "F=49.1600***"</code></pre>
 </div>
 <div id="format" class="section level2">
 <h2 class="hasAnchor">
 <a href="#format" class="anchor"></a><code>format</code>
 </h2>
-<p>This is the printing format that the output will produce, incorporating the name of the test statistic <code>{name}</code>, the test statistic <code>{stat}</code>, the significance markers <code>{stars}</code>, and the p-value <code>{pval}</code>.</p>
+<p>This is the printing format that the output will produce, incorporating the name of the test statistic <code>{name}</code>, the test statistic <code>{stat}</code>, the significance markers <a href="https://r-spatial.github.io/stars/">stars</a>, and the p-value <code>{pval}</code>.</p>
 <p>If your <code>independence.test</code> is heading out to another format besides being printed in the R console, you may want to add additional markup like <code>'{name}$={stat}^{stars}$'}</code> in LaTeX or <code>'{name}={stat}&lt;sup&gt;{stars}&lt;/sup&gt;'</code> in HTML. If you do this, be sure to think carefully about escaping or not escaping characters as appropriate when you print!</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span>(<span class="no">iris</span>$<span class="no">Species</span>,
-                  <span class="no">iris</span>$<span class="no">Sepal.Width</span>,
-                  <span class="kw">format</span> <span class="kw">=</span> <span class="st">'Pr(&gt;{name}): {pval}{stars}'</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>,
+                  <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span>,
+                  format <span class="op">=</span> <span class="st">'Pr(&gt;{name}): {pval}{stars}'</span><span class="op">)</span></pre></div>
 <pre><code>## [1] "Pr(&gt;F): &lt;0.001***"</code></pre>
 </div>
 <div id="opts" class="section level2">
@@ -259,7 +267,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

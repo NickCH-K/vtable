@@ -64,11 +64,13 @@ sumtable(data,
          col.width=NA,
          col.align=NA,
          align=NA,
+         note.align='l',
+         fit.page=NA,
          simple.kable=FALSE,
          opts=list())
 ```
 
-The goal of `sumtable()` is to take a data set `data` and output a usually-HTML (but `data.frame`, `kable`, and `latex` options are there too) file with summary statistics for each of the variables in `data`. There are several options as to how the table will be constructed, and each of these options are explained below. Throughout, the output will be built as `kable`s since this is an RMarkdown document. However, generally you can leave `out` at its default and it will publish an HTML table to Viewer (in RStudio) or the browser (otherwise). This will also include some additional information about your data that can't be demonstrated in this vignette:
+The goal of `sumtable()` is to take a data set `data` and output a usually-HTML (but `data.frame`, `kable`, `csv`, and `latex` options are there too) file with summary statistics for each of the variables in `data`. There are several options as to how the table will be constructed, and each of these options are explained below. Throughout, the output will be built as `kable`s since this is an RMarkdown document. However, generally you can leave `out` at its default and it will publish an HTML table to Viewer (in RStudio) or the browser (otherwise). This will also include some additional information about your data that can't be demonstrated in this vignette:
 
 ## `data` and `vars`
 
@@ -93,6 +95,7 @@ The `out` option determines what will be done with the resulting summary statist
 | viewer     | Loads output in Viewer pane (RStudio only). |
 | htmlreturn | Returns HTML code for output file. |
 | return     | Returns summary table in data frame format. Depending on options, the data frame may be entirely character variables. |
+| csv        | Returns summary table in data.frame format and, with a `file` option, saves that to CSV. |
 | kable      | Returns a `knitr::kable()` |
 | latex      | Returns a LaTeX table. |
 | latexpage  | Returns an independently-buildable LaTeX document. |
@@ -285,14 +288,14 @@ sumtable(LifeCycleSavings,labels=labs)
 
 `anchor` will add an anchor ID (`<a name = ` in HTML or `\label{}` in LaTeX) to allow other parts of your document to link to it, if you are including your `sumtable` in a larger document.
 
-`title` will only show up in output formats with titles. That is, you won't get them with `out = 'return'`. `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so `anchor` won't work with `out = 'kable'` and neither will work with `out = 'return'`.
+`title` will only show up in output formats with titles. That is, you won't get them with `out = 'return'`. `note` and `anchor` will only show up in formats that support multi-column cells and anchoring, so `anchor` won't work with `out = 'kable'` and neither will work with `out = 'return'` or `out = 'csv'`.
 
 
 ## `col.width`
 
 `sumtable()` will select default column widths by basically just giving the column with the variable name a little more space than the `summ`-based columns. `col.width`, as a vector of percentage column widths on the 0-100 scale, will override these defaults. 
 
-Doesn't apply to `out = 'kable'` or `out = 'return'`.
+Doesn't apply to `out = 'kable'`, `out = 'csv'`, or `out = 'return'`.
 
 ```{r, eval=FALSE}
 #The variable names in this data set are pretty short, and the value labels are
@@ -313,16 +316,21 @@ This option is only for HTML output and will only work with `out` values of 'bro
 st(LifeCycleSavings,col.align = 'right')
 ```
 
-## `align`
+## `align`, `note.align`, and `fit.page`
 
-This is a single string, used only with LaTeX output (`out` is 'latex' or 'latexpage'), which will be used as column alignment in standard LaTeX syntax, for example 'lccc' for the left column left-aligned and the other three centered. Accepts 'p{}' and other LaTeX column types.
+These options are used only with LaTeX output (`out` is 'latex' or 'latexpage').
 
-Be sure to escape special characters, in particular backslashes.
+`align` and `note.align` are single strings used for alignment. `align` will be used as column alignment in standard LaTeX syntax, for example 'lccc' for the left column left-aligned and the other three centered. `note.align` is an alignment note specifically for any table notes set with `note` (or significance stars), which enters as part of a `\multicolumn` argument. These both accept 'p{}' and other LaTeX column types.
 
-Defaults to left-aligned 'Variable' columns and right-aligned everything else. If `col.widths` is specified, defaults to 'p{}' columns, with widths set by `col.width`.
+Defaults to left-aligned 'Variable' columns and right-aligned everything else. If `col.widths` is specified, `align` defaults to 'p{}' columns, with widths set by `col.width`.
+
+`fit.page` can be used to ensure that the table is a certain width, and will be used as an entry to a `\resizebox{}`. Set to `\\textwidth` to set the table to text width, or `.9\\textwidth` for 90% of the page, and so on, or any recognized width value in LaTeX.
+
+For all of these, be sure to escape special characters, in particular backslashes.
+
 
 ```{r, eval = FALSE}
-sumtable(iris,align = 'p{.3\\textwidth}ccccccc', out = 'latex')
+sumtable(iris,align = 'p{.3\\textwidth}ccccccc', fit.page = '\\textwidth', out = 'latex')
 ```
 
 ## `opts`

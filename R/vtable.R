@@ -9,7 +9,7 @@
 #' If you would like to include a \code{sumtable} in an RMarkdown document, use \code{out="latexfrag"} if outputting to LaTeX (note this will just capture the table itself, not the header information). If outputting to another format, use \code{out="return"}, and send the result to \code{knitr::kable()}, perhaps followed by \code{kableExtra::kable_styling()} for styling control. Alternately, if you want the full page and not just the table and are exporting to HTML, save the \code{vtable} to file with \code{file='filename.html'}, and then put the page in your RMarkdown document with \code{<iframe>}.
 #'
 #' @param data Data set; accepts any format with column names. If variable labels are set with the haven package, \code{set_label()} from sjlabelled, or \code{label()} from Hmisc, \code{vtable} will extract them automatically.
-#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R. Use \code{"return"} to return the completed variable table to R in data frame form or \code{"kable"} to return it as a \code{knitr::kable()}. Additional options include \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.
+#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R. Use \code{"return"} to return the completed variable table to R in data frame form or \code{"kable"} to return it as a \code{knitr::kable()}. Additional options include \code{"csv"} to write to CSV in conjunction with \code{file} (although this will drop most additional formatting), \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.
 #' @param file Saves the completed variable table file to HTML or .tex with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard vtable HTML file as with \code{out = "viewer"} or \code{out = "browser"}.
 #' @param labels Variable labels. labels will accept three formats: (1) A vector of the same length as the number of variables in the data, in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, or (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels. Setting the labels parameter will override any variable labels already in the data. Set to \code{"omit"} if the data set has embedded labels but you don't want any labels in the table.
 #' @param class Set to \code{TRUE} to include variable classes in the variable table. Defaults to \code{TRUE}.
@@ -21,10 +21,12 @@
 #' @param data.title Character variable with the title of the dataset.
 #' @param desc Character variable offering a brief description of the dataset itself. This will by default include information on the number of observations and the number of columns. To remove this, set \code{desc='omit'}, or include any description and then include \code{'omit'} as the last four characters.
 #' @param note Table note to go after the last row of the table.
+#' @param note.align Set the alignment for the multi-column table note. Usually "l", but if you have a long note in LaTeX you might want to set it with "p{}"
 #' @param anchor Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in HTML table. Must have a number of elements equal to the number of columns in the resulting table.
 #' @param col.align For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to all left-aligned. If you want to get tricky, you can add a \code{";"} afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.
 #' @param align For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to all \code{p{}} columns with widths set using the same defaults as with \code{col.width}.  Be sure to escape special characters, in particular backslashes (i.e. \code{p{.25\\\\textwidth}} instead of \code{p{.25\\textwidth}}).
+#' @param fit.page For LaTeX output, uses a resizebox to force the table to a certain width. Set to \code{NA} to omit. Often \code{'\\textwidth'}.
 #' @param summ Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)} and \code{countNA(x)}.
 #' @param lush Set to \code{TRUE} to select a set of options with more information: sets \code{char.values} and \code{missing} to \code{TRUE}, and sets summ to \code{c('mean(x)', 'sd(x)', 'nuniq(x)')}. \code{summ} can be overwritten by setting \code{summ} to something else.
 #' @param opts The same \code{vtable} options as above, but in a named list format. Useful for applying the same set of options to multiple \code{vtable}s.
@@ -122,8 +124,8 @@
 #' @export
 vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=FALSE,
                    index=FALSE,factor.limit=5,char.values=FALSE,
-                   data.title=NA,desc=NA,note = NA,anchor=NA,col.width=NA,col.align=NA,
-                   align=NA,summ=NA,lush=FALSE,opts=list()) {
+                   data.title=NA,desc=NA,note = NA,note.align = 'l', anchor=NA,col.width=NA,col.align=NA,
+                   align=NA,fit.page = NA, summ=NA,lush=FALSE,opts=list()) {
   #Bring in opts
   list2env(opts,envir=environment())
   #######CHECK INPUTS
@@ -172,8 +174,11 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
   if (!is.logical(lush)) {
     stop('lush must be logical.')
   }
-  if (!identical(out,NA) & !(out %in% c('viewer', 'browser','return','htmlreturn','kable','latex','latexpage'))) {
+  if (!identical(out,NA) & !(out %in% c('viewer', 'browser','return','htmlreturn','kable','latex','latexpage', 'csv'))) {
     stop('out must be viewer, browser, return, htmlreturn, kable, latex, or latexpage')
+  }
+  if (identical(out, 'csv') & is.na(file)) {
+    warning('out = "csv" will just return the vtable as a data.frame unless combined with file')
   }
 
   #One-column matrices run into some problems later on
@@ -279,12 +284,12 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
   #If there are multiples and one is factor, treat as factor
   if (sum(sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))) > 0) {
     data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))] <-
-      as.data.frame(sapply(data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))],function(x) factor(x,ordered=FALSE)))
+      as.data.frame(sapply(data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))],function(x) factor(x,ordered=FALSE)), stringsAsFactors = TRUE)
   }
   #Similarly, only take one class if it's numeric.
   if (sum(sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))) > 0) {
     data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))] <-
-      as.data.frame(sapply(data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))],function(x) as.numeric(x)))
+      as.data.frame(sapply(data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))],function(x) as.numeric(haven::zap_labels(x))))
   }
 
   ####### APPLICATION OF VALUES OPTION
@@ -297,7 +302,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
         #See which are characters
         charvariables <- as.logical(unlist(sapply(data,function(x) max(class(x) == "character"))))
         #and convert
-        data[,charvariables] <- as.data.frame(sapply(data[,charvariables],function(x) as.factor(x)))
+        data[,charvariables] <- as.data.frame(sapply(data[,charvariables],function(x) as.factor(x)), stringsAsFactors = TRUE)
         #clean
         rm(charvariables)
       }
@@ -305,7 +310,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
       #See which variables are in the list
       charvariables <- names(data) %in% char.values
       #and convert
-      data[,charvariables] <- as.data.frame(sapply(data[,charvariables],function(x) as.factor(x)))
+      data[,charvariables] <- as.data.frame(sapply(data[,charvariables],function(x) as.factor(x)), stringsAsFactors = TRUE)
       #clean
       rm(charvariables)
     }
@@ -382,6 +387,23 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
       #And fill in for output table
       vt[sapply(data,is.factor),]$Values <- factorlevels
+    }
+
+    #If there are any dates:
+    if (sum(sapply(data,function(x) max(class(x) %in% c('Date','POSIXct','POSIXt','POSIXlt')) & min(is.na(x)) == 0)) > 0) {
+      #Get minimums, be sure to skip any variables that are always NA
+      min <- lapply(subset(data,select=sapply(data,function(x) max(class(x) %in% c('Date','POSIXct','POSIXt','POSIXlt')) & min(is.na(x)) == 0)),function(x) min(x,na.rm=TRUE))
+      min <- sapply(min, as.character)
+
+      #Get maximums
+      max <- lapply(subset(data,select=sapply(data,function(x) max(class(x) %in% c('Date','POSIXct','POSIXt','POSIXlt')) & min(is.na(x)) == 0)),function(x) max(x,na.rm=TRUE))
+      max <- sapply(max, as.character)
+
+      #Range description
+      range <- paste('Time:',min,'to',max)
+
+      #Fill in for output table
+      vt[sapply(data,function(x) max(class(x) %in% c('Date','POSIXct','POSIXt','POSIXlt')) & min(is.na(x)) == 0),]$Values <- range
     }
 
 
@@ -551,8 +573,8 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     #Table only
     if (out == 'latex') {
       return(cat(dftoLaTeX(vt, file = file,
-                       align = align, note = note,
-                       anchor = anchor, title = 'Variable Table',
+                       align = align, note = note, note.align = note.align,
+                       anchor = anchor, title = 'Variable Table', fit.page = fit.page,
                        no.escape = no.escape)))
     }
 
@@ -589,8 +611,8 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
     #And bring in the table itself
     out.latex <- paste(out.latex,dftoLaTeX(vt, align = align,
-                                           anchor = anchor, note = note,
-                                           title = 'Variable Table',
+                                           anchor = anchor, note = note, note.align = note.align,
+                                           title = 'Variable Table', fit.page = fit.page,
                                            no.escape = no.escape),'\n\n\\end{document}',sep='')
 
     ####### APPLICATION OF FILE OPTION
@@ -688,20 +710,34 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
   out.html <- paste(out.html,dftoHTML(vt,out='htmlreturn',
                                       col.width=col.width,
                                       col.align=col.align,
-                                      note = note, anchor=anchor,
+                                      note = note, note.align = note.align, anchor=anchor,
                                       no.escape = no.escape),'</body></html>',sep='')
 
 
   ####### APPLICATION OF FILE OPTION
   if (!is.na(file)) {
-    #If they forgot a file extension, fill it in
-    if (!grepl("\\.htm",file)) {
-      file <- paste(file,'.html',sep='')
+    if (out == 'csv') {
+      #If they forgot a file extension, fill it in
+      if (!grepl("\\.csv",file)) {
+        file <- paste(file,'.csv',sep='')
+      }
+
+      for (i in 1:ncol(vt)) {
+        vt[[i]] <- gsub('<br/>','; ',vt[[i]])
+      }
+      filepath <- file.path(file)
+      write.csv(vt, file = filepath, row.names = FALSE)
+    } else {
+      #If they forgot a file extension, fill it in
+      if (!grepl("\\.htm",file)) {
+        file <- paste(file,'.html',sep='')
+      }
+
+      filepath <- file.path(file)
+      #Create temporary html file
+      writeLines(out.html,filepath)
     }
 
-    filepath <- file.path(file)
-    #Create temporary html file
-    writeLines(out.html,filepath)
   }
 
   #For more easily working with if statements
@@ -753,7 +789,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     stop('out = "viewer" is not a valid option if RStudio is not running.')
   } else if ((Sys.getenv('RSTUDIO')=='' & out == '') | (out == 'browser')) {
     utils::browseURL(htmlpath)
-  } else if (out == 'return') {
+  } else if (out == 'return' | out == 'csv') {
     for (i in 1:ncol(vt)) {
       vt[[i]] <- gsub('<br/>','; ',vt[[i]])
     }
@@ -764,7 +800,6 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 }
 
 #' @rdname vtable
+#' @import kableExtra
 #' @export
 vt <- vtable
-
-

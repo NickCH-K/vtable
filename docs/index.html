@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.6</span>
       </span>
     </div>
 
@@ -66,7 +66,7 @@
       <a href="articles/sumtable.html">sumtable: Summary Statistics</a>
     </li>
     <li>
-      <a href="articles/vtablefunction.html">vtable: Variable Table</a>
+      <a href="articles/vtablefunction.html">Variable Table (vtable)</a>
     </li>
     <li>
       <a href="articles/vtablehelpers.html">vtable Bonus Functions</a>
@@ -97,7 +97,7 @@
 <li>
 <code>vtable</code>, or <code>vt</code> for short, shows you information about the variables in your data set, including variable labels, in a way that is easy to use “find in page” to search through. It was designed to be similar to Stata’s “Variables” panel.</li>
 <li>
-<code>sumtable</code> or <code>st</code> for short, provides a table of summary statistics. It is very similar in spirit to the summary statistics function of <code><a href="https://rdrr.io/pkg/stargazer/man/stargazer.html">stargazer::stargazer()</a></code> except that it accepts <code>tibble</code>s, handles factor variables, and makes by-group statistics and group tests easy.</li>
+<code>sumtable</code> or <code>st</code> for short, provides a table of summary statistics. It is very similar in spirit to the summary statistics function of <code>stargazer::stargazer()</code> except that it accepts <code>tibble</code>s, handles factor variables, and makes by-group statistics and group tests easy.</li>
 <li>
 <code>labeltable</code> provides a table of value labels, either for variables labelled with <strong>sjlabelled</strong> or <strong>haven</strong> or similar, or for when you want to see how the values of one column line up with the values of another.</li>
 </ol>
@@ -108,23 +108,26 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install vtable from CRAN. Note that the documentation on this site refers to the development version, and so may not work perfectly for the CRAN version. But the two will usually be the same.:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"vtable"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"vtable"</span><span class="op">)</span></pre></div>
 <div id="development-version" class="section level3">
 <h3 class="hasAnchor">
 <a href="#development-version" class="anchor"></a>Development version</h3>
 <p>The development version can be installed from <a href="https://github.com/">GitHub</a>:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="co"># install.packages("remotes")</span>
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"NickCH-K/vtable"</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co"># install.packages("remotes")</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"NickCH-K/vtable"</span><span class="op">)</span></pre></div>
 </div>
 </div>
 <div id="vtable-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#vtable-example" class="anchor"></a>vtable Example</h2>
 <p>I’ll just do a brief example here, using the <code>iris</code> we all know and love. Output will be to <code>kable</code> since this is an RMarkdown document.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">iris</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
 
 <span class="co"># Basic vtable</span>
-<span class="fu"><a href="reference/vtable.html">vt</a></span>(<span class="no">iris</span>)</pre></div>
+<span class="fu"><a href="reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></pre></div>
 <table class="table">
 <caption>
 <p>iris</p>
@@ -199,7 +202,8 @@
 </tbody>
 </table>
 <p>There are plenty of options if we want to go nuts, but let’s keep it simple and just ask for a little more with <code>lush</code></p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="reference/vtable.html">vt</a></span>(<span class="no">iris</span>, <span class="kw">lush</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">iris</span>, lush <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 <table class="table">
 <caption>
 <p>iris</p>
@@ -314,8 +318,9 @@
 <h2 class="hasAnchor">
 <a href="#sumtable-example" class="anchor"></a>sumtable Example</h2>
 <p>Let’s stick with <code>iris</code>!</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="co"># Basic summary stats</span>
-<span class="fu"><a href="reference/sumtable.html">st</a></span>(<span class="no">iris</span>)</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co"># Basic summary stats</span>
+<span class="fu"><a href="reference/sumtable.html">st</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></pre></div>
 <table class="table">
 <caption>
 <p>Summary Statistics</p>
@@ -539,9 +544,10 @@
 <p>Note that <code>sumtable</code> allows for much more customization than <code>vtable</code> since there’s a heightened chance you want it for a paper or something. But I’ll leave that to the more detailed documentation. For now just note it does by-group stats, either in “<code>group.long</code>” format (multiple <code>sumtable</code>s stacked on top of each other), or by default, in columns, with an option to add a group test.</p>
 <p>Grouped <code>sumtables</code> look a little nicer in formats that suport multi-column cells like HTML and LaTeX.</p>
 <p><strong>These tables include multi-column cells, which are not supported in the <code>kable</code> output, but are supported by <code>vtable</code>’s <code>dftoHTML</code> and <code>dftoLaTeX</code> functions. They look nicer in the HTML or LaTeX output.</strong></p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="reference/sumtable.html">st</a></span>(<span class="no">iris</span>,
-   <span class="kw">group</span> <span class="kw">=</span> <span class="st">'Species'</span>,
-   <span class="kw">group.test</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="reference/sumtable.html">st</a></span><span class="op">(</span><span class="va">iris</span>, 
+   group <span class="op">=</span> <span class="st">'Species'</span>, 
+   group.test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 <table class="table">
 <caption>
 <p>Summary Statistics</p>
@@ -760,10 +766,11 @@
 <h2 class="hasAnchor">
 <a href="#labeltable-example" class="anchor"></a>labeltable Example</h2>
 <p>For this we’ll need labeled values.</p>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">efc</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">'sjlabelled'</span>)
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span>, package <span class="op">=</span> <span class="st">'sjlabelled'</span><span class="op">)</span>
 
 <span class="co"># Now shoot - how was gender coded?</span>
-<span class="fu"><a href="reference/labeltable.html">labeltable</a></span>(<span class="no">efc</span>$<span class="no">e16sex</span>)</pre></div>
+<span class="fu"><a href="reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e16sex</span><span class="op">)</span></pre></div>
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
@@ -793,7 +800,8 @@
 </tbody>
 </table>
 <p><code>labeltable</code> can also be used to see, for values of one variable, what values are present of other variables. This is intended for use if one variable is a recode, simplification, or lost-labels version of another, but hey, go nuts.</p>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="reference/labeltable.html">labeltable</a></span>(<span class="no">efc</span>$<span class="no">e15relat</span>,<span class="no">efc</span>$<span class="no">e16sex</span>,<span class="no">efc</span>$<span class="no">e42dep</span>)</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="fu"><a href="reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e15relat</span>,<span class="va">efc</span><span class="op">$</span><span class="va">e16sex</span>,<span class="va">efc</span><span class="op">$</span><span class="va">e42dep</span><span class="op">)</span></pre></div>
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
@@ -950,7 +958,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
