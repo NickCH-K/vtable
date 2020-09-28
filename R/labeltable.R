@@ -250,7 +250,7 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,note.align = NA,an
 
   ####### APPLICATION OF FILE OPTION
   if (!is.na(file)) {
-    if (out == 'csv') {
+    if (identical(out, 'csv')) {
       #If they forgot a file extension, fill it in
       if (!grepl("\\.csv",file)) {
         file <- paste(file,'.csv',sep='')

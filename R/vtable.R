@@ -716,7 +716,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
   ####### APPLICATION OF FILE OPTION
   if (!is.na(file)) {
-    if (out == 'csv') {
+    if (identical(out,'csv')) {
       #If they forgot a file extension, fill it in
       if (!grepl("\\.csv",file)) {
         file <- paste(file,'.csv',sep='')
