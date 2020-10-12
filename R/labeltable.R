@@ -258,7 +258,7 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,note.align = NA,an
 
       filepath <- file.path(file)
       #Create temporary html file
-      write.csv(lt,filepath, row.names = FALSE)
+      utils::write.csv(lt,filepath, row.names = FALSE)
     } else {
       #If they forgot a file extension, fill it in
       if (!grepl("\\.htm",file)) {

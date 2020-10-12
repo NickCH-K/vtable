@@ -835,7 +835,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
       filepath <- file.path(file)
       #Create temporary html file
-      write.csv(clean_multicol(st),filepath, row.names = FALSE)
+      utils::write.csv(clean_multicol(st),filepath, row.names = FALSE)
     } else {
       #If they forgot a file extension, fill it in
       if (!grepl("\\.htm",file)) {

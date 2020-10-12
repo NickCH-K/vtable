@@ -726,7 +726,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
         vt[[i]] <- gsub('<br/>','; ',vt[[i]])
       }
       filepath <- file.path(file)
-      write.csv(vt, file = filepath, row.names = FALSE)
+      utils::write.csv(vt, file = filepath, row.names = FALSE)
     } else {
       #If they forgot a file extension, fill it in
       if (!grepl("\\.htm",file)) {
