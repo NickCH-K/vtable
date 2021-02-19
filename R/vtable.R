@@ -9,7 +9,7 @@
 #' If you would like to include a \code{sumtable} in an RMarkdown document, use \code{out="latexfrag"} if outputting to LaTeX (note this will just capture the table itself, not the header information). If outputting to another format, use \code{out="return"}, and send the result to \code{knitr::kable()}, perhaps followed by \code{kableExtra::kable_styling()} for styling control. Alternately, if you want the full page and not just the table and are exporting to HTML, save the \code{vtable} to file with \code{file='filename.html'}, and then put the page in your RMarkdown document with \code{<iframe>}.
 #'
 #' @param data Data set; accepts any format with column names. If variable labels are set with the haven package, \code{set_label()} from sjlabelled, or \code{label()} from Hmisc, \code{vtable} will extract them automatically.
-#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R. Use \code{"return"} to return the completed variable table to R in data frame form or \code{"kable"} to return it as a \code{knitr::kable()}. Additional options include \code{"csv"} to write to CSV in conjunction with \code{file} (although this will drop most additional formatting), \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.
+#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R. Use \code{"return"} to return the completed variable table to R in data frame form or \code{"kable"} to return it as a \code{knitr::kable()}. Additional options include \code{"csv"} to write to CSV in conjunction with \code{file} (although this will drop most additional formatting), \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or a \code{"kable"} passed through \code{kableExtra::kable_styling()} defaults if it's an RMarkdown document being built with \code{knitr}.
 #' @param file Saves the completed variable table file to HTML or .tex with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard vtable HTML file as with \code{out = "viewer"} or \code{out = "browser"}.
 #' @param labels Variable labels. labels will accept three formats: (1) A vector of the same length as the number of variables in the data, in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, or (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels. Setting the labels parameter will override any variable labels already in the data. Set to \code{"omit"} if the data set has embedded labels but you don't want any labels in the table.
 #' @param class Set to \code{TRUE} to include variable classes in the variable table. Defaults to \code{TRUE}.
@@ -781,6 +781,11 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
       }
     } else {
       kb <- knitr::kable(vt, caption = data.title, row.names = FALSE)
+    }
+
+    # If it's just a default RMarkdown kable, style it for HTML because the default is ew
+    if (isTRUE(getOption('knitr.in.progress')) & out == '') {
+      kb <- kableExtra::kable_styling(kb)
     }
     return(kb)
   } else if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {

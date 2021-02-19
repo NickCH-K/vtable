@@ -8,7 +8,7 @@
 #'
 #' @param var A vector. Label table will show, for each of the values of this variable, its label (if labels can be found with \code{sjlabelled::get_labels()}), or the values in the \code{...} variables.
 #' @param ... As described above. If specified, will show the values of these variables, instead of the labels of var, even if labels can be found.
-#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"return"} to return the completed variable table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Combine \code{out = "csv"} with \code{file} to write to CSV (dropping most formatting). Additional options include \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or \code{"kable"} if it's an RMarkdown document being built with \code{knitr}.
+#' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"return"} to return the completed variable table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Combine \code{out = "csv"} with \code{file} to write to CSV (dropping most formatting). Additional options include \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or a \code{"kable"} passed through \code{kableExtra::kable_styling()} defaults if it's an RMarkdown document being built with \code{knitr}.
 #' @param file Saves the completed variable table file to HTML with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard labeltable HTML file as with \code{out = "viewer"} or \code{out = "browser"}..
 #' @param desc Description of variable (or labeling system) to be included with the table.
 #' @param note Table note to go after the last row of the table.
@@ -308,6 +308,10 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,note.align = NA,an
       }
     } else {
       kb <- knitr::kable(lt)
+    }
+    # If it's just a default RMarkdown kable, style it for HTML because the default is ew
+    if (isTRUE(getOption('knitr.in.progress')) & out == '') {
+      kb <- kableExtra::kable_styling(kb)
     }
     return(kb)
   } else if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {

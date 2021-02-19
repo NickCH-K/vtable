@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.7</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -84,13 +84,14 @@
 
       
 
-      </header><script src="labeltable_files/header-attrs-2.3/header-attrs.js"></script><div class="row">
+      </header><script src="labeltable_files/header-attrs-2.6/header-attrs.js"></script><script src="labeltable_files/kePrint-0.0.1/kePrint.js"></script><link href="labeltable_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>labeltable: Label Table</h1>
                         <h4 class="author">Nick Huntington-Klein</h4>
             
-            <h4 class="date">2020-09-25</h4>
+            <h4 class="date">2021-02-19</h4>
       
       
       <div class="hidden name"><code>labeltable.Rmd</code></div>
@@ -109,25 +110,25 @@
 <h1 class="hasAnchor">
 <a href="#the-labeltable-function" class="anchor"></a>The <code>labeltable()</code> function</h1>
 <p><code><a href="../reference/vtable.html">vtable()</a></code> syntax follows the following outline:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">var</span>,
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">var</span>,
     <span class="va">...</span>,
     out<span class="op">=</span><span class="cn">NA</span>,
     file<span class="op">=</span><span class="cn">NA</span>, 
     desc<span class="op">=</span><span class="cn">NA</span>,
     note<span class="op">=</span><span class="cn">NA</span>,
     note.align<span class="op">=</span><span class="cn">NA</span>,
-    anchor<span class="op">=</span><span class="cn">NA</span><span class="op">)</span></pre></div>
+    anchor<span class="op">=</span><span class="cn">NA</span><span class="op">)</span></code></pre></div>
 <p><code><a href="../reference/labeltable.html">labeltable()</a></code> is a function that shows the values that correspond to <code>var</code>. This could be value label values, or it could be the values found in the data for the <code>...</code> variables.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co">#Include a single labelled variable to show how the values of that variable correspond to its value labels.</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">vtable</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#Include a single labelled variable to show how the values of that variable correspond to its value labels.</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">vtable</span><span class="op">)</span></code></pre></div>
 <pre><code>## Loading required package: kableExtra</code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled">sjlabelled</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
-<span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e15relat</span><span class="op">)</span></pre></div>
-<table class="table">
+<span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e15relat</span><span class="op">)</span></code></pre></div>
+<table class="table table">
 <thead><tr>
 <th style="text-align:left;">
 e15relat
@@ -203,11 +204,11 @@ other, specify
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co">#Include more than one variable to show, for each value of the first, what values of the others are present in the data.</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#Include more than one variable to show, for each value of the first, what values of the others are present in the data.</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>
-<span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span>,<span class="va">mtcars</span><span class="op">$</span><span class="va">carb</span>,<span class="va">mtcars</span><span class="op">$</span><span class="va">am</span><span class="op">)</span></pre></div>
-<table class="table">
+<span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span>,<span class="va">mtcars</span><span class="op">$</span><span class="va">carb</span>,<span class="va">mtcars</span><span class="op">$</span><span class="va">am</span><span class="op">)</span></code></pre></div>
+<table class="table table">
 <thead><tr>
 <th style="text-align:left;">
 cyl
@@ -312,11 +313,11 @@ am
 <a href="#file" class="anchor"></a><code>file</code>
 </h2>
 <p>The <code>file</code> argument will write the variable documentation file to an HTML file and save it. Will automatically append ‘html’ filetype if the filename does not include a period.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">vtable</span><span class="op">)</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">vtable</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
-<span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e15relat</span>,file<span class="op">=</span><span class="st">'lifecycle_variabledocumentation'</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e15relat</span>,file<span class="op">=</span><span class="st">'lifecycle_variabledocumentation'</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="desc-note-and-anchor-" class="section level2">
 <h2 class="hasAnchor">
