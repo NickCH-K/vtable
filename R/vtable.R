@@ -763,7 +763,10 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
   #Default to kable if in knitr
   if (out == 'kable' | (isTRUE(getOption('knitr.in.progress')) & out == '')) {
     for (i in 1:ncol(vt)) {
-      vt[[i]] <- gsub('<br/>','<br>',vt[[i]])
+      # Don't end on a break
+      vt[[i]] <- gsub('<br/>$','',vt[[i]])
+      # But replace all internal ones with commas
+      vt[[i]] <- gsub('<br/>',', ',vt[[i]])
     }
     #kable can't handle blank rows. These should not occur in vtable but just in case
     vt <- vt[!apply(vt,MARGIN=1,FUN=function(x) !any(!(x==rep('',ncol(vt))))),]

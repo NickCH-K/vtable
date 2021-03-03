@@ -874,13 +874,13 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     #I don't know how this would happen but just in case
     st <- st[!apply(st,MARGIN=1,FUN=function(x) propNA(x) == 1),]
     if (!simple.kable) {
-      return(clean_multicol_kable(st,title,note))
-    } else {
-      st <- knitr::kable(clean_multicol(st), caption = title)
-      # If it's just a default RMarkdown kable, style it for HTML because the default is ew
+      st <- clean_multicol_kable(st,title,note)
       if (isTRUE(getOption('knitr.in.progress')) & out == '') {
         st <- kableExtra::kable_styling(st)
       }
+      return(st)
+    } else {
+      st <- knitr::kable(clean_multicol(st), caption = title)
       return(st)
     }
   } else if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {

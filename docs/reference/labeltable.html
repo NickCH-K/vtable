@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.8</span>
       </span>
     </div>
 
@@ -163,7 +163,7 @@
     </tr>
     <tr>
       <th>out</th>
-      <td><p>Determines where the completed table is sent. Set to <code>"browser"</code> to open HTML file in browser using <code><a href='https://rdrr.io/r/utils/browseURL.html'>browseURL()</a></code>, <code>"viewer"</code> to open in RStudio viewer using <code>viewer()</code>, if available. Use <code>"htmlreturn"</code> to return the HTML code to R, <code>"return"</code> to return the completed variable table to R in data frame form, or <code>"kable"</code> to return it in <code><a href='https://rdrr.io/pkg/knitr/man/kable.html'>knitr::kable()</a></code> form. Combine <code>out = "csv"</code> with <code>file</code> to write to CSV (dropping most formatting). Additional options include <code>"latex"</code> for a LaTeX table or <code>"latexpage"</code> for a full buildable LaTeX page. Defaults to <code>"viewer"</code> if RStudio is running, <code>"browser"</code> if it isn't, or <code>"kable"</code> if it's an RMarkdown document being built with <code>knitr</code>.</p></td>
+      <td><p>Determines where the completed table is sent. Set to <code>"browser"</code> to open HTML file in browser using <code><a href='https://rdrr.io/r/utils/browseURL.html'>browseURL()</a></code>, <code>"viewer"</code> to open in RStudio viewer using <code>viewer()</code>, if available. Use <code>"htmlreturn"</code> to return the HTML code to R, <code>"return"</code> to return the completed variable table to R in data frame form, or <code>"kable"</code> to return it in <code><a href='https://rdrr.io/pkg/knitr/man/kable.html'>knitr::kable()</a></code> form. Combine <code>out = "csv"</code> with <code>file</code> to write to CSV (dropping most formatting). Additional options include <code>"latex"</code> for a LaTeX table or <code>"latexpage"</code> for a full buildable LaTeX page. Defaults to <code>"viewer"</code> if RStudio is running, <code>"browser"</code> if it isn't, or a <code>"kable"</code> passed through <code><a href='https://rdrr.io/pkg/kableExtra/man/kable_styling.html'>kableExtra::kable_styling()</a></code> defaults if it's an RMarkdown document being built with <code>knitr</code>.</p></td>
     </tr>
     <tr>
       <th>file</th>
