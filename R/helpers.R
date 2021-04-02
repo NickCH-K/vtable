@@ -14,6 +14,44 @@ nuniq <- function(x) {
   return(length(unique(x)))
 }
 
+#' Weighted standard deviation
+#'
+#' This is a basic weighted standard deviation function, mainly for internal use with \code{sumtable}. For a more fully-fledged weighted SD function, see \code{Hmisc::wtd.var}, although it uses a slightly differend degree-of-freedom correction.
+#'
+#' @param x A numeric vector.
+#' @param w A vector of weights. Negative weights are not allowed.
+#' @param na.rm Set to \code{TRUE} to remove indices with missing values in \code{x} or \code{w}.
+#' @examples
+#' x <- c(1, 1, 2, 3, 4, 4, 4)
+#' w <- c(4, 1, 3, 7, 0, 2, 5)
+#' weighted.sd(x, w)
+#'
+#' @export
+weighted.sd <- function(x, w, na.rm = TRUE) {
+  if (length(x) != length(w)) {
+    stop('Weights and data must be the same length.')
+  }
+  if (min(w) < 0) {
+    stop('Negative weights found.')
+  }
+  if (na.rm) {
+    missings <- is.na(x) | is.na(w)
+    x <- x[!missings]
+    w <- w[!missings]
+  }
+  weightsum <- sum(w)
+  if (weightsum == 0) {
+    stop('Weights sum to 0 among nonmissing data.')
+  }
+  mean_x <- sum(w*x)/weightsum
+  num_nonzero <- sum(w > 0)
+
+  var_x <- sum(w*((x-mean_x)^2))/(weightsum*(num_nonzero-1)/num_nonzero)
+  sd_x <- sqrt(var_x)
+
+  return(sd_x)
+}
+
 #' Proportion or number of missing values in a vector
 #'
 #' This function calculates the proportion of values in a vector that are NA.
@@ -119,7 +157,8 @@ parsesumm <- function(x,summuse,summnames) {
 }
 
 # Evaluate a function allowing it to not work
-parsefcn <- function(x,y) {
+parsefcn <- function(x,y, ...) {
+  list2env(list(...),envir=environment())
   result <- suppressWarnings(try(eval(parse(text=y)),silent = TRUE))
 
   if (inherits(result,'try-error')) {
@@ -131,7 +170,8 @@ parsefcn <- function(x,y) {
 
 # Evaluate a function allowing it to not work
 # Special version for sumtable that does the NA-dropping internally
-parsefcn_summ <- function(x,y) {
+parsefcn_summ <- function(x,y, ...) {
+  list2env(list(...),envir=environment())
   if (!any(sapply(c('anyNA','propNA','countNA'),function(z) grepl(z,y)))) {
     x <- x[!is.na(x)]
   }
@@ -145,11 +185,12 @@ parsefcn_summ <- function(x,y) {
   return(result)
 }
 
+
 # Create a summary statistics table for a single variable
 # Internal function for sumtable
 summary.row <- function(data,var,st,
                         title,summ,cla,factor.percent,
-                        factor.count,factor.numeric,digits,fixed.digits) {
+                        factor.count,factor.numeric,digits,fixed.digits, wts = NULL) {
 
   numcols <- length(summ)
   if (cla == 'header') {
@@ -169,8 +210,12 @@ summary.row <- function(data,var,st,
                 rep('',numcols-2))
     #And now the per-factor stuff
     mat <- as.data.frame(table(va))
+    propcalc <- mat$Freq/nonmiss
+    if (!is.null(wts) & grepl('wts',summ[2])) {
+      propcalc <- sapply(mat$va, function(x) weighted.mean(va == x, w = wts))
+    }
+    propcalc <- propcalc*(100^factor.percent)
     mat$va <- paste('...',mat$va)
-    propcalc <- mat$Freq/nonmiss * (100^factor.percent)
     if (fixed.digits) {
       mat$Prop <- sapply(1:length(propcalc), function(x)
         format(propcalc[x],
@@ -212,7 +257,7 @@ summary.row <- function(data,var,st,
     facnames <- paste('...',levels(va))
     #Run each of the functions on the variable and get results
     results <- lapply(1:ncol(mat),
-                      function(x) sapply(summ, function(y) parsefcn_summ(mat[,x],y)))
+                      function(x) sapply(summ, function(y) parsefcn_summ(mat[,x],y, wts = wts)))
     #Round
     if (fixed.digits) {
       results <- lapply(results, function(x)
@@ -230,8 +275,10 @@ summary.row <- function(data,var,st,
   } else {
     #Get data
     va <- data[[var]]
+
     #Run each of the functions on the variable and get results
-    results <- sapply(summ, function(y) parsefcn_summ(va,y))
+    results <- sapply(summ, function(y) parsefcn_summ(va,y, wts = wts))
+
     #Round
     if (fixed.digits) {
       results <- sapply(1:length(results), function(y) format(results[y],digits=digits[y],nsmall = digits[y],scientific = FALSE))

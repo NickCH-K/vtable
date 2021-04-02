@@ -18,9 +18,11 @@
 #' @param file Saves the completed summary table file to file with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard sumtable HTML file as with \code{out = "viewer"} or \code{out = "browser"}.
 #' @param summ Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. Defaults to \code{c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')} if there's one column, or \code{c('notNA(x)','mean(x)','sd(x)')} if there's more than one. If all variables in a column are factors it defaults to \code{c('sum(x)','mean(x)')} for the factor dummies. If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)} and \code{countNA(x)}.
 #' @param summ.names Character vector of names for the summary statistics included. If \code{summ} is at default, defaults to \code{c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 75','Max')} (or the appropriate shortened version with multiple columns) unless all variables in the column are factors in which case it defaults to \code{c('N','Percent')}. If \code{summ} has been set but \code{summ.names} has not, defaults to \code{summ} with the \code{(x)}s removed and the first letter capitalized.  If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead.
+#' @param add.median Adds \code{"median(x)"} to the set of default summary statistics. Has no effect if \code{"summ"} is also specified.
 #' @param group Character variable with the name of a column in the data set that statistics are to be calculated over. Value labels will be used if found for numeric variables. Changes the default \code{summ} to \code{c('mean(x)','sd(x)')}.
 #' @param group.long By default, if \code{group} is specified, each group will get its own set of columns. Set \code{group.long = TRUE} to instead basically just make a regular \code{sumtable()} for each group and stack them on top of each other. Good for when you have lots of groups. You can also set it to \code{'l'}, \code{'c'}, or \code{'r'} to determine how the group names are aligned. Defaults to centered.
 #' @param group.test Set to \code{TRUE} to perform tests of whether each variable in the table varies over values of \code{group}. Only works with \code{group.long = FALSE}. Performs a joint F-test (using \code{anova(lm))}) for numeric variables, and a Chi-square test of independence (\code{chisq.test}) for categorical variables. If you want to adjust things like which tests are used, significance star levels, etc., see the help file for \code{independence.test} and pass in a named list of options for that function.
+#' @param group.weights **THIS OPTION DOES NOT AUTOMATICALLY WEIGHT ALL CALCULATIONS.** This is mostly to be used with \code{group} and \code{group.long = FALSE}, and while it's more flexible than that, you've gotta read this to figure out how else to use it. That's why I gave it the weird name. Set this to a vector of weights, or a string representing a column name with weights. If \code{summ} is not customized, this will replace \code{'mean(x)'} and \code{'sd(x)'} with the equivalent weighted versions \code{'weighted.mean(x, w = wts)'} and \code{'weighted.sd(x, w = wts)'} It will also add weights to the default \code{group.test} tests. This will not add weights to any other calculations, or to any custom \code{group.test} weights (although you can always do that yourself by customizing \code{summ} and passing in weights with this argument-the weights can be referred to in your function as \code{wts}). This is generally intended for things like post-matching balance tables. If you specify a column name, that column will be removed from the rest of the table, so if you want it to be kept, specify this as a numeric vector instead. If you have a variable in your data called \code{'wts'} that will mess the use of this option up, I recommend changing that.
 #' @param col.breaks Numeric vector indicating the variables (or number of elements of \code{vars}) after which to start a new column. So for example with a data set with six variables, \code{c(3,5)} would put the first three variables in the first column, the next two in the middle, and the last on the right. Cannot be combined with \code{group} unless \code{group.long = TRUE}.
 #' @param digits Number of digits after the decimal place to report. Set to a single number for consistent digits, or a vector the same length as \code{summ} for different digits for each calculation, or a list of vectors that match up to a multi-column \code{summ}. Defaults to 0 for the first calculation and 2 afterwards.
 #' @param fixed.digits \code{FALSE} will cut off trailing \code{0}s when rounding. \code{TRUE} retains them. Defaults to \code{FALSE}.
@@ -86,7 +88,8 @@
 sumtable <- function(data,vars=NA,out=NA,file=NA,
                      summ=NA,
                      summ.names=NA,
-                     group=NA,group.long=FALSE,group.test=FALSE,
+                     add.median = FALSE,
+                     group=NA,group.long=FALSE,group.test=FALSE,group.weights=NA,
                      col.breaks=NA,
                      digits=NA,fixed.digits=FALSE,factor.percent=TRUE,
                      factor.counts=TRUE,factor.numeric=FALSE,
@@ -116,6 +119,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   }
   if (min(is.na(col.width)) == 0 & (max(col.width) > 100 | min(col.width) < 0)) {
     stop('Elements of col.width must be between 0 and 100.')
+  }
+  if (!is.logical(add.median)) {
+    stop('add.median must be TRUE or FALSE.')
   }
   if (!is.list(summ)) {
     if (min(is.na(summ)) == 0 & (!is.vector(summ) | !is.character(summ) | sum(is.na(summ)) > 0)) {
@@ -178,6 +184,38 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   }
   if (identical(out, 'csv') & is.na(file)) {
     warning('out = "csv" will just return the vtable as a data.frame unless combined with file')
+  }
+
+  # Weights
+  wts <- NULL
+  if (length(group.weights) > 1) {
+    wts <- group.weights
+  }
+  if (length(group.weights) == 1) {
+    if (is.character(group.weights)) {
+      wts <- data[[group.weights]]
+      data[[group.weights]] <- NULL
+    }
+  }
+  if (!identical(group.weights, NA) & is.null(wts)) {
+    stop('group.weights must be a vector of length nrow(data), or the name of a column in data')
+  }
+  if (!is.numeric(wts) & !is.null(wts)) {
+    stop('group.weights must be numeric.')
+  }
+  if ((length(wts) != nrow(data)) & !is.null(wts)) {
+    stop('group.weights must be the same length as the number of rows in data')
+  }
+  if (!is.null(wts)) {
+    if (min(wts, na.rm = TRUE) < 0) {
+      stop('No negative weights allowed in group.weights')
+    }
+  }
+  if (!is.null(wts)) {
+    # Drop missing values
+    havewts <- !is.na(wts)
+    wts <- wts[havewts]
+    data <- subset(data, havewts)
   }
 
   #One-column matrices run into some problems later on
@@ -316,23 +354,84 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
         } else {
           summ.names[[i]] <- c('N','Mean')
         }
+
+        # If there are weights
+        if (!is.null(wts)) {
+          summ[[i]] <- c('sum(x)', 'weighted.mean(x, w = wts)')
+          if (fill.sn) {
+            summ.names[[i]][2] <- paste0(summ.names[[i]][2], ' (Weighted)')
+          }
+        }
       } else if ((is.na(group) | group.long == TRUE) & length(col.breaks) == 1) {
         summ[[i]] <- c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')
 
         if (fill.sn) {
           summ.names[[i]] <- c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 75','Max')
         }
+        # Add median if desired
+        if (add.median) {
+          summ[[i]] <- c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','median(x)','pctile(x)[75]','max(x)')
+
+          if (fill.sn) {
+            summ.names[[i]] <- c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 50', 'Pctl. 75','Max')
+          }
+        }
+
+        # If there are weights
+        if (!is.null(wts)) {
+          summ[[i]][summ[[i]] == 'mean(x)'] <- 'weighted.mean(x, w = wts)'
+          summ[[i]][summ[[i]] == 'sd(x)'] <- 'weighted.sd(x, w = wts)'
+          if (fill.sn) {
+            summ.names[[i]][summ.names[[i]] == 'Mean'] <- 'Wt. Mean'
+            summ.names[[i]][summ.names[[i]] == 'Std. Dev.'] <- 'Wt. SD'
+          }
+        }
+
       } else if ((is.na(group) | group.long == TRUE) & length(col.breaks) > 1) {
         summ[[i]] <- c('notNA(x)','mean(x)','sd(x)')
 
         if (fill.sn) {
           summ.names[[i]] <- c('N','Mean','Std. Dev.')
         }
+        if (add.median) {
+          summ[[i]] <- c('notNA(x)','mean(x)','sd(x)', 'median(x)')
+
+          if (fill.sn) {
+            summ.names[[i]] <- c('N','Mean','Std. Dev.', 'Median')
+          }
+        }
+
+        # If there are weights
+        if (!is.null(wts)) {
+          summ[[i]][summ[[i]] == 'mean(x)'] <- 'weighted.mean(x, w = wts)'
+          summ[[i]][summ[[i]] == 'sd(x)'] <- 'weighted.sd(x, w = wts)'
+          if (fill.sn) {
+            summ.names[[i]][summ.names[[i]] == 'Mean'] <- 'Wt. Mean'
+            summ.names[[i]][summ.names[[i]] == 'Std. Dev.'] <- 'Wt. SD'
+          }
+        }
       } else {
         summ[[i]] <- c('notNA(x)','mean(x)','sd(x)')
 
         if (fill.sn) {
           summ.names[[i]] <- c('N','Mean','SD')
+        }
+        if (add.median) {
+          summ[[i]] <- c('notNA(x)','mean(x)','sd(x)', 'median(x)')
+
+          if (fill.sn) {
+            summ.names[[i]] <- c('N','Mean','SD', 'Median')
+          }
+        }
+
+        # If there are weights
+        if (!is.null(wts)) {
+          summ[[i]][summ[[i]] == 'mean(x)'] <- 'weighted.mean(x, w = wts)'
+          summ[[i]][summ[[i]] == 'sd(x)'] <- 'weighted.sd(x, w = wts)'
+          if (fill.sn) {
+            summ.names[[i]][summ.names[[i]] == 'Mean'] <- 'Wt. Mean'
+            summ.names[[i]][summ.names[[i]] == 'SD'] <- 'Wt. SD'
+          }
         }
       }
     }
@@ -522,7 +621,8 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                     factor.counts,
                     factor.numeric,
                     digits[[i]],
-                    fixed.digits))
+                    fixed.digits,
+                    wts))
       contents <- do.call(rbind, contents)
       st[[i]] <- rbind(st[[i]],contents)
     }
@@ -555,7 +655,8 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                     factor.counts,
                     factor.numeric,
                     digits[[1]],
-                    fixed.digits))
+                    fixed.digits,
+                    wts[data[[group]] == grouplevels[i]]))
 
       #On the last one, if there's a test, add it
       if (group.test & i == length(grouplevels)) {
@@ -572,6 +673,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
           test.result <- suppressWarnings(
             try(independence.test(data[[group]],
                                   data[[vars[x]]],
+                                  w = wts,
                                   opts=group.test.opts),
                 silent = TRUE))
           if (inherits(test.result,'try-error')) {
@@ -644,9 +746,10 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                       factor.counts,
                       factor.numeric,
                       digits[[i]],
-                      fixed.digits))
-        contents <- do.call(rbind, contents)
-        st[[i]] <- rbind(st[[i]],contents)
+                      fixed.digits,
+                      wts[data[[group]] == grouplevels[j]]))
+        summcontents <- do.call(rbind, contents)
+        st[[i]] <- rbind(st[[i]],summcontents)
       }
 
       st.all[[j]] <- cbind_unequal(st)

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@
       <h1 data-toc-skip>sumtable: Summary Statistics</h1>
                         <h4 class="author">Nick Huntington-Klein</h4>
             
-            <h4 class="date">2021-03-03</h4>
+            <h4 class="date">2021-04-01</h4>
       
       
       <div class="hidden name"><code>sumtable.Rmd</code></div>
@@ -346,9 +346,11 @@ Species
          file<span class="op">=</span><span class="cn">NA</span>,
          summ<span class="op">=</span><span class="cn">NA</span>,
          summ.names<span class="op">=</span><span class="cn">NA</span>,
+         add.median<span class="op">=</span><span class="cn">FALSE</span>,
          group<span class="op">=</span><span class="cn">NA</span>,
          group.long<span class="op">=</span><span class="cn">FALSE</span>,
          group.test<span class="op">=</span><span class="cn">FALSE</span>,
+         group.weights <span class="op">=</span><span class="cn">NA</span>,
          col.breaks<span class="op">=</span><span class="cn">NA</span>,
          digits<span class="op">=</span><span class="cn">NA</span>,
          fixed.digits<span class="op">=</span><span class="cn">FALSE</span>,
@@ -1406,6 +1408,14 @@ Petal.Width
 </tr>
 </tbody>
 </table>
+</div>
+<div id="group-weights" class="section level2">
+<h2 class="hasAnchor">
+<a href="#group-weights" class="anchor"></a><code>group.weights</code>
+</h2>
+<p>This allows you to pass a set of weights for your data (as a vector or as a string column name). <strong>HOWEVER,</strong> it does not automatically weight all the results. If you leave <code>summ</code> as its default, then it will use <code><a href="https://rdrr.io/r/stats/weighted.mean.html">weighted.mean(x, w = wts)</a></code> and <code><a href="../reference/weighted.sd.html">weighted.sd(x, w = wts)</a></code> in place of wherever it would normally have <code><a href="https://rdrr.io/r/base/mean.html">mean(x)</a></code> and <code><a href="https://rdrr.io/r/stats/sd.html">sd(x)</a></code>. Factor proportions are calculated using <code><a href="https://rdrr.io/r/base/mean.html">mean(x)</a></code>, so this is covered. Weights will also be passed to <code><a href="../reference/independence.test.html">independence.test()</a></code> if <code>group.test = TRUE</code>, and so tests of independence across groups will be weighted as well.</p>
+<p><strong>No other calculations will be automatically weighted.</strong> This is really designed to be used with <code>group</code> and <code>group.test = TRUE</code> to create weighted balance tables, which is why it’s called <code>group.weights</code> (and to avoid anyone thinking it weights everything, which would be the natural conclusion if it were just called <code>weights</code>).</p>
+<p>If you want to use the weights with other functions, you can. You’ll just need to specify <code>summ</code> yourself. Just pass <code>summ</code> a string describing function that takes weights and refer to <code>wts</code> as the weights, e.g. <code>'weighted.mean(x, w = wts)'</code> for a weighted mean, as above.</p>
 </div>
 <div id="col-breaks" class="section level2">
 <h2 class="hasAnchor">

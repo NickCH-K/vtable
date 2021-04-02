@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -146,9 +146,11 @@
   file <span class='op'>=</span> <span class='cn'>NA</span>,
   summ <span class='op'>=</span> <span class='cn'>NA</span>,
   summ.names <span class='op'>=</span> <span class='cn'>NA</span>,
+  add.median <span class='op'>=</span> <span class='cn'>FALSE</span>,
   group <span class='op'>=</span> <span class='cn'>NA</span>,
   group.long <span class='op'>=</span> <span class='cn'>FALSE</span>,
   group.test <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  group.weights <span class='op'>=</span> <span class='cn'>NA</span>,
   col.breaks <span class='op'>=</span> <span class='cn'>NA</span>,
   digits <span class='op'>=</span> <span class='cn'>NA</span>,
   fixed.digits <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -177,9 +179,11 @@
   file <span class='op'>=</span> <span class='cn'>NA</span>,
   summ <span class='op'>=</span> <span class='cn'>NA</span>,
   summ.names <span class='op'>=</span> <span class='cn'>NA</span>,
+  add.median <span class='op'>=</span> <span class='cn'>FALSE</span>,
   group <span class='op'>=</span> <span class='cn'>NA</span>,
   group.long <span class='op'>=</span> <span class='cn'>FALSE</span>,
   group.test <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  group.weights <span class='op'>=</span> <span class='cn'>NA</span>,
   col.breaks <span class='op'>=</span> <span class='cn'>NA</span>,
   digits <span class='op'>=</span> <span class='cn'>NA</span>,
   fixed.digits <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -229,6 +233,10 @@
       <td><p>Character vector of names for the summary statistics included. If <code>summ</code> is at default, defaults to <code><a href='https://rdrr.io/r/base/c.html'>c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 75','Max')</a></code> (or the appropriate shortened version with multiple columns) unless all variables in the column are factors in which case it defaults to <code><a href='https://rdrr.io/r/base/c.html'>c('N','Percent')</a></code>. If <code>summ</code> has been set but <code>summ.names</code> has not, defaults to <code>summ</code> with the <code>(x)</code>s removed and the first letter capitalized.  If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead.</p></td>
     </tr>
     <tr>
+      <th>add.median</th>
+      <td><p>Adds <code>"median(x)"</code> to the set of default summary statistics. Has no effect if <code>"summ"</code> is also specified.</p></td>
+    </tr>
+    <tr>
       <th>group</th>
       <td><p>Character variable with the name of a column in the data set that statistics are to be calculated over. Value labels will be used if found for numeric variables. Changes the default <code>summ</code> to <code><a href='https://rdrr.io/r/base/c.html'>c('mean(x)','sd(x)')</a></code>.</p></td>
     </tr>
@@ -239,6 +247,10 @@
     <tr>
       <th>group.test</th>
       <td><p>Set to <code>TRUE</code> to perform tests of whether each variable in the table varies over values of <code>group</code>. Only works with <code>group.long = FALSE</code>. Performs a joint F-test (using <code>anova(lm))</code>) for numeric variables, and a Chi-square test of independence (<code>chisq.test</code>) for categorical variables. If you want to adjust things like which tests are used, significance star levels, etc., see the help file for <code>independence.test</code> and pass in a named list of options for that function.</p></td>
+    </tr>
+    <tr>
+      <th>group.weights</th>
+      <td><p>**THIS OPTION DOES NOT AUTOMATICALLY WEIGHT ALL CALCULATIONS.** This is mostly to be used with <code>group</code> and <code>group.long = FALSE</code>, and while it's more flexible than that, you've gotta read this to figure out how else to use it. That's why I gave it the weird name. Set this to a vector of weights, or a string representing a column name with weights. If <code>summ</code> is not customized, this will replace <code>'mean(x)'</code> and <code>'sd(x)'</code> with the equivalent weighted versions <code>'weighted.mean(x, w = wts)'</code> and <code>'weighted.sd(x, w = wts)'</code> It will also add weights to the default <code>group.test</code> tests. This will not add weights to any other calculations, or to any custom <code>group.test</code> weights (although you can always do that yourself by customizing <code>summ</code> and passing in weights with this argument-the weights can be referred to in your function as <code>wts</code>). This is generally intended for things like post-matching balance tables. If you specify a column name, that column will be removed from the rest of the table, so if you want it to be kept, specify this as a numeric vector instead. If you have a variable in your data called <code>'wts'</code> that will mess the use of this option up, I recommend changing that.</p></td>
     </tr>
     <tr>
       <th>col.breaks</th>

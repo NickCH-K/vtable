@@ -66,6 +66,24 @@ pc[c(25,50,75)]
 plot(pc)
 ```
 
+## `weighted.sd`
+
+`weighted.sd(x, w)` is a function to calculate a weighted standard deviation of `x` using `w` as weights, much like the base `weighted.mean()` does for means. It is mostly used as a helper function for `sumtable()` when `group.weights` is specified. However, you can use it on its own if you like. Unlike `weighted.mean()`, setting `na.rm = TRUE` will account for missings both in `x` and `w`.
+
+The weighted standard deviation is calculated as
+
+$$ \frac{\sum_i(w_i*(x_i-\bar{x}_w)^2)}{\frac{N_w-1}{N_w}\sum_iw_i} $$
+
+Where $\bar{x}_w$ is the weighted mean of $x$, and $N_w$ is the number of observations with a nonzero weight.
+
+```{r}
+x <- 1:100
+w <- 1:100
+weighted.mean(x, w)
+sd(x)
+weighted.sd(x, w)
+```
+
 # `independence.test`
 
 `independence.test` is a helper function for `sumtable(group.test=TRUE)` that tests for independence between a categorical variable `x` and another variable `y` that may be categorical or numerical. 
@@ -75,7 +93,7 @@ Then, it outputs a *formatted string* as its output, with significance stars, fo
 The function takes the format
 
 ```{r, eval = FALSE}
-independence.test(x,y,
+independence.test(x,y,w=NA,
                   factor.test = NA,
                   numeric.test = NA,
                   star.cutoffs = c(.01,.05,.1),
@@ -90,7 +108,7 @@ independence.test(x,y,
 
 These are functions that actually perform the independence test. `numeric.test` is used when `y` is numeric, and `factor.test` is used in all other instances.
 
-Specifically, these functions should take only `x` and `y` as arguments, and should return a list with three elements: the name of the test statistic, the test statistic itself, and the p-value of the test.
+Specifically, these functions should take only `x`, `y`, and `w=NULL` as arguments, and should return a list with three elements: the name of the test statistic, the test statistic itself, and the p-value of the test.
 
 By default, these are the internal functions `vtable:::chisq.it` for `factor.test` and `vtable:::groupf.it` for `numeric.test`, so you can take a look at those (just put `vtable:::chisq.it` in the terminal and it will show you the function's code) if you'd like to make your own test functions.
 

@@ -46,9 +46,11 @@ sumtable(data,
          file=NA,
          summ=NA,
          summ.names=NA,
+         add.median=FALSE,
          group=NA,
          group.long=FALSE,
          group.test=FALSE,
+         group.weights =NA,
          col.breaks=NA,
          digits=NA,
          fixed.digits=FALSE,
@@ -175,6 +177,14 @@ st(iris, group = 'Species', group.test = TRUE)
 ```{r}
 st(iris, group = 'Species', group.long = TRUE)
 ```
+
+## `group.weights`
+
+This allows you to pass a set of weights for your data (as a vector or as a string column name). **HOWEVER,** it does not automatically weight all the results. If you leave `summ` as its default, then it will use `weighted.mean(x, w = wts)` and `weighted.sd(x, w = wts)` in place of wherever it would normally have `mean(x)` and `sd(x)`. Factor proportions are calculated using `mean(x)`, so this is covered. Weights will also be passed to `independence.test()` if `group.test = TRUE`, and so tests of independence across groups will be weighted as well.
+
+**No other calculations will be automatically weighted.** This is really designed to be used with `group` and `group.test = TRUE` to create weighted balance tables, which is why it's called `group.weights` (and to avoid anyone thinking it weights everything, which would be the natural conclusion if it were just called `weights`).
+
+If you want to use the weights with other functions, you can. You'll just need to specify `summ` yourself. Just pass `summ` a string describing function that takes weights and refer to `wts` as the weights, e.g. `'weighted.mean(x, w = wts)'` for a weighted mean, as above.
 
 ## `col.breaks`
 

@@ -7,6 +7,7 @@
 independence.test(
   x,
   y,
+  w = NA,
   factor.test = NA,
   numeric.test = NA,
   star.cutoffs = c(0.01, 0.05, 0.1),
@@ -22,7 +23,9 @@ independence.test(
 
 \item{y}{A variable to test for independence with \code{x}. This can be a factor or numeric variable. If you want a numeric variable treated as categorical, convert to a factor first.}
 
-\item{factor.test}{Used when \code{y} is a factor, a function that takes \code{x} and \code{y} as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a Chi-squared test. WARNING: this test's assumptions fail with small sample sizes. This function will be attempted for all non-numeric \code{y}.}
+\item{w}{A vector of weights to pass to the appropriate test.}
+
+\item{factor.test}{Used when \code{y} is a factor, a function that takes \code{x} and \code{y} as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a Chi-squared test if there are no weights, or a design-based F statistic (Rao & Scott Aadjustment, see \code{survey::svychisq}) with weights, which requires that the **survey** package be installed. WARNING: the Chi-squared test's assumptions fail with small sample sizes. This function will be attempted for all non-numeric \code{y}.}
 
 \item{numeric.test}{Used when \code{y} is numeric, a function that takes \code{x} and \code{y} as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a group differences F test.}
 

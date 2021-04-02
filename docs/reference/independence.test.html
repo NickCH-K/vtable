@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -142,6 +142,7 @@
     <pre class="usage"><span class='fu'>independence.test</span><span class='op'>(</span>
   <span class='va'>x</span>,
   <span class='va'>y</span>,
+  w <span class='op'>=</span> <span class='cn'>NA</span>,
   factor.test <span class='op'>=</span> <span class='cn'>NA</span>,
   numeric.test <span class='op'>=</span> <span class='cn'>NA</span>,
   star.cutoffs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.01</span>, <span class='fl'>0.05</span>, <span class='fl'>0.1</span><span class='op'>)</span>,
@@ -164,8 +165,12 @@
       <td><p>A variable to test for independence with <code>x</code>. This can be a factor or numeric variable. If you want a numeric variable treated as categorical, convert to a factor first.</p></td>
     </tr>
     <tr>
+      <th>w</th>
+      <td><p>A vector of weights to pass to the appropriate test.</p></td>
+    </tr>
+    <tr>
       <th>factor.test</th>
-      <td><p>Used when <code>y</code> is a factor, a function that takes <code>x</code> and <code>y</code> as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a Chi-squared test. WARNING: this test's assumptions fail with small sample sizes. This function will be attempted for all non-numeric <code>y</code>.</p></td>
+      <td><p>Used when <code>y</code> is a factor, a function that takes <code>x</code> and <code>y</code> as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a Chi-squared test if there are no weights, or a design-based F statistic (Rao &amp; Scott Aadjustment, see <code><a href='https://rdrr.io/pkg/survey/man/svychisq.html'>survey::svychisq</a></code>) with weights, which requires that the **survey** package be installed. WARNING: the Chi-squared test's assumptions fail with small sample sizes. This function will be attempted for all non-numeric <code>y</code>.</p></td>
     </tr>
     <tr>
       <th>numeric.test</th>

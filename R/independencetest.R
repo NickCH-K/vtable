@@ -6,7 +6,8 @@
 #'
 #' @param x A categorical variable.
 #' @param y A variable to test for independence with \code{x}. This can be a factor or numeric variable. If you want a numeric variable treated as categorical, convert to a factor first.
-#' @param factor.test Used when \code{y} is a factor, a function that takes \code{x} and \code{y} as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a Chi-squared test. WARNING: this test's assumptions fail with small sample sizes. This function will be attempted for all non-numeric \code{y}.
+#' @param w A vector of weights to pass to the appropriate test.
+#' @param factor.test Used when \code{y} is a factor, a function that takes \code{x} and \code{y} as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a Chi-squared test if there are no weights, or a design-based F statistic (Rao & Scott Aadjustment, see \code{survey::svychisq}) with weights, which requires that the **survey** package be installed. WARNING: the Chi-squared test's assumptions fail with small sample sizes. This function will be attempted for all non-numeric \code{y}.
 #' @param numeric.test Used when \code{y} is numeric, a function that takes \code{x} and \code{y} as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a group differences F test.
 #' @param star.cutoffs A numeric vector indicating the p-value cutoffs to use for reporting significance stars. Defaults to \code{c(.01,.05,.1)}. If you don't want stars, remove them from the \code{format} argument.
 #' @param star.markers A character vector indicating the symbols to use to indicate significance cutoffs associated with \code{star.cuoffs}. Defaults to \code{c('***','**','*')}. If you don't want stars, remove them from the \code{format} argument.
@@ -20,7 +21,7 @@
 #' independence.test(mtcars$cyl,mtcars$mpg)
 #'
 #' @export
-independence.test <- function(x,y,
+independence.test <- function(x,y,w=NA,
                               factor.test = NA,
                               numeric.test = NA,
                               star.cutoffs = c(.01,.05,.1),
@@ -34,6 +35,13 @@ independence.test <- function(x,y,
   #Are we using factor.test or numeric.test
   cla <- is.numeric(y)
 
+  # Backwards consistency
+  if (length(w) == 1) {
+    if (is.na(w)) {
+      w <- NULL
+    }
+  }
+
   #Fill in defaults
   if (identical(factor.test,NA)) {
     factor.test <- chisq.it
@@ -43,9 +51,9 @@ independence.test <- function(x,y,
   }
 
   if (cla) {
-    result <- numeric.test(x,y)
+    result <- numeric.test(x,y,w)
   } else {
-    result <- factor.test(x,y)
+    result <- factor.test(x,y,w)
   }
 
   #Get stars
@@ -83,17 +91,34 @@ independence.test <- function(x,y,
 }
 
 # Internal chi-square and group-F tests that return things in independence.test format
-chisq.it <- function(x,y) {
-  suppressWarnings(result <- stats::chisq.test(x,y))
+chisq.it <- function(x,y,w=NULL) {
+  if (is.null(w)) {
+    suppressWarnings(result <- stats::chisq.test(x,y))
 
-  return(list(
-    'X2',
-    unname(result$statistic),
-    result$p.value
-  ))
+    return(list(
+      'X2',
+      unname(result$statistic),
+      result$p.value
+    ))
+  } else {
+    # Create survey design
+    d <- data.frame(x = x, y = y, w = w)
+    errmess <- try(sdes <- survey::svydesign(~1, data = d, weights = ~w))
+
+    if (grepl('Error in loadNamespace',errmess[1])) {
+      stop('Using weights with group.test = TRUE and factor variables requires the survey package. install.packages("survey")')
+    }
+
+    ftest <- survey::svychisq(~x+y, sdes)
+    return(list(
+      'F',
+      unname(ftest$statistic),
+      unname(ftest$p.value)
+    ))
+  }
 }
-groupf.it <- function(x,y) {
-  result <- stats::anova(stats::lm(y~factor(x)))
+groupf.it <- function(x,y,w=NULL) {
+  result <- stats::anova(stats::lm(y~factor(x),weights = w))
 
   return(list(
     'F',

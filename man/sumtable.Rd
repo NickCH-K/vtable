@@ -12,9 +12,11 @@ sumtable(
   file = NA,
   summ = NA,
   summ.names = NA,
+  add.median = FALSE,
   group = NA,
   group.long = FALSE,
   group.test = FALSE,
+  group.weights = NA,
   col.breaks = NA,
   digits = NA,
   fixed.digits = FALSE,
@@ -43,9 +45,11 @@ st(
   file = NA,
   summ = NA,
   summ.names = NA,
+  add.median = FALSE,
   group = NA,
   group.long = FALSE,
   group.test = FALSE,
+  group.weights = NA,
   col.breaks = NA,
   digits = NA,
   fixed.digits = FALSE,
@@ -80,11 +84,15 @@ st(
 
 \item{summ.names}{Character vector of names for the summary statistics included. If \code{summ} is at default, defaults to \code{c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 75','Max')} (or the appropriate shortened version with multiple columns) unless all variables in the column are factors in which case it defaults to \code{c('N','Percent')}. If \code{summ} has been set but \code{summ.names} has not, defaults to \code{summ} with the \code{(x)}s removed and the first letter capitalized.  If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead.}
 
+\item{add.median}{Adds \code{"median(x)"} to the set of default summary statistics. Has no effect if \code{"summ"} is also specified.}
+
 \item{group}{Character variable with the name of a column in the data set that statistics are to be calculated over. Value labels will be used if found for numeric variables. Changes the default \code{summ} to \code{c('mean(x)','sd(x)')}.}
 
 \item{group.long}{By default, if \code{group} is specified, each group will get its own set of columns. Set \code{group.long = TRUE} to instead basically just make a regular \code{sumtable()} for each group and stack them on top of each other. Good for when you have lots of groups. You can also set it to \code{'l'}, \code{'c'}, or \code{'r'} to determine how the group names are aligned. Defaults to centered.}
 
 \item{group.test}{Set to \code{TRUE} to perform tests of whether each variable in the table varies over values of \code{group}. Only works with \code{group.long = FALSE}. Performs a joint F-test (using \code{anova(lm))}) for numeric variables, and a Chi-square test of independence (\code{chisq.test}) for categorical variables. If you want to adjust things like which tests are used, significance star levels, etc., see the help file for \code{independence.test} and pass in a named list of options for that function.}
+
+\item{group.weights}{**THIS OPTION DOES NOT AUTOMATICALLY WEIGHT ALL CALCULATIONS.** This is mostly to be used with \code{group} and \code{group.long = FALSE}, and while it's more flexible than that, you've gotta read this to figure out how else to use it. That's why I gave it the weird name. Set this to a vector of weights, or a string representing a column name with weights. If \code{summ} is not customized, this will replace \code{'mean(x)'} and \code{'sd(x)'} with the equivalent weighted versions \code{'weighted.mean(x, w = wts)'} and \code{'weighted.sd(x, w = wts)'} It will also add weights to the default \code{group.test} tests. This will not add weights to any other calculations, or to any custom \code{group.test} weights (although you can always do that yourself by customizing \code{summ} and passing in weights with this argument-the weights can be referred to in your function as \code{wts}). This is generally intended for things like post-matching balance tables. If you specify a column name, that column will be removed from the rest of the table, so if you want it to be kept, specify this as a numeric vector instead. If you have a variable in your data called \code{'wts'} that will mess the use of this option up, I recommend changing that.}
 
 \item{col.breaks}{Numeric vector indicating the variables (or number of elements of \code{vars}) after which to start a new column. So for example with a data set with six variables, \code{c(3,5)} would put the first three variables in the first column, the next two in the middle, and the last on the right. Cannot be combined with \code{group} unless \code{group.long = TRUE}.}
 
