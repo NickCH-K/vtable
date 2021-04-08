@@ -212,7 +212,7 @@ summary.row <- function(data,var,st,
     mat <- as.data.frame(table(va))
     propcalc <- mat$Freq/nonmiss
     if (!is.null(wts) & grepl('wts',summ[2])) {
-      propcalc <- sapply(mat$va, function(x) weighted.mean(va == x, w = wts))
+      propcalc <- sapply(mat$va, function(x) stats::weighted.mean(va == x, w = wts))
     }
     propcalc <- propcalc*(100^factor.percent)
     mat$va <- paste('...',mat$va)
