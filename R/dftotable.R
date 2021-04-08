@@ -339,21 +339,21 @@ dftoLaTeX <- function(data,file=NA,fit.page = NA, frag=TRUE,title=NA,note=NA,not
   }
 
   #Begin table latex code by opening the table
-  table.latex <- '\\begin{table}[!htbp] \\centering \n \\renewcommand*{\\arraystretch}{1.1} \n'
+  table.latex <- '\\begin{table}[!htbp] \\centering \\renewcommand*{\\arraystretch}{1.1}'
 
   #Add a caption if there is one
   if (!is.na(title)) {
-    table.latex <- paste0(table.latex,'\n\\caption{',title,'}\n')
+    table.latex <- paste0(table.latex,'\\caption{',title,'}')
   }
   #Add an anchor if there is one
   if (!is.na(anchor)) {
-    table.latex <- paste0(table.latex,'\n\\label{',anchor,'}\n')
+    table.latex <- paste0(table.latex,'\\label{',anchor,'}')
   }
 
   # If there's a resizebox
   if (!is.na(fit.page)) {
     table.latex <- paste0(table.latex,
-                          '\\resizebox{',fit.page,'}{!}{ \n')
+                          '\\resizebox{',fit.page,'}{!}{')
   }
 
   #Start the tabular
