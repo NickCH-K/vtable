@@ -170,7 +170,7 @@
     </tr>
     <tr>
       <th>factor.test</th>
-      <td><p>Used when <code>y</code> is a factor, a function that takes <code>x</code> and <code>y</code> as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a Chi-squared test if there are no weights, or a design-based F statistic (Rao &amp; Scott Aadjustment, see <code><a href='https://rdrr.io/pkg/survey/man/svychisq.html'>survey::svychisq</a></code>) with weights, which requires that the **survey** package be installed. WARNING: the Chi-squared test's assumptions fail with small sample sizes. This function will be attempted for all non-numeric <code>y</code>.</p></td>
+      <td><p>Used when <code>y</code> is a factor, a function that takes <code>x</code> and <code>y</code> as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a Chi-squared test if there are no weights, or a design-based F statistic (Rao &amp; Scott Aadjustment, see <code><a href='https://rdrr.io/pkg/survey/man/svychisq.html'>survey::svychisq</a></code>) with weights, which requires that the <code>survey</code> package be installed. WARNING: the Chi-squared test's assumptions fail with small sample sizes. This function will be attempted for all non-numeric <code>y</code>.</p></td>
     </tr>
     <tr>
       <th>numeric.test</th>
