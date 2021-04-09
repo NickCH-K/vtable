@@ -108,7 +108,7 @@ Outputting the variable table as a help file will make it easy to search through
 
 This function is in a similar spirit to \code{promptData()}, but focuses on variable documentation rather than dataset documentation.
 
-If you would like to include a \code{sumtable} in an RMarkdown document, use \code{out="latexfrag"} if outputting to LaTeX (note this will just capture the table itself, not the header information). If outputting to another format, use \code{out="return"}, and send the result to \code{knitr::kable()}, perhaps followed by \code{kableExtra::kable_styling()} for styling control. Alternately, if you want the full page and not just the table and are exporting to HTML, save the \code{vtable} to file with \code{file='filename.html'}, and then put the page in your RMarkdown document with \code{<iframe>}.
+If you would like to include a \code{vtable} in an RMarkdown document, it should just work! If you leave \code{out} blank, it will default to a nicely-formatted \code{knitr::kable()}, although this will drop some formatting elements like multi-column cells (or do \code{out="kable"} to get an unformatted \code{kable} that you can format yourself). If you prefer the \code{vtable} package formatting, then use \code{out="latex"} if outputting to LaTeX or \code{out="htmlreturn"} for HTML, both with \code{results="asis"} in the code chunk. Alternately, in HTML, you can use the \code{file} option to write to file and use a \code{<iframe>} to include it.
 }
 \examples{
 \dontshow{

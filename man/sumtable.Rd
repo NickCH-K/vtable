@@ -138,13 +138,13 @@ This function will output a summary statistics variable table either to the cons
 \details{
 There are many, many functions in R that will produce a summary statisics table for you. So why use \code{sumtable()}? \code{sumtable()} serves two main purposes:
 
-(1) In the same spirit as \code{vtable()}, it makes it easy to view the summary statistics *as you work*, either in the Viewer pane or in a browser window.
+(1) In the same spirit as \code{vtable()}, it makes it easy to view the summary statistics \emph{as you work}, either in the Viewer pane or in a browser window.
 
-(2) \code{sumtable()} is designed to *have nice defaults* and is not really intended for deep customization. It's got lots of options, sure, but they're only intended to go so far. So you can have a summary statistics table without much work.
+(2) \code{sumtable()} is designed to \emph{have nice defaults} and is not really intended for deep customization. It's got lots of options, sure, but they're only intended to go so far. So you can have a summary statistics table without much work.
 
 Keeping with point (2), \code{sumtable()} is designed for use by people who want the kind of table that \code{sumtable()} produces, which is itself heavily influenced by the kinds of summary statistics tables you often see in economics papers. In that regard it is most similar to \code{stargazer::stargazer()} except that it can handle tibbles, factor variables, grouping, and produce multicolumn tables, or \code{summarytools::dfSummary()} or \code{skimr::skim()} except that it is easier to export with nice formatting. If you want a lot of control over your summary statistics table, check out the packages gtsummary, arsenal, qwraps2, or Amisc, and about a million more.
 
-If you would like to include a \code{sumtable} in an RMarkdown document, then use \code{out="latex"} if outputting to LaTeX. If outputting to another format, use \code{out="kable"}, perhaps followed by \code{kableExtra::kable_styling()} for styling control. Alternately, in HTML, you can use the \code{file} option to write to file and use a \code{<iframe>} to include it.
+If you would like to include a \code{sumtable} in an RMarkdown document, it should just work! If you leave \code{out} blank, it will default to a nicely-formatted \code{knitr::kable()}, although this will drop some formatting elements like multi-column cells (or do \code{out="kable"} to get an unformatted \code{kable} that you can format yourself). If you prefer the \code{vtable} package formatting, then use \code{out="latex"} if outputting to LaTeX or \code{out="htmlreturn"} for HTML, both with \code{results="asis"} in the code chunk. Alternately, in HTML, you can use the \code{file} option to write to file and use a \code{<iframe>} to include it.
 }
 \examples{
 # Examples are only run interactively because they open HTML pages in Viewer or a browser.
