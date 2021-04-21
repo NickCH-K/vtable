@@ -19,7 +19,10 @@ knitr::opts_chunk$set(
 # vtable
 
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/vtable)](https://CRAN.R-project.org/package=vtable)
+
+[![](http://cranlogs.r-pkg.org/badges/grand-total/vtable?color=orange)](https://cran.r-project.org/package=vtable) [![](http://cranlogs.r-pkg.org/badges/last-month/vtable?color=green)](https://cran.r-project.org/package=vtable) [![](https://www.r-pkg.org/badges/version/vtable?color=blue)](https://cran.r-project.org/package=vtable) [![CRAN
+checks](https://cranchecks.info/badges/summary/vtable)](https://cran.r-project.org/web/checks/check_results_vtable.html) [![CRAN status](https://www.r-pkg.org/badges/version/vtable)](https://CRAN.R-project.org/package=vtable)
+
 <!-- badges: end -->
 
 The **vtable** package is designed to help you quickly and efficiently look at and document your data.

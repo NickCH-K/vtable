@@ -5,8 +5,14 @@
 
 <!-- badges: start -->
 
+[![](http://cranlogs.r-pkg.org/badges/grand-total/vtable?color=orange)](https://cran.r-project.org/package=vtable)
+[![](http://cranlogs.r-pkg.org/badges/last-month/vtable?color=green)](https://cran.r-project.org/package=vtable)
+[![](https://www.r-pkg.org/badges/version/vtable?color=blue)](https://cran.r-project.org/package=vtable)
+[![CRAN
+checks](https://cranchecks.info/badges/summary/vtable)](https://cran.r-project.org/web/checks/check_results_vtable.html)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/vtable)](https://CRAN.R-project.org/package=vtable)
+
 <!-- badges: end -->
 
 The **vtable** package is designed to help you quickly and efficiently
@@ -43,7 +49,7 @@ want something real out there, that’s when you can break out the big
 guns.
 
 All three main **vtable** functions can produce HTML, LaTeX,
-`data.frame`, or `knitr::kable()` output.
+`data.frame`, CSV, or `knitr::kable()` output.
 
 ## Installation
 
@@ -77,154 +83,80 @@ data(iris)
 vt(iris)
 ```
 
-<table>
-
+<table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-
 iris
-
 </caption>
-
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 Name
-
 </th>
-
 <th style="text-align:left;">
-
 Class
-
 </th>
-
 <th style="text-align:left;">
-
 Values
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 Sepal.Length
-
 </td>
-
 <td style="text-align:left;">
-
 numeric
-
 </td>
-
 <td style="text-align:left;">
-
 Num: 4.3 to 7.9
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Sepal.Width
-
 </td>
-
 <td style="text-align:left;">
-
 numeric
-
 </td>
-
 <td style="text-align:left;">
-
 Num: 2 to 4.4
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Petal.Length
-
 </td>
-
 <td style="text-align:left;">
-
 numeric
-
 </td>
-
 <td style="text-align:left;">
-
 Num: 1 to 6.9
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Petal.Width
-
 </td>
-
 <td style="text-align:left;">
-
 numeric
-
 </td>
-
 <td style="text-align:left;">
-
 Num: 0.1 to 2.5
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Species
-
 </td>
-
 <td style="text-align:left;">
-
 factor
-
 </td>
-
 <td style="text-align:left;">
-
 ‘setosa’ ‘versicolor’ ‘virginica’
-
 </td>
-
 </tr>
-
 </tbody>
-
 </table>
 
 There are plenty of options if we want to go nuts, but let’s keep it
@@ -234,679 +166,348 @@ simple and just ask for a little more with `lush`
 vt(iris, lush = TRUE)
 ```
 
-<table>
-
+<table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-
 iris
-
 </caption>
-
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 Name
-
 </th>
-
 <th style="text-align:left;">
-
 Class
-
 </th>
-
 <th style="text-align:left;">
-
 Values
-
 </th>
-
 <th style="text-align:left;">
-
 Missing
-
 </th>
-
 <th style="text-align:left;">
-
 Summary
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 Sepal.Length
-
 </td>
-
 <td style="text-align:left;">
-
 numeric
-
 </td>
-
 <td style="text-align:left;">
-
 Num: 4.3 to 7.9
-
 </td>
-
 <td style="text-align:left;">
-
 0
-
 </td>
-
 <td style="text-align:left;">
-
-mean: 5.843\<br\>sd: 0.828\<br\>nuniq: 35
-
+mean: 5.843, sd: 0.828, nuniq: 35
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Sepal.Width
-
 </td>
-
 <td style="text-align:left;">
-
 numeric
-
 </td>
-
 <td style="text-align:left;">
-
 Num: 2 to 4.4
-
 </td>
-
 <td style="text-align:left;">
-
 0
-
 </td>
-
 <td style="text-align:left;">
-
-mean: 3.057\<br\>sd: 0.436\<br\>nuniq: 23
-
+mean: 3.057, sd: 0.436, nuniq: 23
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Petal.Length
-
 </td>
-
 <td style="text-align:left;">
-
 numeric
-
 </td>
-
 <td style="text-align:left;">
-
 Num: 1 to 6.9
-
 </td>
-
 <td style="text-align:left;">
-
 0
-
 </td>
-
 <td style="text-align:left;">
-
-mean: 3.758\<br\>sd: 1.765\<br\>nuniq: 43
-
+mean: 3.758, sd: 1.765, nuniq: 43
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Petal.Width
-
 </td>
-
 <td style="text-align:left;">
-
 numeric
-
 </td>
-
 <td style="text-align:left;">
-
 Num: 0.1 to 2.5
-
 </td>
-
 <td style="text-align:left;">
-
 0
-
 </td>
-
 <td style="text-align:left;">
-
-mean: 1.199\<br\>sd: 0.762\<br\>nuniq: 22
-
+mean: 1.199, sd: 0.762, nuniq: 22
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Species
-
 </td>
-
 <td style="text-align:left;">
-
 factor
-
 </td>
-
 <td style="text-align:left;">
-
 ‘setosa’ ‘versicolor’ ‘virginica’
-
 </td>
-
 <td style="text-align:left;">
-
 0
-
 </td>
-
 <td style="text-align:left;">
-
 nuniq: 3
-
 </td>
-
 </tr>
-
 </tbody>
-
 </table>
 
 ## sumtable Example
 
-Let’s stick with `iris`\!
+Let’s stick with `iris`!
 
 ``` r
 # Basic summary stats
 st(iris)
 ```
 
-<table>
-
+<table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-
 Summary Statistics
-
 </caption>
-
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 Variable
-
 </th>
-
 <th style="text-align:left;">
-
 N
-
 </th>
-
 <th style="text-align:left;">
-
 Mean
-
 </th>
-
 <th style="text-align:left;">
-
 Std. Dev.
-
 </th>
-
 <th style="text-align:left;">
-
 Min
-
 </th>
-
 <th style="text-align:left;">
-
 Pctl. 25
-
 </th>
-
 <th style="text-align:left;">
-
 Pctl. 75
-
 </th>
-
 <th style="text-align:left;">
-
 Max
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 Sepal.Length
-
 </td>
-
 <td style="text-align:left;">
-
 150
-
 </td>
-
 <td style="text-align:left;">
-
 5.843
-
 </td>
-
 <td style="text-align:left;">
-
 0.828
-
 </td>
-
 <td style="text-align:left;">
-
 4.3
-
 </td>
-
 <td style="text-align:left;">
-
 5.1
-
 </td>
-
 <td style="text-align:left;">
-
 6.4
-
 </td>
-
 <td style="text-align:left;">
-
 7.9
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Sepal.Width
-
 </td>
-
 <td style="text-align:left;">
-
 150
-
 </td>
-
 <td style="text-align:left;">
-
 3.057
-
 </td>
-
 <td style="text-align:left;">
-
 0.436
-
 </td>
-
 <td style="text-align:left;">
-
 2
-
 </td>
-
 <td style="text-align:left;">
-
 2.8
-
 </td>
-
 <td style="text-align:left;">
-
 3.3
-
 </td>
-
 <td style="text-align:left;">
-
 4.4
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Petal.Length
-
 </td>
-
 <td style="text-align:left;">
-
 150
-
 </td>
-
 <td style="text-align:left;">
-
 3.758
-
 </td>
-
 <td style="text-align:left;">
-
 1.765
-
 </td>
-
 <td style="text-align:left;">
-
 1
-
 </td>
-
 <td style="text-align:left;">
-
 1.6
-
 </td>
-
 <td style="text-align:left;">
-
 5.1
-
 </td>
-
 <td style="text-align:left;">
-
 6.9
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Petal.Width
-
 </td>
-
 <td style="text-align:left;">
-
 150
-
 </td>
-
 <td style="text-align:left;">
-
 1.199
-
 </td>
-
 <td style="text-align:left;">
-
 0.762
-
 </td>
-
 <td style="text-align:left;">
-
 0.1
-
 </td>
-
 <td style="text-align:left;">
-
 0.3
-
 </td>
-
 <td style="text-align:left;">
-
 1.8
-
 </td>
-
 <td style="text-align:left;">
-
 2.5
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Species
-
 </td>
-
 <td style="text-align:left;">
-
 150
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 … setosa
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 33.3%
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 … versicolor
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 33.3%
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 … virginica
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 33.3%
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 <td style="text-align:left;">
-
 </td>
-
 </tr>
-
 </tbody>
-
 </table>
 
 Note that `sumtable` allows for much more customization than `vtable`
@@ -929,19 +530,13 @@ st(iris,
    group.test = TRUE)
 ```
 
-<table>
-
+<table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-
 Summary Statistics
-
 </caption>
-
 <thead>
-
 <tr>
-
-<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
 
 <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 
@@ -950,8 +545,7 @@ Species
 </div>
 
 </th>
-
-<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
 
 <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 
@@ -960,8 +554,7 @@ setosa
 </div>
 
 </th>
-
-<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
 
 <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 
@@ -970,8 +563,7 @@ versicolor
 </div>
 
 </th>
-
-<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
 
 <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 
@@ -980,384 +572,195 @@ virginica
 </div>
 
 </th>
-
-<th style="border-bottom:hidden" colspan="1">
-
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="1">
 </th>
-
 </tr>
-
 <tr>
-
 <th style="text-align:left;">
-
 Variable
-
 </th>
-
 <th style="text-align:left;">
-
 N
-
 </th>
-
 <th style="text-align:left;">
-
 Mean
-
 </th>
-
 <th style="text-align:left;">
-
 SD
-
 </th>
-
 <th style="text-align:left;">
-
 N
-
 </th>
-
 <th style="text-align:left;">
-
 Mean
-
 </th>
-
 <th style="text-align:left;">
-
 SD
-
 </th>
-
 <th style="text-align:left;">
-
 N
-
 </th>
-
 <th style="text-align:left;">
-
 Mean
-
 </th>
-
 <th style="text-align:left;">
-
 SD
-
 </th>
-
 <th style="text-align:left;">
-
 Test
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 Sepal.Length
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 5.006
-
 </td>
-
 <td style="text-align:left;">
-
 0.352
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 5.936
-
 </td>
-
 <td style="text-align:left;">
-
 0.516
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 6.588
-
 </td>
-
 <td style="text-align:left;">
-
 0.636
-
 </td>
-
 <td style="text-align:left;">
-
 F=119.265<sup>\*\*\*</sup>
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Sepal.Width
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 3.428
-
 </td>
-
 <td style="text-align:left;">
-
 0.379
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 2.77
-
 </td>
-
 <td style="text-align:left;">
-
 0.314
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 2.974
-
 </td>
-
 <td style="text-align:left;">
-
 0.322
-
 </td>
-
 <td style="text-align:left;">
-
 F=49.16<sup>\*\*\*</sup>
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Petal.Length
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 1.462
-
 </td>
-
 <td style="text-align:left;">
-
 0.174
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 4.26
-
 </td>
-
 <td style="text-align:left;">
-
 0.47
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 5.552
-
 </td>
-
 <td style="text-align:left;">
-
 0.552
-
 </td>
-
 <td style="text-align:left;">
-
 F=1180.161<sup>\*\*\*</sup>
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Petal.Width
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 0.246
-
 </td>
-
 <td style="text-align:left;">
-
 0.105
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 1.326
-
 </td>
-
 <td style="text-align:left;">
-
 0.198
-
 </td>
-
 <td style="text-align:left;">
-
 50
-
 </td>
-
 <td style="text-align:left;">
-
 2.026
-
 </td>
-
 <td style="text-align:left;">
-
 0.275
-
 </td>
-
 <td style="text-align:left;">
-
 F=960.007<sup>\*\*\*</sup>
-
 </td>
-
 </tr>
-
 </tbody>
-
 <tfoot>
-
 <tr>
-
 <td style="padding: 0; border:0;" colspan="100%">
-
-<sup></sup> Statistical significance markers: \* p\<0.1; \*\* p\<0.05;
-\*\*\* p\<0.01
-
+<sup></sup> Statistical significance markers: \* p&lt;0.1; \*\*
+p&lt;0.05; \*\*\* p&lt;0.01
 </td>
-
 </tr>
-
 </tfoot>
-
 </table>
 
 ## labeltable Example
@@ -1371,64 +774,35 @@ data(efc, package = 'sjlabelled')
 labeltable(efc$e16sex)
 ```
 
-<table>
-
+<table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 e16sex
-
 </th>
-
 <th style="text-align:left;">
-
 Label
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 1
-
 </td>
-
 <td style="text-align:left;">
-
 male
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 2
-
 </td>
-
 <td style="text-align:left;">
-
 female
-
 </td>
-
 </tr>
-
 </tbody>
-
 </table>
 
 `labeltable` can also be used to see, for values of one variable, what
@@ -1440,234 +814,119 @@ but hey, go nuts.
 labeltable(efc$e15relat,efc$e16sex,efc$e42dep)
 ```
 
-<table>
-
+<table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 e15relat
-
 </th>
-
 <th style="text-align:left;">
-
 e16sex
-
 </th>
-
 <th style="text-align:left;">
-
 e42dep
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 1
-
 </td>
-
 <td style="text-align:left;">
-
 2, 1
-
 </td>
-
 <td style="text-align:left;">
-
 3, 4, 1, 2, NA
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 2
-
 </td>
-
 <td style="text-align:left;">
-
 2, 1, NA
-
 </td>
-
 <td style="text-align:left;">
-
 3, 4, 2, 1
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 3
-
 </td>
-
 <td style="text-align:left;">
-
 1, 2
-
 </td>
-
 <td style="text-align:left;">
-
 3, 2, 1, 4
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 4
-
 </td>
-
 <td style="text-align:left;">
-
 2, 1
-
 </td>
-
 <td style="text-align:left;">
-
 4, 3, 2, 1
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 5
-
 </td>
-
 <td style="text-align:left;">
-
 2, 1
-
 </td>
-
 <td style="text-align:left;">
-
 3, 2, 1, 4
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 6
-
 </td>
-
 <td style="text-align:left;">
-
 2, 1
-
 </td>
-
 <td style="text-align:left;">
-
 4, 3, 1, 2
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 7
-
 </td>
-
 <td style="text-align:left;">
-
 2, 1
-
 </td>
-
 <td style="text-align:left;">
-
 4, 3, 2, 1
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 8
-
 </td>
-
 <td style="text-align:left;">
-
 2, 1
-
 </td>
-
 <td style="text-align:left;">
-
 3, 4, 2, 1
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 NA
-
 </td>
-
 <td style="text-align:left;">
-
 2, NA
-
 </td>
-
 <td style="text-align:left;">
-
 3, NA
-
 </td>
-
 </tr>
-
 </tbody>
-
 </table>

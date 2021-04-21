@@ -91,7 +91,7 @@
       <h1 data-toc-skip>Variable Table (vtable)</h1>
                         <h4 class="author">Nick Huntington-Klein</h4>
             
-            <h4 class="date">2021-04-09</h4>
+            <h4 class="date">2021-04-21</h4>
       
       
       <div class="hidden name"><code>vtablefunction.Rmd</code></div>
@@ -144,8 +144,7 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">vtable</span><span class="op">)</span></code></pre></div>
 <pre><code>## Loading required package: kableExtra</code></pre>
-<pre><code>## Warning: package 'kableExtra' was built under R version 4.0.5</code></pre>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Example 1, using base data LifeCycleSavings</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>, out<span class="op">=</span><span class="st">'kable'</span><span class="op">)</span></code></pre></div>
@@ -222,7 +221,7 @@ Num: 0.22 to 16.71
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Example 2, using efc data with embedded variable labels</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
@@ -665,7 +664,7 @@ Care level
 </tbody>
 </table>
 <p>By default, <code>vtable</code> will select ‘viewer’ if running in RStudio, and ‘browser’ otherwise. If it’s being built in an RMarkdown document with <code>knitr</code>, it will default to ‘kable’.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,out<span class="op">=</span><span class="st">'browser'</span><span class="op">)</span>
@@ -681,7 +680,7 @@ Care level
 <a href="#file" class="anchor"></a><code>file</code>
 </h2>
 <p>The <code>file</code> argument will write the variable documentation file to an HTML or LaTeX file and save it. Will automatically append ‘html’ or ‘tex’ filetype if the filename does not include a period.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,file<span class="op">=</span><span class="st">'lifecycle_variabledocumentation'</span><span class="op">)</span></code></pre></div>
 </div>
@@ -695,7 +694,7 @@ Care level
 <h3 class="hasAnchor">
 <a href="#labels-as-a-vector" class="anchor"></a><code>labels</code> as a vector</h3>
 <p><code>labels</code> can be set to be a vector of equal length to the number of variables in <code>data</code>, and in the same order. <code>NA</code> values can be used for padding if some variables do not have labels.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Note that LifeCycleSavings has five variables</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
 <span class="co">#These variable labels are taken from help(LifeCycleSavings)</span>
@@ -796,7 +795,7 @@ Num: 0.22 to 16.71
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'numeric aggregate personal savings'</span>,<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="cn">NA</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,labels<span class="op">=</span><span class="va">labs</span><span class="op">)</span></code></pre></div>
 <table class="table table">
@@ -896,7 +895,7 @@ Num: 0.22 to 16.71
 <a href="#labels-as-a-two-column-data-set" class="anchor"></a><code>labels</code> as a two-column data set</h3>
 <p><code>labels</code> can be set to a two-column data set (any type will do) where the first column has the variable names, and the second column has the labels. The column names don’t matter.</p>
 <p>This approach does <strong>not</strong> require that every variable name in <code>data</code> has a matching label.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Note that LifeCycleSavings has five variables</span>
 <span class="co">#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
@@ -1003,7 +1002,7 @@ Num: 0.22 to 16.71
 <a href="#labels-as-a-one-row-data-set" class="anchor"></a><code>labels</code> as a one-row data set</h3>
 <p><code>labels</code> can be set to a one-row data set in which the column names are the variable names in <code>data</code> and the first row is the variable names. The <code>labels</code> argument can take any data type including data frame, data table, tibble, or matrix, as long as it has a valid set of variable names stored in the <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code> attribute.</p>
 <p>This approach does <strong>not</strong> require that every variable name in <code>data</code> has a matching label.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Note that LifeCycleSavings has five variables</span>
 <span class="co">#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
@@ -1117,7 +1116,7 @@ Num: 0.22 to 16.71
 </h2>
 <p>The <code>values</code> flag will either report or not report the values that each variable takes. Numeric variables will report a range, logicals will report ‘TRUE FALSE’, and factor variables will report the first <code>factor.limit</code> (default 5) factors listed.</p>
 <p>If the variable is numeric but has value labels applied by the <code>sjlabelled</code> package, <code><a href="../reference/vtable.html">vtable()</a></code> will find them and report the numeric-label crosswalk.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,values<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <table class="table table">
@@ -1175,7 +1174,7 @@ numeric
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></code></pre></div>
 <table class="table table">
 <caption>
@@ -1250,7 +1249,7 @@ Num: 0.22 to 16.71
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#CO2 contains factor variables</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">CO2</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">CO2</span><span class="op">)</span></code></pre></div>
@@ -1327,7 +1326,7 @@ Num: 7.7 to 45.5
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#efc contains labeled values</span>
 <span class="co">#Note that the original value labels do not easily tell you what numerical</span>
 <span class="co">#value each label maps to, but vtable() does.</span>
@@ -1744,7 +1743,7 @@ Care level
 <a href="#char-values" class="anchor"></a><code>char.values</code>
 </h2>
 <p>If <code>values</code> is set to <code>TRUE</code>, then <code>char.values = TRUE</code> instructs <code>vtable</code> to list the values that character variables take, as though they were factors. If you only want some of the character variables to have their values listed, use a character vector to indicate which variables.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">USJudgeRatings</span><span class="op">)</span>
 <span class="va">USJudgeRatings</span><span class="op">$</span><span class="va">Judge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span><span class="op">(</span><span class="va">USJudgeRatings</span><span class="op">)</span>
 <span class="va">USJudgeRatings</span><span class="op">$</span><span class="va">SecondCharacter</span> <span class="op">&lt;-</span> <span class="st">'Less Interesting'</span>
@@ -1765,7 +1764,7 @@ Care level
 <p><code>anchor</code> will add an anchor ID (<code>&lt;a name =</code> in HTML or <code>\label{}</code> in LaTeX) to allow other parts of your document to link to it, if you are including your <code>vtable</code> in a larger document.</p>
 <p><code>data.title</code> and <code>desc</code> will only show up in full-page <code>vtable</code>s. That is, you won’t get them with <code>out = 'return'</code>, <code>out = 'csv'</code>, or <code>out = 'latex'</code> (although <code>out = 'latexpage'</code> works). <code>note</code> and <code>anchor</code> will only show up in formats that support multi-column cells and anchoring, so they won’t work with <code>out = 'return'</code> or <code>out = 'csv'</code>.</p>
 <p><code>out = 'kable'</code> is a half-exception in that it will use <code>data.title</code> as the caption for the <code>kable</code>, and will use the <code>note</code> as a footnote, but won’t use <code>desc</code> or <code>anchor</code>.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">vtable</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
@@ -1783,7 +1782,7 @@ Care level
 <a href="#col-width" class="anchor"></a><code>col.width</code>
 </h2>
 <p><code><a href="../reference/vtable.html">vtable()</a></code> will select default column widths for the variable table depending on which measures <code>(name, class, label, values, summ)</code> are included. <code>col.width</code>, as a vector of percentage column widths on the 0-100 scale, will override these defaults.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
 <span class="co">#The variable names in this data set are pretty short, and the value labels are</span>
@@ -1797,7 +1796,7 @@ Care level
 <p><code>col.align</code> can be used to adjust text alignment in HTML output. Set to ‘left’, ‘right’, or ‘center’ to align all columns, or give a vector of column alignments to do each column separately.</p>
 <p>If you want to get tricky, you can add a semicolon afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.</p>
 <p>This option is only for HTML output and will only work with <code>out</code> values of ‘browser’, ‘viewer’, or ‘htmlreturn’.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span>,col.align <span class="op">=</span> <span class="st">'right'</span><span class="op">)</span></code></pre></div>
@@ -1811,7 +1810,7 @@ Care level
 <p>Defaults to left-aligned ‘Variable’ columns and right-aligned everything else. If <code>col.widths</code> is specified, <code>align</code> defaults to ‘p{}’ columns, with widths set by <code>col.width</code>.</p>
 <p><code>fit.page</code> can be used to ensure that the table is a certain width, and will be used as an entry to a <code>\resizebox{}</code>. Set to <code>\\textwidth</code> to set the table to text width, or <code>.9\\textwidth</code> for 90% of the page, and so on, or any recognized width value in LaTeX.</p>
 <p>For all of these, be sure to escape special characters, in particular backslashes.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span>,align <span class="op">=</span> <span class="st">'p{.3\\textwidth}cc'</span>, fit.page <span class="op">=</span> <span class="st">'\\textwidth'</span>, out <span class="op">=</span> <span class="st">'latex'</span><span class="op">)</span></code></pre></div>
@@ -1822,7 +1821,7 @@ Care level
 </h2>
 <p><code>summ</code> will calculate summary statistics for all variables that report valid output on the given summary statistics functions. <code>summ</code> is very flexible. It takes a character vector in which each element is of the form <code>function(x)</code>, where <code>function(x)</code> is any function that takes a vector and returns a single numeric value. For example, <code>summ=c('mean(x)','median(x)','mean(log(x))')</code> would calculate the mean, median, and mean of the log for each variable.</p>
 <p><code>summ</code> treats as special two <code>vtable</code> functions: <code><a href="../reference/propNA.html">propNA(x)</a></code> and <code><a href="../reference/countNA.html">countNA(x)</a></code>, which give the proportion and count of NA values, and the count of non-NA values in the variable, respectively. These two functions are always reported first, and are the only functions that include NA values in their calculations.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
 
