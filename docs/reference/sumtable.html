@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.2</span>
       </span>
     </div>
 
@@ -114,9 +114,17 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/NickCH-K/vtable/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -131,7 +139,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Summary Table Function</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/NickCH-K/vtable/blob/master/R/sumtable.R'><code>R/sumtable.R</code></a></small>
     <div class="hidden name"><code>sumtable.Rd</code></div>
     </div>
 
@@ -258,7 +266,7 @@
     </tr>
     <tr>
       <th>digits</th>
-      <td><p>Number of digits after the decimal place to report. Set to a single number for consistent digits, or a vector the same length as <code>summ</code> for different digits for each calculation, or a list of vectors that match up to a multi-column <code>summ</code>. Defaults to 0 for the first calculation and 2 afterwards.</p></td>
+      <td><p>Number of digits after the decimal place to report. Set to a single number for consistent digits, or a vector the same length as <code>summ</code> for different digits for each calculation, or a list of vectors that match up to a multi-column <code>summ</code>. Defaults to 0 for the first calculation (N, usually) and 2 afterwards.</p></td>
     </tr>
     <tr>
       <th>fixed.digits</th>

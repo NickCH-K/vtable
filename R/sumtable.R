@@ -24,7 +24,7 @@
 #' @param group.test Set to \code{TRUE} to perform tests of whether each variable in the table varies over values of \code{group}. Only works with \code{group.long = FALSE}. Performs a joint F-test (using \code{anova(lm))}) for numeric variables, and a Chi-square test of independence (\code{chisq.test}) for categorical variables. If you want to adjust things like which tests are used, significance star levels, etc., see the help file for \code{independence.test} and pass in a named list of options for that function.
 #' @param group.weights \emph{THIS OPTION DOES NOT AUTOMATICALLY WEIGHT ALL CALCULATIONS.} This is mostly to be used with \code{group} and \code{group.long = FALSE}, and while it's more flexible than that, you've gotta read this to figure out how else to use it. That's why I gave it the weird name. Set this to a vector of weights, or a string representing a column name with weights. If \code{summ} is not customized, this will replace \code{'mean(x)'} and \code{'sd(x)'} with the equivalent weighted versions \code{'weighted.mean(x, w = wts)'} and \code{'weighted.sd(x, w = wts)'} It will also add weights to the default \code{group.test} tests. This will not add weights to any other calculations, or to any custom \code{group.test} weights (although you can always do that yourself by customizing \code{summ} and passing in weights with this argument-the weights can be referred to in your function as \code{wts}). This is generally intended for things like post-matching balance tables. If you specify a column name, that column will be removed from the rest of the table, so if you want it to be kept, specify this as a numeric vector instead. If you have a variable in your data called \code{'wts'} that will mess the use of this option up, I recommend changing that.
 #' @param col.breaks Numeric vector indicating the variables (or number of elements of \code{vars}) after which to start a new column. So for example with a data set with six variables, \code{c(3,5)} would put the first three variables in the first column, the next two in the middle, and the last on the right. Cannot be combined with \code{group} unless \code{group.long = TRUE}.
-#' @param digits Number of digits after the decimal place to report. Set to a single number for consistent digits, or a vector the same length as \code{summ} for different digits for each calculation, or a list of vectors that match up to a multi-column \code{summ}. Defaults to 0 for the first calculation and 2 afterwards.
+#' @param digits Number of digits after the decimal place to report. Set to a single number for consistent digits, or a vector the same length as \code{summ} for different digits for each calculation, or a list of vectors that match up to a multi-column \code{summ}. Defaults to 0 for the first calculation (N, usually) and 2 afterwards.
 #' @param fixed.digits \code{FALSE} will cut off trailing \code{0}s when rounding. \code{TRUE} retains them. Defaults to \code{FALSE}.
 #' @param factor.percent Set to \code{TRUE} to show factor means as percentages instead of proportions, i.e. \code{50\%} with a column header of "Percent" rather than \code{.5} with a column header of "Mean". Defaults to \code{TRUE}.
 #' @param factor.counts Set to \code{TRUE} to show a count of each factor level in the first column. Defaults to \code{TRUE}.
@@ -357,7 +357,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
         # If there are weights
         if (!is.null(wts)) {
-          summ[[i]] <- c('sum(x)', 'weighted.mean(x, w = wts)')
+          summ[[i]] <- c('sum(x)', 'stats::weighted.mean(x, w = wts)')
           if (fill.sn) {
             summ.names[[i]][2] <- paste0(summ.names[[i]][2], ' (Weighted)')
           }
@@ -379,7 +379,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
         # If there are weights
         if (!is.null(wts)) {
-          summ[[i]][summ[[i]] == 'mean(x)'] <- 'weighted.mean(x, w = wts)'
+          summ[[i]][summ[[i]] == 'mean(x)'] <- 'stats::weighted.mean(x, w = wts)'
           summ[[i]][summ[[i]] == 'sd(x)'] <- 'weighted.sd(x, w = wts)'
           if (fill.sn) {
             summ.names[[i]][summ.names[[i]] == 'Mean'] <- 'Wt. Mean'
@@ -403,7 +403,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
         # If there are weights
         if (!is.null(wts)) {
-          summ[[i]][summ[[i]] == 'mean(x)'] <- 'weighted.mean(x, w = wts)'
+          summ[[i]][summ[[i]] == 'mean(x)'] <- 'stats::weighted.mean(x, w = wts)'
           summ[[i]][summ[[i]] == 'sd(x)'] <- 'weighted.sd(x, w = wts)'
           if (fill.sn) {
             summ.names[[i]][summ.names[[i]] == 'Mean'] <- 'Wt. Mean'
@@ -426,7 +426,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
         # If there are weights
         if (!is.null(wts)) {
-          summ[[i]][summ[[i]] == 'mean(x)'] <- 'weighted.mean(x, w = wts)'
+          summ[[i]][summ[[i]] == 'mean(x)'] <- 'stats::weighted.mean(x, w = wts)'
           summ[[i]][summ[[i]] == 'sd(x)'] <- 'weighted.sd(x, w = wts)'
           if (fill.sn) {
             summ.names[[i]][summ.names[[i]] == 'Mean'] <- 'Wt. Mean'

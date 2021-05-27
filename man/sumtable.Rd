@@ -96,7 +96,7 @@ st(
 
 \item{col.breaks}{Numeric vector indicating the variables (or number of elements of \code{vars}) after which to start a new column. So for example with a data set with six variables, \code{c(3,5)} would put the first three variables in the first column, the next two in the middle, and the last on the right. Cannot be combined with \code{group} unless \code{group.long = TRUE}.}
 
-\item{digits}{Number of digits after the decimal place to report. Set to a single number for consistent digits, or a vector the same length as \code{summ} for different digits for each calculation, or a list of vectors that match up to a multi-column \code{summ}. Defaults to 0 for the first calculation and 2 afterwards.}
+\item{digits}{Number of digits after the decimal place to report. Set to a single number for consistent digits, or a vector the same length as \code{summ} for different digits for each calculation, or a list of vectors that match up to a multi-column \code{summ}. Defaults to 0 for the first calculation (N, usually) and 2 afterwards.}
 
 \item{fixed.digits}{\code{FALSE} will cut off trailing \code{0}s when rounding. \code{TRUE} retains them. Defaults to \code{FALSE}.}
 

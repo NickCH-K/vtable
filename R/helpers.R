@@ -212,23 +212,23 @@ summary.row <- function(data,var,st,
     mat <- as.data.frame(table(va))
     propcalc <- mat$Freq/nonmiss
     if (!is.null(wts) & grepl('wts',summ[2])) {
-      propcalc <- sapply(mat$va, function(x) stats::weighted.mean(va == x, w = wts))
+      propcalc <- sapply(mat$va, function(x) stats::weighted.mean(va == x, w = wts, na.rm = TRUE))
     }
     propcalc <- propcalc*(100^factor.percent)
     mat$va <- paste('...',mat$va)
     if (fixed.digits) {
       mat$Prop <- sapply(1:length(propcalc), function(x)
         format(propcalc[x],
-               digits=max(digits[2]-2*factor.percent,0),
+               digits=max(digits[2]-2*factor.percent,1),
                nsmall=max(digits[2]-2*factor.percent,0),
                scientific = FALSE))
       mat$Freq <- sapply(1:length(mat$Freq), function(x)
         format(as.numeric(mat$Freq[x]),
-               digits=digits[1],
+               digits=max(digits[1],1),
                nsmall=digits[1],
                scientific = FALSE))
       st[1,2] <- format(as.numeric(st[1,2]),
-                                   digits = digits[1],
+                                   max(digits = digits[1],1),
                                    nsmall = digits[1],
                         scientific = FALSE)
     } else {
@@ -261,7 +261,7 @@ summary.row <- function(data,var,st,
     #Round
     if (fixed.digits) {
       results <- lapply(results, function(x)
-        sapply(1:length(x), function(y) format(x[y],digits=digits[y],nsmall = digits[y],scientific=FALSE)))
+        sapply(1:length(x), function(y) format(x[y],digits=digits[y],nsmall = max(digits[y],1),scientific=FALSE)))
     } else {
       results <- lapply(results, function(x)
         sapply(1:length(x), function(y) as.character(round(x[y],digits=digits[y]))))

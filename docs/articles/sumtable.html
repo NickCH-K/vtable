@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.2</span>
       </span>
     </div>
 
@@ -73,8 +73,18 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/NickCH-K/vtable/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -84,16 +94,16 @@
 
       
 
-      </header><script src="sumtable_files/header-attrs-2.7/header-attrs.js"></script><script src="sumtable_files/kePrint-0.0.1/kePrint.js"></script><link href="sumtable_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+      </header><script src="sumtable_files/header-attrs-2.8/header-attrs.js"></script><script src="sumtable_files/kePrint-0.0.1/kePrint.js"></script><link href="sumtable_files/lightable-0.0.1/lightable.css" rel="stylesheet">
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>sumtable: Summary Statistics</h1>
                         <h4 class="author">Nick Huntington-Klein</h4>
             
-            <h4 class="date">2021-04-21</h4>
+            <h4 class="date">2021-05-27</h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/NickCH-K/vtable/blob/master/vignettes/sumtable.Rmd"><code>vignettes/sumtable.Rmd</code></a></small>
       <div class="hidden name"><code>sumtable.Rmd</code></div>
 
     </div>
@@ -110,7 +120,7 @@
 <p>However, if you want the kind of table <code><a href="../reference/sumtable.html">sumtable()</a></code> produces (and I think a lot of you do!) then it’s perfect and easy. This makes <code><a href="../reference/sumtable.html">sumtable()</a></code> very similar in spirit to the summary statistics functionality of <code><a href="https://rdrr.io/pkg/stargazer/man/stargazer.html">stargazer::stargazer()</a></code>, except with some additional important bonuses, like working with <code>tibble</code>s, factor variables, producing summary statistics by group, and being a summary-statistics-only function so the documentation isn’t entwined with a bunch of regression-table functionality.</p>
 <p>Like, look at this. Isn’t this what you basically already want? After loading the package this took eight keystrokes and no option-setting:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">vtable</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/">vtable</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## Loading required package: kableExtra</code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/sumtable.html">st</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></code></pre></div>
