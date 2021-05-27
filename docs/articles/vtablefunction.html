@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.2</span>
       </span>
     </div>
 
@@ -73,8 +73,18 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/NickCH-K/vtable/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -84,16 +94,16 @@
 
       
 
-      </header><script src="vtablefunction_files/header-attrs-2.7/header-attrs.js"></script><script src="vtablefunction_files/kePrint-0.0.1/kePrint.js"></script><link href="vtablefunction_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+      </header><script src="vtablefunction_files/header-attrs-2.8/header-attrs.js"></script><script src="vtablefunction_files/kePrint-0.0.1/kePrint.js"></script><link href="vtablefunction_files/lightable-0.0.1/lightable.css" rel="stylesheet">
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Variable Table (vtable)</h1>
                         <h4 class="author">Nick Huntington-Klein</h4>
             
-            <h4 class="date">2021-04-21</h4>
+            <h4 class="date">2021-05-27</h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/NickCH-K/vtable/blob/master/vignettes/vtablefunction.Rmd"><code>vignettes/vtablefunction.Rmd</code></a></small>
       <div class="hidden name"><code>vtablefunction.Rmd</code></div>
 
     </div>
@@ -142,7 +152,7 @@
 <p>The <code>data</code> argument can take any <code>data.frame</code>, <code>data.table</code>, <code>tibble</code>, or <code>matrix</code>, as long as it has a valid set of variable names stored in the <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code> attribute. The goal of <code><a href="../reference/vtable.html">vtable()</a></code> is to produce documentation of each of the variables in this data set and display that documentation, one variable per row on the output <code>vtable</code>.</p>
 <p>If <code>data</code> has embedded variable or value labels, as the data set <code>efc</code> does below, <code><a href="../reference/vtable.html">vtable()</a></code> will extract and use them automatically.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">vtable</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/">vtable</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## Loading required package: kableExtra</code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Example 1, using base data LifeCycleSavings</span>
@@ -1765,7 +1775,7 @@ Care level
 <p><code>data.title</code> and <code>desc</code> will only show up in full-page <code>vtable</code>s. That is, you won’t get them with <code>out = 'return'</code>, <code>out = 'csv'</code>, or <code>out = 'latex'</code> (although <code>out = 'latexpage'</code> works). <code>note</code> and <code>anchor</code> will only show up in formats that support multi-column cells and anchoring, so they won’t work with <code>out = 'return'</code> or <code>out = 'csv'</code>.</p>
 <p><code>out = 'kable'</code> is a half-exception in that it will use <code>data.title</code> as the caption for the <code>kable</code>, and will use the <code>note</code> as a footnote, but won’t use <code>desc</code> or <code>anchor</code>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">vtable</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/">vtable</a></span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
