@@ -257,7 +257,7 @@ summary.row <- function(data,var,st,
     facnames <- paste('...',levels(va))
     #Run each of the functions on the variable and get results
     results <- lapply(1:ncol(mat),
-                      function(x) sapply(summ, function(y) parsefcn_summ(mat[,x],y, wts = wts)))
+                      function(x) sapply(summ, function(y) parsefcn_summ(mat[,x],y, wts = wts[!is.na(va)])))
     #Round
     if (fixed.digits) {
       results <- lapply(results, function(x)
@@ -277,7 +277,7 @@ summary.row <- function(data,var,st,
     va <- data[[var]]
 
     #Run each of the functions on the variable and get results
-    results <- sapply(summ, function(y) parsefcn_summ(va,y, wts = wts))
+    results <- sapply(summ, function(y) parsefcn_summ(va,y, wts = wts[!is.na(va)]))
 
     #Round
     if (fixed.digits) {

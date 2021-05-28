@@ -357,7 +357,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
         # If there are weights
         if (!is.null(wts)) {
-          summ[[i]] <- c('sum(x)', 'stats::weighted.mean(x, w = wts)')
+          summ[[i]] <- c('sum(x)', 'stats::weighted.mean(x, w = wts, na.rm = TRUE)')
           if (fill.sn) {
             summ.names[[i]][2] <- paste0(summ.names[[i]][2], ' (Weighted)')
           }
@@ -379,7 +379,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
         # If there are weights
         if (!is.null(wts)) {
-          summ[[i]][summ[[i]] == 'mean(x)'] <- 'stats::weighted.mean(x, w = wts)'
+          summ[[i]][summ[[i]] == 'mean(x)'] <- 'stats::weighted.mean(x, w = wts, na.rm = TRUE)'
           summ[[i]][summ[[i]] == 'sd(x)'] <- 'weighted.sd(x, w = wts)'
           if (fill.sn) {
             summ.names[[i]][summ.names[[i]] == 'Mean'] <- 'Wt. Mean'
@@ -403,7 +403,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
         # If there are weights
         if (!is.null(wts)) {
-          summ[[i]][summ[[i]] == 'mean(x)'] <- 'stats::weighted.mean(x, w = wts)'
+          summ[[i]][summ[[i]] == 'mean(x)'] <- 'stats::weighted.mean(x, w = wts, na.rm = TRUE)'
           summ[[i]][summ[[i]] == 'sd(x)'] <- 'weighted.sd(x, w = wts)'
           if (fill.sn) {
             summ.names[[i]][summ.names[[i]] == 'Mean'] <- 'Wt. Mean'
@@ -426,7 +426,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
         # If there are weights
         if (!is.null(wts)) {
-          summ[[i]][summ[[i]] == 'mean(x)'] <- 'stats::weighted.mean(x, w = wts)'
+          summ[[i]][summ[[i]] == 'mean(x)'] <- 'stats::weighted.mean(x, w = wts, na.rm = TRUE)'
           summ[[i]][summ[[i]] == 'sd(x)'] <- 'weighted.sd(x, w = wts)'
           if (fill.sn) {
             summ.names[[i]][summ.names[[i]] == 'Mean'] <- 'Wt. Mean'
