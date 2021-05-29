@@ -610,7 +610,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                                               collapse =','),
                                  check.names = FALSE)
 
-      contents <- lapply(col.vars[[i]], function(x)
+    contents <- lapply(col.vars[[i]], function(x)
         summary.row(data,
                     vars[x],
                     st[[i]],

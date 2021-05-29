@@ -281,9 +281,9 @@ summary.row <- function(data,var,st,
 
     #Round
     if (fixed.digits) {
-      results <- sapply(1:length(results), function(y) format(results[y],digits=digits[y],nsmall = digits[y],scientific = FALSE))
+      results <- sapply(1:length(results), function(y) format(results[y],digits=max(digits[y],1),nsmall = digits[y],scientific = FALSE))
     } else {
-      results <- sapply(1:length(results), function(y) round(results[y],digits=digits[y]))
+      results <- sapply(1:length(results), function(y) round(results[y],digits=max(digits[y],1)))
     }
     #And construct
     st[1,] <- c(title,results)
