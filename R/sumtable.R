@@ -237,6 +237,11 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     if (var.classes[c] == 'character') {
       if (vtable::nuniq(data[[c]]) <= 6) {
         data[[c]] <- as.factor(data[[c]])
+      } else {
+        if (names(data)[c] %in% vars) {
+          warning('You have specified a variable in vars that is a character variable with a large number of different values. It will be excluded. If you are sure you want it in the table, convert it to a factor before calling sumtable.')
+        }
+        vars <- vars[!(vars == names(data)[c])]
       }
     } else if (var.classes[c] == 'logical') {
       #Turn logicals to numerics if logical.numeric = FALSE
@@ -609,6 +614,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
       st[[i]] <- utils::read.csv(text = paste(c('Variable',summ.names[[i]]),
                                               collapse =','),
                                  check.names = FALSE)
+
 
     contents <- lapply(col.vars[[i]], function(x)
         summary.row(data,
