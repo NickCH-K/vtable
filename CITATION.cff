@@ -1,0 +1,17 @@
+# YAML 1.2
+---
+abstract: "This is an R package for the purpose of viewing information about data while working on it. vtable() automatically generates and displays a table of information about the variables in a data set, including name, class, range, labels, and summary statistics."
+authors: 
+  -
+    affiliation: "Seattle University"
+    family-names: "Huntington-Klein"
+    given-names: Nick
+    orcid: "https://orcid.org/https://orcid.org/0000-0002-7352-3991"
+cff-version: "1.1.0"
+date-released: 2018
+license: "MIT + file LICENSE"
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://github.com/NickCH-K/vtable"
+title: "vtable: A quick and easy variable browser for R."
+version: "1.3.3"
+...
