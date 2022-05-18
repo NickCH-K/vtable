@@ -7,3 +7,6 @@
 
 - Fixes an error that occurs if a character variable with lots of different values is specified in `vars` in `sumtable`.
 
+# vtable 1.3.4
+
+- Fixes an issue with `haven_labelled` class variables where value labels weren't recognized in `vtable`.

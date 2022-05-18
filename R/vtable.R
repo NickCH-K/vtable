@@ -286,10 +286,10 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))] <-
       as.data.frame(sapply(data[,sapply(data,function(x) (length(class(x)) >1) & (is.factor(x)))],function(x) factor(x,ordered=FALSE)), stringsAsFactors = TRUE)
   }
-  #Similarly, only take one class if it's numeric.
-  if (sum(sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))) > 0) {
-    data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))] <-
-      as.data.frame(sapply(data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)))],function(x) as.numeric(haven::zap_labels(x))))
+  #Similarly, only take one class if it's numeric, UNLESS it's haven_labelled.
+  if (sum(sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)) & !('haven_labelled' %in% class(x)))) > 0) {
+    data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)) & !('haven_labelled' %in% class(x)))] <-
+      as.data.frame(sapply(data[,sapply(data,function(x) (length(class(x)) >1) & (is.numeric(x)) & !('haven_labelled' %in% class(x)))],function(x) as.numeric(haven::zap_labels(x))))
   }
 
   ####### APPLICATION OF VALUES OPTION
