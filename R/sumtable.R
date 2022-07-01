@@ -716,7 +716,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
           star.cutoffs <- group.test.opts[['star.cutoffs']]
         }
         if (!is.null(group.test.opts[['star.markers']])) {
-          star.cutoffs <- group.test.opts[['star.markers']]
+          star.markers <- group.test.opts[['star.markers']]
         }
         #Order biggest to smallest
         star.markers <- star.markers[order(-star.cutoffs)]
