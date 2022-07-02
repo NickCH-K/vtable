@@ -11,3 +11,4 @@
 
 - Fixes an issue with `haven_labelled` class variables where value labels weren't recognized in `vtable`.
 - Fixes an issue where custom star markers are not recognized in `sumtable`.
+- Date variables maintain class before being evaluated for `summ` in `vtable`, and also `lush = TRUE` produces medians and `nuniq()` for dates instead of mean, SD, and `nuniq`.

@@ -142,15 +142,14 @@ parsesumm <- function(x,summuse,summnames) {
   results <- lapply(summuse, function(y) parsefcn(x,y))
 
   # If it's a number, round it
-  results <- lapply(results, function(y) ifelse(is.numeric(y),
-                                                round(y,3),y))
+  results <- lapply(results, function(y) if(is.numeric(y)) { round(y,3) } else { y })
 
   # Get rid of functions that evaluated to NA (i.e. don't work)
   summnames <- summnames[!is.na(results)]
   results <- results[!is.na(results)]
 
   # Paste together
-  results <- paste(summnames,results, sep = "")
+  results <- paste(summnames,sapply(results, as.character), sep = "")
 
   # And bring it all together with a break between each
   return(paste0(results, collapse = '<br/>'))

@@ -506,7 +506,12 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
                 data),function(x) x[!is.na(x)]),
               #4. within each of those variables, paste together a bunch of summary stats
               # Send to parsesumm so as to handle different cases
-              function(x) parsesumm(x,summuse,summnames)),sep='')
+              # If it's a date, and summnames was set by lush = TRUE, use median and nuniq
+              function(x) if (lush == TRUE & max(class(x) %in% c('Date','POSIXct','POSIXt','POSIXlt')) == 1) {
+                parsesumm(x, c('median(x)','nuniq(x)'), c('median: ', 'nuniq: '))
+              } else {
+                parsesumm(x,summuse,summnames)
+              }),sep='')
   }
 
   ####### APPLICATION OF COL.WIDTH OPTION
