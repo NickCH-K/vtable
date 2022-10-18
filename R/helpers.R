@@ -353,7 +353,7 @@ clean_multicol_kable <- function(df,title,note=NA) {
   names(df) <- clean_content(names(df))
 
   # For this one, directly return the kable
-  if (knitr::is_html_output()) {
+  if (knitr::is_html_output() | !isTRUE(getOption('knitr.in.progress'))) {
     fmt <- 'html'
   } else if (knitr::is_latex_output()) {
     fmt <- 'latex'
