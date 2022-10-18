@@ -353,7 +353,7 @@ clean_multicol_kable <- function(df,title,note=NA) {
   names(df) <- clean_content(names(df))
 
   # For this one, directly return the kable
-  if (knitr::is_html_output() | !isTRUE(getOption('knitr.in.progress'))) {
+  if (knitr::is_html_output()) {
     fmt <- 'html'
   } else if (knitr::is_latex_output()) {
     fmt <- 'latex'
@@ -361,7 +361,28 @@ clean_multicol_kable <- function(df,title,note=NA) {
     fmt <- NULL
   }
 
+  # And format the header if there is one
+  if (hasheader) {
+    # Get rid of deleted cells
+    if (is.null(fmt)) {
+      headerrow[headerrow == 'DELETECELL'] = ''
+    } else {
+      headerrow <- headerrow[headerrow != 'DELETECELL']
+    }
+    # HEADERROW itself is blank
+    headerrow <- gsub('HEADERROW','',headerrow)
+
+    # No alignment control anyway
+    headerrow <- gsub('_c_','_l_',headerrow)
+    headerrow <- gsub('_r_','_l_',headerrow)
+  }
+
   if (is.null(fmt)) {
+    if (!is.null(hasheader)) {
+      headerrow <- gsub('_MULTICOL.*$','',headerrow)
+      names(headerrow) = names(df)
+      df = rbind(headerrow, df)
+    }
     kb <- knitr::kable(df, caption = title, row.names = FALSE)
   } else if (fmt == 'html') {
     kb <- knitr::kable(df, caption = title, row.names = FALSE, format = fmt, escape = FALSE)
@@ -371,23 +392,14 @@ clean_multicol_kable <- function(df,title,note=NA) {
 
   # And now add the header
   if (hasheader & !is.null(fmt)) {
-    # Get rid of deleted cells
-    headerrow <- headerrow[headerrow != 'DELETECELL']
-    # HEADERROW itself is blank
-    headerrow <- gsub('HEADERROW','',headerrow)
-
-    # No alignment control anyway
-    headerrow <- gsub('_c_','_l_',headerrow)
-    headerrow <- gsub('_r_','_l_',headerrow)
-
     headercol <- eval(parse(text=paste('c(',
-      paste(
-      sapply(headerrow, FUN = function(x)
-        ifelse(grepl('_MULTICOL_l_',x),
-               paste0('"',strsplit(x,'_MULTICOL_l_')[[1]][1],'"=',strsplit(x,'_MULTICOL_l_')[[1]][2]),
-               paste0('"',x,'"'))),
-      collapse = ','),
-      ')')))
+                                       paste(
+                                         sapply(headerrow, FUN = function(x)
+                                           ifelse(grepl('_MULTICOL_l_',x),
+                                                  paste0('"',strsplit(x,'_MULTICOL_l_')[[1]][1],'"=',strsplit(x,'_MULTICOL_l_')[[1]][2]),
+                                                  paste0('"',x,'"'))),
+                                         collapse = ','),
+                                       ')')))
 
     kb <- kableExtra::add_header_above(kb,headercol)
   }
