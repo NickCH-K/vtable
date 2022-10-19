@@ -9,6 +9,8 @@
 #' @param var A vector. Label table will show, for each of the values of this variable, its label (if labels can be found with \code{sjlabelled::get_labels()}), or the values in the \code{...} variables.
 #' @param ... As described above. If specified, will show the values of these variables, instead of the labels of var, even if labels can be found.
 #' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"return"} to return the completed variable table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Combine \code{out = "csv"} with \code{file} to write to CSV (dropping most formatting). Additional options include \code{"latex"} for a LaTeX table or \code{"latexpage"} for a full buildable LaTeX page. Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't, or a \code{"kable"} passed through \code{kableExtra::kable_styling()} defaults if it's an RMarkdown document being built with \code{knitr}.
+#' @param count Set to \code{TRUE} to also report the number of observations for each value of \code{var} in the data.
+#' @param percent Set to \code{TRUE} to also report the percentage of non-missing observation for each value of \code{var} in the data.
 #' @param file Saves the completed variable table file to HTML with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard labeltable HTML file as with \code{out = "viewer"} or \code{out = "browser"}..
 #' @param desc Description of variable (or labeling system) to be included with the table.
 #' @param note Table note to go after the last row of the table.
@@ -61,15 +63,15 @@
 #' }
 #' @export
 
-labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,note.align = NA,anchor=NA) {
+labeltable <- function(var,...,out=NA,count=FALSE,percent=FALSE,file=NA,desc=NA,note=NA,note.align = NA,anchor=NA) {
   #Just in case, noting that if ...s are labeled,
   #but a package that supports the class isn't loaded it messes things up
   comp.vars <- data.frame(lapply(list(...),function(x) sjlabelled::unlabel(x)))
   names(comp.vars) <- sapply(as.list(substitute(list(...)))[-1L], function(x)
     utils::tail(as.character(x),n=1))
 
-  if (ncol(comp.vars)==0 & is.null(unlist(sjlabelled::get_labels(var)))) {
-    stop('Either var must have labels, or variables must be specified in ...')
+  if (ncol(comp.vars)==0 & is.null(unlist(sjlabelled::get_labels(var))) & !(count) & !(percent)) {
+    stop('Either var must have labels, variables must be specified in ..., or count or percent must be TRUE.')
   }
   if (!is.na(desc) & !is.character(desc)) {
     stop('desc must be a character.')
@@ -117,9 +119,7 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,note.align = NA,an
     }
 
     names(lt) <- c(var.name,'Label')
-  }
-  #comp.var version
-  else {
+  } else { #comp.var version
     # No missing data please!
     var <- as.character(var)
     var[is.na(var)] <- 'NA'
@@ -137,6 +137,20 @@ labeltable <- function(var,...,out=NA,file=NA,desc=NA,note=NA,note.align = NA,an
 
     lt <- lt[order(lt$var),]
     names(lt) <- c(var.name,names(prelt)[-1])
+  }
+
+  # Do counts and/or percentages
+  if (count | percent) {
+    cts = as.data.frame(table(var))
+    cts$Pct = paste0(format(100*cts$Freq/sum(cts$Freq), digits = 2, nsmall = 2, scientific = FALSE),'%')
+    names(cts) = c(var.name, 'Count','Percent')
+    if (!count) {
+      cts$Count = NULL
+    }
+    if (!percent) {
+      cts$Percent = NULL
+    }
+    lt = merge(lt, cts, by = var.name)
   }
 
   # Row names have gotten funky
