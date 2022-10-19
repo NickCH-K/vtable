@@ -26,6 +26,8 @@
 #' @param col.breaks Numeric vector indicating the variables (or number of elements of \code{vars}) after which to start a new column. So for example with a data set with six variables, \code{c(3,5)} would put the first three variables in the first column, the next two in the middle, and the last on the right. Cannot be combined with \code{group} unless \code{group.long = TRUE}.
 #' @param digits Number of digits after the decimal place to report. Set to a single number for consistent digits, or a vector the same length as \code{summ} for different digits for each calculation, or a list of vectors that match up to a multi-column \code{summ}. Defaults to 0 for the first calculation (N, usually) and 2 afterwards.
 #' @param fixed.digits \code{FALSE} will cut off trailing \code{0}s when rounding. \code{TRUE} retains them. Defaults to \code{FALSE}.
+#' @param format A function that takes a numeric input and produces labeled output, such as the \code{label_} functions from the \emph{scales} package. Provide a single function to apply to all variables, or a list of functions the same length as the number of variables to format each variable differently. The formatting function will skip over \code{notNA, countNA, propNA} calculations by default. Factor percentages will ignore this entirely; you can use \code{NA} to skip them when specifying a list. Alternately, if the \emph{scales} package is installed, you can specify strings giving the shorthand for the appropriate \code{scales::label_} function, for instance \code{c('comma','percent')} to use \code{label_comma()} followed by \code{label_percent()}. Specifying a character vector will respect your \code{digits} option if \code{digits} is a single value rather than a vector or list, but will otherwise use the defaults of those functions. You can mix together specifying your own functions and specifying character strings. At the moment there is no way to do different formatting for different columns of the same variable, other than \code{skip.format}.
+#' @param skip.format Set of functions in \code{summ} that are not subject to \code{format}. Does nothing if \code{format} is not specified.
 #' @param factor.percent Set to \code{TRUE} to show factor means as percentages instead of proportions, i.e. \code{50\%} with a column header of "Percent" rather than \code{.5} with a column header of "Mean". Defaults to \code{TRUE}.
 #' @param factor.counts Set to \code{TRUE} to show a count of each factor level in the first column. Defaults to \code{TRUE}.
 #' @param factor.numeric By default, factor variable dummies basically ignore the \code{summ} argument and show count (or nothing) in the first column and percent or proportion in the second. Set this to \code{TRUE} to instead treat the dummies like numeric binary variables with values 0 and 1.
@@ -91,7 +93,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                      add.median = FALSE,
                      group=NA,group.long=FALSE,group.test=FALSE,group.weights=NA,
                      col.breaks=NA,
-                     digits=NA,fixed.digits=FALSE,factor.percent=TRUE,
+                     digits=NA,fixed.digits=FALSE,format=NA,skip.format = c('notNA(x)','propNA(x)','coutNA(x)'), factor.percent=TRUE,
                      factor.counts=TRUE,factor.numeric=FALSE,
                      logical.numeric=FALSE,logical.labels=c("No","Yes"),labels=NA,title='Summary Statistics',
                      note = NA, anchor=NA,col.width=NA,col.align=NA,
@@ -175,6 +177,32 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   }
   if (!is.numeric(digits) & !is.list(digits) & !identical(digits,NA)) {
     stop('digits must be numeric.')
+  }
+  if (!is.list(format)) {
+    if (length(format) > 1) {
+      format = as.list(format)
+    } else {
+      format = list(format)
+    }
+  }
+  # All elements of format must be NA, character, or function
+  # if character, replace with function equivalent
+  for (fm in 1:length(format)) {
+    if (is.function(format[[fm]])) {
+    } else if (is.na(format[[fm]])) {
+      format[[fm]] = function(x) x
+    } else if (is.character(format[[fm]])) {
+      if (is.na(digits)) {
+        format[[fm]] = eval(parse(text = paste0('scales::label_',format[[fm]][[f]], '()')))
+      } else {
+        format[[fm]] = eval(parse(text = paste0('scales::label_',
+                                                format[[fm]][[f]],
+                                                '(accuracy = ',1/(10^digits),
+                                                ')')))
+      }
+    } else {
+      stop('Each element of format must be NA, A shorthand string for the scales package, or a function.')
+    }
   }
   if (!is.logical(factor.percent) | !is.logical(factor.counts)) {
     stop('factor.percent and factor.counts must each be TRUE or FALSE.')
@@ -488,6 +516,15 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     }
   }
 
+  # If format is a single thing, fill it in
+  if (length(format) == 1) {
+    single.format = format[[1]]
+    format = list()
+    for (i in 1:length(vars)) {
+      format[[i]] = single.format
+    }
+  }
+
   #And fill in summ.names the rest of the way
   #If a vector was specified for summ.names, turn it into a list
   if (!fill.sn & !is.list(summ.names)) {
@@ -615,8 +652,7 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                                               collapse =','),
                                  check.names = FALSE)
 
-
-    contents <- lapply(col.vars[[i]], function(x)
+    contents <- lapply(col.vars[[i]], function(x) {
         summary.row(data,
                     vars[x],
                     st[[i]],
@@ -628,7 +664,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                     factor.numeric,
                     digits[[i]],
                     fixed.digits,
-                    wts))
+                    wts,
+                    format[[x]],
+                    skip.format) })
       contents <- do.call(rbind, contents)
       st[[i]] <- rbind(st[[i]],contents)
     }
@@ -662,7 +700,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                     factor.numeric,
                     digits[[1]],
                     fixed.digits,
-                    wts[data[[group]] == grouplevels[i]]))
+                    wts[data[[group]] == grouplevels[i]],
+                    format[[x]],
+                    skip.format))
 
       #On the last one, if there's a test, add it
       if (group.test & i == length(grouplevels)) {
@@ -753,7 +793,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                       factor.numeric,
                       digits[[i]],
                       fixed.digits,
-                      wts[data[[group]] == grouplevels[j]]))
+                      wts[data[[group]] == grouplevels[j]],
+                      format[[x]],
+                      skip.format))
         summcontents <- do.call(rbind, contents)
         st[[i]] <- rbind(st[[i]],summcontents)
       }

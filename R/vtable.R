@@ -297,7 +297,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
   if (values == TRUE) {
 
     ####### APPLICATION OF CHAR.VALUES OPTION
-    if (class(char.values) == 'logical') {
+    if (inherits(char.values,'logical')) {
       if (char.values == TRUE) {
         #See which are characters
         charvariables <- as.logical(unlist(sapply(data,function(x) max(class(x) == "character"))))
@@ -306,7 +306,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
         #clean
         rm(charvariables)
       }
-    } else if (class(char.values) == 'character') {
+    } else if (inherits(char.values,'character')) {
       #See which variables are in the list
       charvariables <- names(data) %in% char.values
       #and convert
