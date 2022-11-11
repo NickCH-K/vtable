@@ -193,10 +193,10 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
       format[[fm]] = function(x) x
     } else if (is.character(format[[fm]])) {
       if (is.na(digits)) {
-        format[[fm]] = eval(parse(text = paste0('scales::label_',format[[fm]][[f]], '()')))
+        format[[fm]] = eval(parse(text = paste0('scales::label_',format[[fm]], '()')))
       } else {
         format[[fm]] = eval(parse(text = paste0('scales::label_',
-                                                format[[fm]][[f]],
+                                                format[[fm]],
                                                 '(accuracy = ',1/(10^digits),
                                                 ')')))
       }

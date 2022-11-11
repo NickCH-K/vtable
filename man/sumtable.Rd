@@ -20,6 +20,8 @@ sumtable(
   col.breaks = NA,
   digits = NA,
   fixed.digits = FALSE,
+  format = NA,
+  skip.format = c("notNA(x)", "propNA(x)", "coutNA(x)"),
   factor.percent = TRUE,
   factor.counts = TRUE,
   factor.numeric = FALSE,
@@ -53,6 +55,8 @@ st(
   col.breaks = NA,
   digits = NA,
   fixed.digits = FALSE,
+  format = NA,
+  skip.format = c("notNA(x)", "propNA(x)", "coutNA(x)"),
   factor.percent = TRUE,
   factor.counts = TRUE,
   factor.numeric = FALSE,
@@ -99,6 +103,10 @@ st(
 \item{digits}{Number of digits after the decimal place to report. Set to a single number for consistent digits, or a vector the same length as \code{summ} for different digits for each calculation, or a list of vectors that match up to a multi-column \code{summ}. Defaults to 0 for the first calculation (N, usually) and 2 afterwards.}
 
 \item{fixed.digits}{\code{FALSE} will cut off trailing \code{0}s when rounding. \code{TRUE} retains them. Defaults to \code{FALSE}.}
+
+\item{format}{A function that takes a numeric input and produces labeled output, such as the \code{label_} functions from the \emph{scales} package. Provide a single function to apply to all variables, or a list of functions the same length as the number of variables to format each variable differently. The formatting function will skip over \code{notNA, countNA, propNA} calculations by default. Factor percentages will ignore this entirely; you can use \code{NA} to skip them when specifying a list. Alternately, if the \emph{scales} package is installed, you can specify strings giving the shorthand for the appropriate \code{scales::label_} function, for instance \code{c('comma','percent')} to use \code{label_comma()} followed by \code{label_percent()}. Specifying a character vector will respect your \code{digits} option if \code{digits} is a single value rather than a vector or list, but will otherwise use the defaults of those functions. You can mix together specifying your own functions and specifying character strings. At the moment there is no way to do different formatting for different columns of the same variable, other than \code{skip.format}.}
+
+\item{skip.format}{Set of functions in \code{summ} that are not subject to \code{format}. Does nothing if \code{format} is not specified.}
 
 \item{factor.percent}{Set to \code{TRUE} to show factor means as percentages instead of proportions, i.e. \code{50\%} with a column header of "Percent" rather than \code{.5} with a column header of "Mean". Defaults to \code{TRUE}.}
 

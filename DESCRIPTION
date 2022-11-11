@@ -19,7 +19,7 @@ Suggests:
     rmarkdown,
     survey,
     scales
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1
 VignetteBuilder: knitr
 URL: https://nickch-k.github.io/vtable/
 BugReports: https://github.com/NickCH-K/vtable/issues

@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/vtable.html">Get started</a>
 </li>
@@ -50,7 +46,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -79,7 +75,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/NickCH-K/vtable/">
+  <a href="https://github.com/NickCH-K/vtable/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -94,51 +90,71 @@
 
       
 
-      </header><script src="labeltable_files/header-attrs-2.9/header-attrs.js"></script><script src="labeltable_files/kePrint-0.0.1/kePrint.js"></script><link href="labeltable_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+      </header><script src="labeltable_files/kePrint-0.0.1/kePrint.js"></script><link href="labeltable_files/lightable-0.0.1/lightable.css" rel="stylesheet">
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>labeltable: Label Table</h1>
-                        <h4 class="author">Nick Huntington-Klein</h4>
+                        <h4 data-toc-skip class="author">Nick
+Huntington-Klein</h4>
             
-            <h4 class="date">2021-07-29</h4>
+            <h4 data-toc-skip class="date">2022-11-11</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/NickCH-K/vtable/blob/master/vignettes/labeltable.Rmd"><code>vignettes/labeltable.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NickCH-K/vtable/blob/HEAD/vignettes/labeltable.Rmd" class="external-link"><code>vignettes/labeltable.Rmd</code></a></small>
       <div class="hidden name"><code>labeltable.Rmd</code></div>
 
     </div>
 
     
     
-<p>The <code>vtable</code> package serves the purpose of outputting automatic variable documentation that can be easily viewed while continuing to work with data.</p>
-<p><code>vtable</code> contains four main functions: <code><a href="../reference/vtable.html">vtable()</a></code> (or <code><a href="../reference/vtable.html">vt()</a></code>), <code><a href="../reference/sumtable.html">sumtable()</a></code> (or <code><a href="../reference/sumtable.html">st()</a></code>), <code><a href="../reference/labeltable.html">labeltable()</a></code>, and <code><a href="../reference/dftoHTML.html">dftoHTML()</a></code>/<code><a href="../reference/dftoLaTeX.html">dftoLaTeX()</a></code>. This vignette focuses on <code><a href="../reference/labeltable.html">labeltable()</a></code>.</p>
-<p><code><a href="../reference/labeltable.html">labeltable()</a></code> is designed to take a single variable and show the values it is associated with. This can also be used to generate data documentation if desired, or can just be an easy way to look at label values, or learn more about the data you’re working with.</p>
-<p>If that variable has value labels from the <code>sjlabelled</code> or <code>haven</code> packages, it will show how the values in the data correspond to the value labels.</p>
-<p>Alternately, you can include other variables as well, and <code><a href="../reference/labeltable.html">labeltable()</a></code> will show, for each value of the variable you’re interested in, the values that those other variables take. This can be handy, for example, if you used some variables to create a numeric ID and want to remember what original values correspond to each ID. It can also act as sort of a cross-tabulation.</p>
+<p>The <code>vtable</code> package serves the purpose of outputting
+automatic variable documentation that can be easily viewed while
+continuing to work with data.</p>
+<p><code>vtable</code> contains four main functions:
+<code><a href="../reference/vtable.html">vtable()</a></code> (or <code><a href="../reference/vtable.html">vt()</a></code>), <code><a href="../reference/sumtable.html">sumtable()</a></code>
+(or <code><a href="../reference/sumtable.html">st()</a></code>), <code><a href="../reference/labeltable.html">labeltable()</a></code>, and
+<code><a href="../reference/dftoHTML.html">dftoHTML()</a></code>/<code><a href="../reference/dftoLaTeX.html">dftoLaTeX()</a></code>. This vignette focuses
+on <code><a href="../reference/labeltable.html">labeltable()</a></code>.</p>
+<p><code><a href="../reference/labeltable.html">labeltable()</a></code> is designed to take a single variable and
+show the values it is associated with. This can also be used to generate
+data documentation if desired, or can just be an easy way to look at
+label values, or learn more about the data you’re working with.</p>
+<p>If that variable has value labels from the <code>sjlabelled</code> or
+<code>haven</code> packages, it will show how the values in the data
+correspond to the value labels.</p>
+<p>Alternately, you can include other variables as well, and
+<code><a href="../reference/labeltable.html">labeltable()</a></code> will show, for each value of the variable
+you’re interested in, the values that those other variables take. This
+can be handy, for example, if you used some variables to create a
+numeric ID and want to remember what original values correspond to each
+ID. It can also act as sort of a cross-tabulation.</p>
 <hr>
-<div id="the-labeltable-function" class="section level1">
-<h1 class="hasAnchor">
-<a href="#the-labeltable-function" class="anchor"></a>The <code>labeltable()</code> function</h1>
+<div class="section level2">
+<h2 id="the-labeltable-function">The <code>labeltable()</code> function<a class="anchor" aria-label="anchor" href="#the-labeltable-function"></a>
+</h2>
 <p><code><a href="../reference/vtable.html">vtable()</a></code> syntax follows the following outline:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">var</span>,
-    <span class="va">...</span>,
-    out<span class="op">=</span><span class="cn">NA</span>,
-    file<span class="op">=</span><span class="cn">NA</span>, 
-    desc<span class="op">=</span><span class="cn">NA</span>,
-    note<span class="op">=</span><span class="cn">NA</span>,
-    note.align<span class="op">=</span><span class="cn">NA</span>,
-    anchor<span class="op">=</span><span class="cn">NA</span><span class="op">)</span></code></pre></div>
-<p><code><a href="../reference/labeltable.html">labeltable()</a></code> is a function that shows the values that correspond to <code>var</code>. This could be value label values, or it could be the values found in the data for the <code>...</code> variables.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">var</span>,</span>
+<span>    <span class="va">...</span>,</span>
+<span>    out<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>    file<span class="op">=</span><span class="cn">NA</span>, </span>
+<span>    desc<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>    note<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>    note.align<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>    anchor<span class="op">=</span><span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="../reference/labeltable.html">labeltable()</a></code> is a function that shows the values that
+correspond to <code>var</code>. This could be value label values, or it
+could be the values found in the data for the <code>...</code>
+variables.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Include a single labelled variable to show how the values of that variable correspond to its value labels.</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/">vtable</a></span><span class="op">)</span></code></pre></div>
-<pre><code>## Loading required package: kableExtra</code></pre>
+<code class="sourceCode R"><span><span class="co">#Include a single labelled variable to show how the values of that variable correspond to its value labels.</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/" class="external-link">vtable</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: kableExtra</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
-<span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e15relat</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/" class="external-link">sjlabelled</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e15relat</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 e15relat
@@ -215,10 +231,10 @@ other, specify
 </tbody>
 </table>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Include more than one variable to show, for each value of the first, what values of the others are present in the data.</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>
-<span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span>,<span class="va">mtcars</span><span class="op">$</span><span class="va">carb</span>,<span class="va">mtcars</span><span class="op">$</span><span class="va">am</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="co">#Include more than one variable to show, for each value of the first, what values of the others are present in the data.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span>,<span class="va">mtcars</span><span class="op">$</span><span class="va">carb</span>,<span class="va">mtcars</span><span class="op">$</span><span class="va">am</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 cyl
@@ -266,11 +282,13 @@ am
 </tr>
 </tbody>
 </table>
-<div id="out" class="section level2">
-<h2 class="hasAnchor">
-<a href="#out" class="anchor"></a><code>out</code>
-</h2>
-<p>The <code>out</code> option determines what will be done with the resulting label table file. There are several options for <code>out</code>:</p>
+<div class="section level3">
+<h3 id="out">
+<code>out</code><a class="anchor" aria-label="anchor" href="#out"></a>
+</h3>
+<p>The <code>out</code> option determines what will be done with the
+resulting label table file. There are several options for
+<code>out</code>:</p>
 <table class="table">
 <colgroup>
 <col width="22%">
@@ -299,11 +317,12 @@ am
 </tr>
 <tr class="odd">
 <td>csv</td>
-<td>Returns output table in data.frame format and, with a <code>file</code> option, saves that to CSV.</td>
+<td>Returns output table in data.frame format and, with a
+<code>file</code> option, saves that to CSV.</td>
 </tr>
 <tr class="even">
 <td>kable</td>
-<td>Returns a <code><a href="https://rdrr.io/pkg/knitr/man/kable.html">knitr::kable()</a></code>
+<td>Returns a <code><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">knitr::kable()</a></code>
 </td>
 </tr>
 <tr class="odd">
@@ -316,32 +335,55 @@ am
 </tr>
 </tbody>
 </table>
-<p>By default, <code>vtable</code> will select ‘viewer’ if running in RStudio, and ‘browser’ otherwise. If it’s being built in an RMarkdown document with <code>knitr</code>, it will default to ‘kable’.</p>
+<p>By default, <code>vtable</code> will select ‘viewer’ if running in
+RStudio, and ‘browser’ otherwise. If it’s being built in an RMarkdown
+document with <code>knitr</code>, it will default to ‘kable’.</p>
 </div>
-<div id="file" class="section level2">
-<h2 class="hasAnchor">
-<a href="#file" class="anchor"></a><code>file</code>
-</h2>
-<p>The <code>file</code> argument will write the variable documentation file to an HTML file and save it. Will automatically append ‘html’ filetype if the filename does not include a period.</p>
+<div class="section level3">
+<h3 id="file">
+<code>file</code><a class="anchor" aria-label="anchor" href="#file"></a>
+</h3>
+<p>The <code>file</code> argument will write the variable documentation
+file to an HTML file and save it. Will automatically append ‘html’
+filetype if the filename does not include a period.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/">vtable</a></span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
-<span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e15relat</span>,file<span class="op">=</span><span class="st">'lifecycle_variabledocumentation'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/" class="external-link">vtable</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/labeltable.html">labeltable</a></span><span class="op">(</span><span class="va">efc</span><span class="op">$</span><span class="va">e15relat</span>,file<span class="op">=</span><span class="st">'lifecycle_variabledocumentation'</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="desc-note-and-anchor-" class="section level2">
-<h2 class="hasAnchor">
-<a href="#desc-note-and-anchor-" class="anchor"></a><code>desc</code>, <code>note</code>, and <code>anchor</code>.</h2>
-<p><code>desc</code> will include a description of the data set (or whatever you like) in the file, which may be useful for documentation purposes.</p>
+<div class="section level3">
+<h3 id="desc-note-and-anchor-">
+<code>desc</code>, <code>note</code>, and <code>anchor</code>.<a class="anchor" aria-label="anchor" href="#desc-note-and-anchor-"></a>
+</h3>
+<p><code>desc</code> will include a description of the data set (or
+whatever you like) in the file, which may be useful for documentation
+purposes.</p>
 <p><code>note</code> will add a table note in the last row.</p>
-<p><code>anchor</code> will add an anchor ID (<code>&lt;a name =</code> in HTML or <code>\label{}</code> in LaTeX) to allow other parts of your document to link to it, if you are including your vtable in a larger document.</p>
-<p><code>desc</code> will only show up in full-page <code>labeltable</code>s. That is, you won’t get them with <code>out = 'kable'</code>, <code>out = 'return'</code>, <code>out = 'csv'</code>, or <code>out = 'latex'</code> (although <code>out = 'latexpage'</code> works). <code>note</code> and <code>anchor</code> will only show up in formats that support multi-column cells and anchoring, so they won’t work with <code>out = 'kable'</code>, <code>out = 'csv'</code>, or <code>out = 'return'</code>.</p>
+<p><code>anchor</code> will add an anchor ID (<code>&lt;a name =</code>
+in HTML or <code>\label{}</code> in LaTeX) to allow other parts of your
+document to link to it, if you are including your vtable in a larger
+document.</p>
+<p><code>desc</code> will only show up in full-page
+<code>labeltable</code>s. That is, you won’t get them with
+<code>out = 'kable'</code>, <code>out = 'return'</code>,
+<code>out = 'csv'</code>, or <code>out = 'latex'</code> (although
+<code>out = 'latexpage'</code> works). <code>note</code> and
+<code>anchor</code> will only show up in formats that support
+multi-column cells and anchoring, so they won’t work with
+<code>out = 'kable'</code>, <code>out = 'csv'</code>, or
+<code>out = 'return'</code>.</p>
 </div>
-<div id="note-align" class="section level2">
-<h2 class="hasAnchor">
-<a href="#note-align" class="anchor"></a><code>note.align</code>
-</h2>
-<p>This option is used only with LaTeX output (<code>out</code> is ‘latex’ or ‘latexpage’). <code>note.align</code> is a single string used for alignment, specifically for any table notes set with <code>note</code>, which enters as part of a <code>\multicolumn</code> argument. It accepts ‘p{}’ and other LaTeX column types. Be sure to escape special characters, in particular backslashes.</p>
+<div class="section level3">
+<h3 id="note-align">
+<code>note.align</code><a class="anchor" aria-label="anchor" href="#note-align"></a>
+</h3>
+<p>This option is used only with LaTeX output (<code>out</code> is
+‘latex’ or ‘latexpage’). <code>note.align</code> is a single string used
+for alignment, specifically for any table notes set with
+<code>note</code>, which enters as part of a <code>\multicolumn</code>
+argument. It accepts ‘p{}’ and other LaTeX column types. Be sure to
+escape special characters, in particular backslashes.</p>
 </div>
 </div>
   </div>
@@ -357,11 +399,13 @@ am
 
 
       <footer><div class="copyright">
-  <p>Developed by Nick Huntington-Klein.</p>
+  <p></p>
+<p>Developed by Nick Huntington-Klein.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -369,6 +413,8 @@ am
 
   
 
+
+  
 
   </body>
 </html>
