@@ -4,18 +4,27 @@
 \alias{notNA}
 \title{Number of nonmissing values in a vector}
 \usage{
-notNA(x)
+notNA(x, big.mark = NULL, scientific = FALSE, ...)
 }
 \arguments{
 \item{x}{A vector.}
+
+\item{big.mark}{Argument to pass to \code{format()}, if a formatted string is desired.}
+
+\item{scientific}{Argument to pass to \code{format()} if \code{big.mark} is specified. Defaults to \code{FALSE}, unlike in \code{format()}.}
+
+\item{...}{Other arguments to pass to \code{format()}. Ignored if \code{big.mark} is not specified.}
 }
 \description{
 This function calculates the number of values in a vector that are not NA.
 }
 \details{
 This function just shorthand for \code{sum(!is.na(x))}, with a shorter name for reference in the \code{vtable} or \code{sumtable} \code{summ} option.
+
+If \code{big.mark} is specified, will return a formatted string instead of a number, where the formatting is based on \code{format(x, big.mark = big.mark, scientific = FALSE, ...)}.
 }
 \examples{
 x <- c(1, 1, NA, 2, 3, NA)
 notNA(x)
+notNA(1:10000, big.mark = ',')
 }

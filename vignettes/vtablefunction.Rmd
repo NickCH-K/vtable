@@ -92,7 +92,7 @@ The `out` option determines what will be done with the resulting variable docume
 | latex      | Returns a LaTeX table. |
 | latexpage  | Returns an independently-buildable LaTeX document. |
 
-By default, `vtable` will select 'viewer' if running in RStudio, and 'browser' otherwise. If it's being built in an RMarkdown document with `knitr`, it will default to 'kable'.
+By default, `vtable` will select 'viewer' if running in RStudio, and 'browser' otherwise. If it's being built in an RMarkdown document with `knitr`, it will default to 'kable'. Note that an RMarkdown default to 'kable' will also include some nice formatting, where `out = 'kable'` directly will give you a more basic `kable` you can format yourself.
 
 ```{r, eval = FALSE}
 data(LifeCycleSavings)
@@ -242,7 +242,7 @@ vtable(USJudgeRatings,char.values=c('Judge','SecondCharacter'))
 
 `desc` will include a description of the data set in the variable documentation file. This will by default include information on the number of observations and the number of columns. To remove this, set `desc='omit'`, or include any description and then include 'omit' as the last four characters. 
 
-`note` will add a table note in the last row.
+`note` will add a table note in the last row. `note.align` determines its left/right/center alignment, but is only used with LaTeX (see below).
 
 `anchor` will add an anchor ID (`<a name = ` in HTML or `\label{}` in LaTeX) to allow other parts of your document to link to it, if you are including your `vtable` in a larger document.
 

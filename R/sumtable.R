@@ -16,7 +16,7 @@
 #' @param vars Character vector of column names to include, in the order you'd like them included. Defaults to all numeric, factor, and logical variables, plus any character variables with six or fewer unique values. You can include strings that aren't columns in the data (including blanks) - these will create rows that are blank except for the string (left-aligned), for spacers or subtitles.
 #' @param out Determines where the completed table is sent. Set to \code{"browser"} to open HTML file in browser using \code{browseURL()}, \code{"viewer"} to open in RStudio viewer using \code{viewer()}, if available. Use \code{"htmlreturn"} to return the HTML code to R, \code{"latex"} to return LaTeX code to R (use \code{"latexdoc"} to get a full buildable document rather than a fragment), \code{"return"} to return the completed summary table to R in data frame form, or \code{"kable"} to return it in \code{knitr::kable()} form. Combine \code{out = "csv"} with \code{file} to write to CSV (dropping most formatting). Defaults to \code{"viewer"} if RStudio is running, \code{"browser"} if it isn't,  or a \code{"kable"} passed through \code{kableExtra::kable_styling()} defaults if it's an RMarkdown document being built with \code{knitr}.
 #' @param file Saves the completed summary table file to file with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard sumtable HTML file as with \code{out = "viewer"} or \code{out = "browser"}.
-#' @param summ Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. Defaults to \code{c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')} if there's one column, or \code{c('notNA(x)','mean(x)','sd(x)')} if there's more than one. If all variables in a column are factors it defaults to \code{c('sum(x)','mean(x)')} for the factor dummies. If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)} and \code{countNA(x)}.
+#' @param summ Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. Defaults to \code{c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')} if there's one column, or \code{c('notNA(x)','mean(x)','sd(x)')} if there's more than one. If all variables in a column are factors it defaults to \code{c('sum(x)','mean(x)')} for the factor dummies. If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, \code{notNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)} and \code{countNA(x)}.
 #' @param summ.names Character vector of names for the summary statistics included. If \code{summ} is at default, defaults to \code{c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 75','Max')} (or the appropriate shortened version with multiple columns) unless all variables in the column are factors in which case it defaults to \code{c('N','Percent')}. If \code{summ} has been set but \code{summ.names} has not, defaults to \code{summ} with the \code{(x)}s removed and the first letter capitalized.  If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead.
 #' @param add.median Adds \code{"median(x)"} to the set of default summary statistics. Has no effect if \code{"summ"} is also specified.
 #' @param group Character variable with the name of a column in the data set that statistics are to be calculated over. Value labels will be used if found for numeric variables. Changes the default \code{summ} to \code{c('mean(x)','sd(x)')}.
@@ -25,8 +25,8 @@
 #' @param group.weights \emph{THIS OPTION DOES NOT AUTOMATICALLY WEIGHT ALL CALCULATIONS.} This is mostly to be used with \code{group} and \code{group.long = FALSE}, and while it's more flexible than that, you've gotta read this to figure out how else to use it. That's why I gave it the weird name. Set this to a vector of weights, or a string representing a column name with weights. If \code{summ} is not customized, this will replace \code{'mean(x)'} and \code{'sd(x)'} with the equivalent weighted versions \code{'weighted.mean(x, w = wts)'} and \code{'weighted.sd(x, w = wts)'} It will also add weights to the default \code{group.test} tests. This will not add weights to any other calculations, or to any custom \code{group.test} weights (although you can always do that yourself by customizing \code{summ} and passing in weights with this argument-the weights can be referred to in your function as \code{wts}). This is generally intended for things like post-matching balance tables. If you specify a column name, that column will be removed from the rest of the table, so if you want it to be kept, specify this as a numeric vector instead. If you have a variable in your data called \code{'wts'} that will mess the use of this option up, I recommend changing that.
 #' @param col.breaks Numeric vector indicating the variables (or number of elements of \code{vars}) after which to start a new column. So for example with a data set with six variables, \code{c(3,5)} would put the first three variables in the first column, the next two in the middle, and the last on the right. Cannot be combined with \code{group} unless \code{group.long = TRUE}.
 #' @param digits Number of digits after the decimal place to report. Set to a single number for consistent digits, or a vector the same length as \code{summ} for different digits for each calculation, or a list of vectors that match up to a multi-column \code{summ}. Defaults to 0 for the first calculation (N, usually) and 2 afterwards.
-#' @param fixed.digits \code{FALSE} will cut off trailing \code{0}s when rounding. \code{TRUE} retains them. Defaults to \code{FALSE}.
-#' @param format A function that takes a numeric input and produces labeled output, such as the \code{label_} functions from the \emph{scales} package. Provide a single function to apply to all variables, or a list of functions the same length as the number of variables to format each variable differently. The formatting function will skip over \code{notNA, countNA, propNA} calculations by default. Factor percentages will ignore this entirely; you can use \code{NA} to skip them when specifying a list. Alternately, if the \emph{scales} package is installed, you can specify strings giving the shorthand for the appropriate \code{scales::label_} function, for instance \code{c('comma','percent')} to use \code{label_comma()} followed by \code{label_percent()}. Specifying a character vector will respect your \code{digits} option if \code{digits} is a single value rather than a vector or list, but will otherwise use the defaults of those functions. You can mix together specifying your own functions and specifying character strings. At the moment there is no way to do different formatting for different columns of the same variable, other than \code{skip.format}.
+#' @param fixed.digits Deprecated; currently only works if \code{numformat = NA}. \code{FALSE} will cut off trailing \code{0}s when rounding. \code{TRUE} retains them. Defaults to \code{FALSE}.
+#' @param numformat A function that takes a numeric input and produces labeled output, which you might construct using the \code{format.func} function or the \code{label_} functions from the scales package. Provide a single function to apply to all variables, or a list of functions the same length as the number of variables to format each variable differently. The formatting function will skip over \code{notNA, countNA, propNA} calculations by default. Factor percentages will ignore this entirely; you can use \code{NA} to skip them when specifying a list. Alternately, you can specify strings giving the shorthand for the appropriate formatting: the string containing \code{'comma'} will set \code{big.mark = ','}, \code{'decimal'} will set \code{big.mark = '.', decimal.mark = ','}, \code{'percent'} will do percentage formatting (with 1 = 100\%), and \code{'A|B'} will use \code{'A'} as a prefix and \code{'B'} as a suffix (specifying suffix optional, so \code{numformat = '$'} gives \code{'$3'}). Anything more complex than that will require you pass a \code{format.func} or similar function. Specifying a character vector will respect your \code{digits} option if \code{digits} is a single value rather than a vector or list, but will otherwise use the defaults of those functions. You can mix together specifying your own functions and specifying character strings. At the moment there is no way to do different formatting for different columns of the same variable, other than \code{skip.format}. Set to \code{NA} to revert to the old way of formatting.
 #' @param skip.format Set of functions in \code{summ} that are not subject to \code{format}. Does nothing if \code{format} is not specified.
 #' @param factor.percent Set to \code{TRUE} to show factor means as percentages instead of proportions, i.e. \code{50\%} with a column header of "Percent" rather than \code{.5} with a column header of "Mean". Defaults to \code{TRUE}.
 #' @param factor.counts Set to \code{TRUE} to show a count of each factor level in the first column. Defaults to \code{TRUE}.
@@ -36,13 +36,14 @@
 #' @param labels Variable labels. labels will accept four formats: (1) A vector of the same length as the number of variables in the data that will be included in the table (tricky to use if many are being dropped, also won't work for your \code{group} variable), in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels, or (4) TRUE to look in the data for variable labels set by the haven package, \code{set_label()} from sjlabelled, or \code{label()} from Hmisc.
 #' @param title Character variable with the title of the table.
 #' @param note Table note to go after the last row of the table. Will follow significance star note if \code{group.test = TRUE}.
-#' @param note.align Set the alignment for the multi-column table note. Usually "l", but if you have a long note in LaTeX you might want to set it with "p{}"
 #' @param anchor Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in an HTML table. Must have a number of elements equal to the number of columns in the resulting table.
 #' @param col.align For HTML output, a character vector indicating the HTML \code{text-align} attributes to be used in the table (for example \code{col.align = c('left','center','center')}. Defaults to variable-name columns left-aligned and all others right-aligned (with a little extra padding between columns with \code{col.breaks}). If you want to get tricky, you can add a \code{";"} afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.
 #' @param align For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to left in the first column and right-aligned afterwards, with \code{@{\\hskip .2in}} spacers if you have \code{col.breaks}. If \code{col.width} is specified, defaults to all \code{p{}} columns with widths set by \code{col.width}. If you want the columns aligned on a decimal point, see \href{https://tex.stackexchange.com/questions/2746/aligning-numbers-by-decimal-points-in-table-columns#2747}{this explainer}.
+#' @param note.align For LaTeX output, set the alignment for the multi-column table note. Usually "l", but if you have a long note in LaTeX you might want to set it with "p{}"
 #' @param fit.page For LaTeX output, uses a resizebox to force the table to a certain width. Set to \code{NA} to omit.
 #' @param simple.kable For \code{out = 'kable'}, if you want the \code{kable} printed to console rather than HTML or PDF, then the multi-column headers and table notes won't work. Set \code{simple.kable = TRUE} to skip both.
+#' @param obs.function The function to use (and, potentially, format) to count the number of observations for the N column. This should take a vector and return a single number or string. Uses the same string formatting as \code{summ}. If not specified, will check if \code{numformat} is specified using \code{format.func} or a string. If not, this will be \code{'notNA(x)'}. If it is, will be \code{'notNA(x)'} with the \code{big.mark} argument set to match the first function listed in \code{numformat}.
 #' @param opts The same \code{sumtable} options as above, but in a named list format. Useful for applying the same set of options to multiple \code{sumtable}s.
 #' @examples
 #' # Examples are only run interactively because they open HTML pages in Viewer or a browser.
@@ -83,6 +84,16 @@
 #'     factor.percent = FALSE,
 #'     col.breaks = 7)
 #'
+#' # Format the results
+#' # use rep so there are enough observations to see the comma separators
+#' irisrep = do.call('rbind', replicate(100, iris, simplify = FALSE))
+#' # Comma separator for thousands, including for N.
+#' st(irisrep, numformat = 'comma')
+#' # Dollar formatting for sepal.width, decimal (1.000,00) formatting for the rest
+#' st(iris, numformat = c('decimal','Sepal.Width' = '$'))
+#' # Custom formatting throughout, note the big.mark = ',' will also be picked up by N
+#' st(irisrep, numformat = format.func(digits = 2, nsmall = 2, big.mark = ','))
+#'
 #' }
 #' @rdname sumtable
 #' @export
@@ -93,11 +104,12 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                      add.median = FALSE,
                      group=NA,group.long=FALSE,group.test=FALSE,group.weights=NA,
                      col.breaks=NA,
-                     digits=NA,fixed.digits=FALSE,format=NA,skip.format = c('notNA(x)','propNA(x)','coutNA(x)'), factor.percent=TRUE,
+                     digits=2,fixed.digits=FALSE,numformat=format.func(digits = digits, big.mark = ''),skip.format = c('notNA(x)','propNA(x)','countNA(x)', obs.function),
+                     factor.percent=TRUE,
                      factor.counts=TRUE,factor.numeric=FALSE,
                      logical.numeric=FALSE,logical.labels=c("No","Yes"),labels=NA,title='Summary Statistics',
                      note = NA, anchor=NA,col.width=NA,col.align=NA,
-                     align=NA, note.align = 'l', fit.page = '\\textwidth', simple.kable=FALSE,opts=list()) {
+                     align=NA, note.align = 'l', fit.page = '\\textwidth', simple.kable=FALSE,obs.function = NA, opts=list()) {
   #Bring in opts
   list2env(opts,envir=environment())
   #######CHECK INPUTS
@@ -106,6 +118,11 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   }
   if (!is.na(file) & !is.character(file)) {
     stop('Incorrect file name.')
+  }
+  if (!is.na(out)) {
+    if (!(out %in% c('return','viewer','browser','htmlreturn','latex','kable','csv','latexpage'))) {
+      stop('Unrecognized option for out.')
+    }
   }
   if (!identical(vars,NA) & !is.character(vars)) {
     stop('vars must be a character vector.')
@@ -169,6 +186,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   if (!is.logical(fixed.digits)) {
     stop('fixed.digits must be TRUE or FALSE.')
   }
+  if (fixed.digits) {
+    warning('fixed.digits is deprecated and will be removed in a future version in favor of a setting in ')
+  }
   if (!is.numeric(col.breaks) & !identical(col.breaks,NA)) {
     stop('col.breaks must be numeric.')
   }
@@ -178,30 +198,62 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   if (!is.numeric(digits) & !is.list(digits) & !identical(digits,NA)) {
     stop('digits must be numeric.')
   }
-  if (!is.list(format)) {
-    if (length(format) > 1) {
-      format = as.list(format)
+  if (!is.list(numformat)) {
+    if (length(numformat) > 1) {
+      numformat = as.list(numformat)
     } else {
-      format = list(format)
+      numformat = list(numformat)
     }
   }
-  # All elements of format must be NA, character, or function
+  # All elements of numformat must be NA, character, or function
   # if character, replace with function equivalent
-  for (fm in 1:length(format)) {
-    if (is.function(format[[fm]])) {
-    } else if (is.na(format[[fm]])) {
-      format[[fm]] = function(x) x
-    } else if (is.character(format[[fm]])) {
-      if (is.na(digits)) {
-        format[[fm]] = eval(parse(text = paste0('scales::label_',format[[fm]][[f]], '()')))
-      } else {
-        format[[fm]] = eval(parse(text = paste0('scales::label_',
-                                                format[[fm]][[f]],
-                                                '(accuracy = ',1/(10^digits),
-                                                ')')))
+  for (fm in 1:length(numformat)) {
+    if (is.function(numformat[[fm]])) {
+    } else if (is.na(numformat[[fm]])) {
+      numformat[[fm]] = function(x) x
+    } else if (is.character(numformat[[fm]])) {
+      set_digits <- ifelse(is.na(digits), NULL, digits)
+      set_bigmark <- ''
+      set_decimalmark <- getOption("OutDec")
+      set_percent <- FALSE
+      set_prefix = ''
+      set_suffix = ''
+      if (grepl('comma', numformat[[fm]])) {
+        set_bigmark <- ','
+        numformat[[fm]] <- gsub('comma','',numformat[[fm]])
       }
+      if (grepl('decimal',numformat[[fm]])) {
+        set_bigmark <- '.'
+        set_decimalmark <- ','
+        numformat[[fm]] <- gsub('decimal','',numformat[[fm]])
+      }
+      if (grepl('percent', numformat[[fm]])) {
+        set_percent <- TRUE
+        numformat[[fm]] <- gsub('percent','',numformat[[fm]])
+      }
+      if (nchar(numformat[[fm]]) > 0) {
+        if (grepl('|', numformat[[fm]])) {
+          format_split <- strsplit(numformat[[fm]],'|', fixed = TRUE)[[1]]
+          set_prefix <- format_split[1]
+          set_suffix <- format_split[2]
+        } else {
+          set_prefix <- numformat[[fm]]
+        }
+      }
+      numformat[[fm]] <- format.func(percent = set_percent,
+                                     prefix = set_prefix,
+                                     suffix = set_suffix,
+                                     digits = digits,
+                                     big.mark = set_bigmark,
+                                     decimal.mark = set_decimalmark)
     } else {
-      stop('Each element of format must be NA, A shorthand string for the scales package, or a function.')
+      stop('Each element of numformat must be NA, a string, or a function.')
+    }
+  }
+  if (is.na(obs.function)) {
+    obs.function <- 'notNA(x)'
+    if (!is.null(attr(numformat[[1]], 'big.mark'))) {
+      obs.function <- paste0('notNA(x, "', attr(numformat[[1]], 'big.mark'), '")')
     }
   }
   if (!is.logical(factor.percent) | !is.logical(factor.counts)) {
@@ -209,6 +261,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
   }
   if (!is.character(title)) {
     stop('title must be a character variable.')
+  }
+  if (!identical(out,NA) & !(out %in% c('viewer', 'browser','return','htmlreturn','kable','latex','latexpage', 'csv'))) {
+    stop('out must be viewer, browser, return, htmlreturn, kable, latex, or latexpage')
   }
   if (identical(out, 'csv') & is.na(file)) {
     warning('out = "csv" will just return the vtable as a data.frame unless combined with file')
@@ -311,19 +366,19 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     if (is.list(summ) & !identical(col.breaks,NA)) {
       ext.col.breaks <- c(1,col.breaks,ncol(data))
       for (i in 1:length(summ)) {
-        if ((!(summ[[i]][1] %in% c('length(x)','notNA(x)')) |
+        if ((!(summ[[i]][1] %in% c('length(x)', obs.function)) |
             !(summ[[i]][2] %in% 'mean(x)')) &
             any(var.classes[ext.col.breaks[i]:ext.col.breaks[i+1]] == 'factor')) {
           factor.warning <- TRUE
         }
       }
     } else if (!is.list(summ)) {
-      if (!(summ[1] %in% c('length(x)','notNA(x)')) |
+      if (!(summ[1] %in% c('length(x)',obs.function)) |
           !(summ[2] %in% 'mean(x)')) {
         factor.warning <- TRUE
       }
     } else {
-      if (!(summ[[1]][1] %in% c('length(x)','notNA(x)')) |
+      if (!(summ[[1]][1] %in% c('length(x)',obs.function)) |
           !(summ[[1]][2] %in% 'mean(x)')) {
         factor.warning <- TRUE
       }
@@ -396,14 +451,14 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
           }
         }
       } else if ((is.na(group) | group.long == TRUE) & length(col.breaks) == 1) {
-        summ[[i]] <- c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')
+        summ[[i]] <- c(obs.function,'mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')
 
         if (fill.sn) {
           summ.names[[i]] <- c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 75','Max')
         }
         # Add median if desired
         if (add.median) {
-          summ[[i]] <- c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','median(x)','pctile(x)[75]','max(x)')
+          summ[[i]] <- c(obs.function,'mean(x)','sd(x)','min(x)','pctile(x)[25]','median(x)','pctile(x)[75]','max(x)')
 
           if (fill.sn) {
             summ.names[[i]] <- c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 50', 'Pctl. 75','Max')
@@ -421,13 +476,13 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
         }
 
       } else if ((is.na(group) | group.long == TRUE) & length(col.breaks) > 1) {
-        summ[[i]] <- c('notNA(x)','mean(x)','sd(x)')
+        summ[[i]] <- c(obs.function,'mean(x)','sd(x)')
 
         if (fill.sn) {
           summ.names[[i]] <- c('N','Mean','Std. Dev.')
         }
         if (add.median) {
-          summ[[i]] <- c('notNA(x)','mean(x)','sd(x)', 'median(x)')
+          summ[[i]] <- c(obs.function,'mean(x)','sd(x)', 'median(x)')
 
           if (fill.sn) {
             summ.names[[i]] <- c('N','Mean','Std. Dev.', 'Median')
@@ -444,13 +499,13 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
           }
         }
       } else {
-        summ[[i]] <- c('notNA(x)','mean(x)','sd(x)')
+        summ[[i]] <- c(obs.function,'mean(x)','sd(x)')
 
         if (fill.sn) {
           summ.names[[i]] <- c('N','Mean','SD')
         }
         if (add.median) {
-          summ[[i]] <- c('notNA(x)','mean(x)','sd(x)', 'median(x)')
+          summ[[i]] <- c(obs.function,'mean(x)','sd(x)', 'median(x)')
 
           if (fill.sn) {
             summ.names[[i]] <- c('N','Mean','SD', 'Median')
@@ -509,20 +564,33 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
         # Attempt to calc each variable for this function
         calcs <- sapply(vars, function(x) parsefcn_summ(data[[x]],summ[[i]][j]))
         calcs <- calcs[!is.na(calcs)]
-        if (is.round(calcs) | summ[[i]][j] == 'notNA(x)') {
+        if (is.round(calcs) | summ[[i]][j] == obs.function) {
           digits[[i]][j] <- 0
         }
       }
     }
   }
 
-  # If format is a single thing, fill it in
-  if (length(format) == 1) {
-    single.format = format[[1]]
-    format = list()
+  # If numformat is a single thing, fill it in
+  if (length(numformat) == 1) {
+    single.numformat = numformat[[1]]
+    numformat = list()
     for (i in 1:length(vars)) {
-      format[[i]] = single.format
+      numformat[[i]] = single.numformat
     }
+  }
+  # If numformat is a named list, fill it in
+  if (length(numformat) < length(vars)) {
+    new.numformat <- list()
+    for (v in vars) {
+      if (v %in% names(numformat)) {
+        new.numformat[[v]] <- numformat[[v]]
+      } else {
+        new.numformat[[v]] <- numformat[[1]]
+      }
+    }
+    numformat <- new.numformat
+    rm(new.numformat)
   }
 
   #And fill in summ.names the rest of the way
@@ -665,8 +733,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                     digits[[i]],
                     fixed.digits,
                     wts,
-                    format[[x]],
-                    skip.format) })
+                    numformat[[x]],
+                    skip.format,
+                    function(x) eval(parse(text = obs.function))) })
       contents <- do.call(rbind, contents)
       st[[i]] <- rbind(st[[i]],contents)
     }
@@ -701,8 +770,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                     digits[[1]],
                     fixed.digits,
                     wts[data[[group]] == grouplevels[i]],
-                    format[[x]],
-                    skip.format))
+                    numformat[[x]],
+                    skip.format,
+                    function(x) eval(parse(text = obs.function))))
 
       #On the last one, if there's a test, add it
       if (group.test & i == length(grouplevels)) {
@@ -794,8 +864,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                       digits[[i]],
                       fixed.digits,
                       wts[data[[group]] == grouplevels[j]],
-                      format[[x]],
-                      skip.format))
+                      numformat[[x]],
+                      skip.format,
+                      function(x) eval(parse(text = obs.function))))
         summcontents <- do.call(rbind, contents)
         st[[i]] <- rbind(st[[i]],summcontents)
       }
@@ -1027,7 +1098,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     if (!simple.kable) {
       st <- clean_multicol_kable(st,title,note)
       if (isTRUE(getOption('knitr.in.progress')) & out == '') {
-        st <- kableExtra::kable_styling(st)
+        if (isTRUE(knitr::is_html_output())) {
+          st <- kableExtra::kable_styling(st)
+        }
       }
       return(st)
     } else {

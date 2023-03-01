@@ -20,7 +20,7 @@
 #' data(mtcars)
 #' independence.test(mtcars$cyl,mtcars$mpg)
 #'
-#' @export
+#' @export independence.test
 independence.test <- function(x,y,w=NA,
                               factor.test = NA,
                               numeric.test = NA,

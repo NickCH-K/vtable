@@ -18,8 +18,10 @@ sumtable(
   group.test = FALSE,
   group.weights = NA,
   col.breaks = NA,
-  digits = NA,
+  digits = 2,
   fixed.digits = FALSE,
+  numformat = format.func(digits = digits, big.mark = ""),
+  skip.format = c("notNA(x)", "propNA(x)", "countNA(x)", obs.function),
   factor.percent = TRUE,
   factor.counts = TRUE,
   factor.numeric = FALSE,
@@ -35,6 +37,7 @@ sumtable(
   note.align = "l",
   fit.page = "\\\\textwidth",
   simple.kable = FALSE,
+  obs.function = NA,
   opts = list()
 )
 
@@ -51,8 +54,10 @@ st(
   group.test = FALSE,
   group.weights = NA,
   col.breaks = NA,
-  digits = NA,
+  digits = 2,
   fixed.digits = FALSE,
+  numformat = format.func(digits = digits, big.mark = ""),
+  skip.format = c("notNA(x)", "propNA(x)", "countNA(x)", obs.function),
   factor.percent = TRUE,
   factor.counts = TRUE,
   factor.numeric = FALSE,
@@ -68,6 +73,7 @@ st(
   note.align = "l",
   fit.page = "\\\\textwidth",
   simple.kable = FALSE,
+  obs.function = NA,
   opts = list()
 )
 }
@@ -80,7 +86,7 @@ st(
 
 \item{file}{Saves the completed summary table file to file with this filepath. May be combined with any value of \code{out}, although note that \code{out = "return"} and \code{out = "kable"} will still save the standard sumtable HTML file as with \code{out = "viewer"} or \code{out = "browser"}.}
 
-\item{summ}{Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. Defaults to \code{c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')} if there's one column, or \code{c('notNA(x)','mean(x)','sd(x)')} if there's more than one. If all variables in a column are factors it defaults to \code{c('sum(x)','mean(x)')} for the factor dummies. If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)} and \code{countNA(x)}.}
+\item{summ}{Character vector of summary statistics to include for numeric and logical variables, in the form \code{'function(x)'}. Defaults to \code{c('notNA(x)','mean(x)','sd(x)','min(x)','pctile(x)[25]','pctile(x)[75]','max(x)')} if there's one column, or \code{c('notNA(x)','mean(x)','sd(x)')} if there's more than one. If all variables in a column are factors it defaults to \code{c('sum(x)','mean(x)')} for the factor dummies. If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead. This option is flexible, and allows any summary statistic function that takes in a column and returns a single number. For example, \code{summ=c('mean(x)','mean(log(x))')} will provide the mean of each variable as well as the mean of the log of each variable. Keep in mind the special vtable package helper functions designed specifically for this option \code{propNA}, \code{countNA}, \code{notNA}, and \code{notNA}, which report counts and proportions of NAs, or counts of not-NAs, in the vectors, \code{nuniq}, which reports the number of unique values, and \code{pctile}, which returns a vector of the 100 percentiles of the variable. NAs will be omitted from all calculations other than \code{propNA(x)} and \code{countNA(x)}.}
 
 \item{summ.names}{Character vector of names for the summary statistics included. If \code{summ} is at default, defaults to \code{c('N','Mean','Std. Dev.','Min','Pctl. 25','Pctl. 75','Max')} (or the appropriate shortened version with multiple columns) unless all variables in the column are factors in which case it defaults to \code{c('N','Percent')}. If \code{summ} has been set but \code{summ.names} has not, defaults to \code{summ} with the \code{(x)}s removed and the first letter capitalized.  If the table has multiple variable-columns and you want different statistics in each, include a list of character vectors instead.}
 
@@ -98,7 +104,11 @@ st(
 
 \item{digits}{Number of digits after the decimal place to report. Set to a single number for consistent digits, or a vector the same length as \code{summ} for different digits for each calculation, or a list of vectors that match up to a multi-column \code{summ}. Defaults to 0 for the first calculation (N, usually) and 2 afterwards.}
 
-\item{fixed.digits}{\code{FALSE} will cut off trailing \code{0}s when rounding. \code{TRUE} retains them. Defaults to \code{FALSE}.}
+\item{fixed.digits}{Deprecated; currently only works if \code{numformat = NA}. \code{FALSE} will cut off trailing \code{0}s when rounding. \code{TRUE} retains them. Defaults to \code{FALSE}.}
+
+\item{numformat}{A function that takes a numeric input and produces labeled output, which you might construct using the \code{format.func} function or the \code{label_} functions from the scales package. Provide a single function to apply to all variables, or a list of functions the same length as the number of variables to format each variable differently. The formatting function will skip over \code{notNA, countNA, propNA} calculations by default. Factor percentages will ignore this entirely; you can use \code{NA} to skip them when specifying a list. Alternately, you can specify strings giving the shorthand for the appropriate formatting: the string containing \code{'comma'} will set \code{big.mark = ','}, \code{'decimal'} will set \code{big.mark = '.', decimal.mark = ','}, \code{'percent'} will do percentage formatting (with 1 = 100\%), and \code{'A|B'} will use \code{'A'} as a prefix and \code{'B'} as a suffix (specifying suffix optional, so \code{numformat = '$'} gives \code{'$3'}). Anything more complex than that will require you pass a \code{format.func} or similar function. Specifying a character vector will respect your \code{digits} option if \code{digits} is a single value rather than a vector or list, but will otherwise use the defaults of those functions. You can mix together specifying your own functions and specifying character strings. At the moment there is no way to do different formatting for different columns of the same variable, other than \code{skip.format}. Set to \code{NA} to revert to the old way of formatting.}
+
+\item{skip.format}{Set of functions in \code{summ} that are not subject to \code{format}. Does nothing if \code{format} is not specified.}
 
 \item{factor.percent}{Set to \code{TRUE} to show factor means as percentages instead of proportions, i.e. \code{50\%} with a column header of "Percent" rather than \code{.5} with a column header of "Mean". Defaults to \code{TRUE}.}
 
@@ -124,11 +134,13 @@ st(
 
 \item{align}{For LaTeX output, string indicating the alignment of each column. Use standard LaTeX syntax (i.e. \code{l|ccc}). Defaults to left in the first column and right-aligned afterwards, with \code{@{\\hskip .2in}} spacers if you have \code{col.breaks}. If \code{col.width} is specified, defaults to all \code{p{}} columns with widths set by \code{col.width}. If you want the columns aligned on a decimal point, see \href{https://tex.stackexchange.com/questions/2746/aligning-numbers-by-decimal-points-in-table-columns#2747}{this explainer}.}
 
-\item{note.align}{Set the alignment for the multi-column table note. Usually "l", but if you have a long note in LaTeX you might want to set it with "p{}"}
+\item{note.align}{For LaTeX output, set the alignment for the multi-column table note. Usually "l", but if you have a long note in LaTeX you might want to set it with "p{}"}
 
 \item{fit.page}{For LaTeX output, uses a resizebox to force the table to a certain width. Set to \code{NA} to omit.}
 
 \item{simple.kable}{For \code{out = 'kable'}, if you want the \code{kable} printed to console rather than HTML or PDF, then the multi-column headers and table notes won't work. Set \code{simple.kable = TRUE} to skip both.}
+
+\item{obs.function}{The function to use (and, potentially, format) to count the number of observations for the N column. This should take a vector and return a single number or string. Uses the same string formatting as \code{summ}. If not specified, will check if \code{numformat} is specified using \code{format.func} or a string. If not, this will be \code{'notNA(x)'}. If it is, will be \code{'notNA(x)'} with the \code{big.mark} argument set to match the first function listed in \code{numformat}.}
 
 \item{opts}{The same \code{sumtable} options as above, but in a named list format. Useful for applying the same set of options to multiple \code{sumtable}s.}
 }
@@ -184,6 +196,16 @@ st(iris,
     'Species'),
     factor.percent = FALSE,
     col.breaks = 7)
+
+# Format the results
+# use rep so there are enough observations to see the comma separators
+irisrep = do.call('rbind', replicate(100, iris, simplify = FALSE))
+# Comma separator for thousands, including for N.
+st(irisrep, numformat = 'comma')
+# Dollar formatting for sepal.width, decimal (1.000,00) formatting for the rest
+st(iris, numformat = c('decimal','Sepal.Width' = '$'))
+# Custom formatting throughout, note the big.mark = ',' will also be picked up by N
+st(irisrep, numformat = format.func(digits = 2, nsmall = 2, big.mark = ','))
 
 }
 }

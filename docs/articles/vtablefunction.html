@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/vtable.html">Get started</a>
 </li>
@@ -50,7 +46,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -79,7 +75,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/NickCH-K/vtable/">
+  <a href="https://github.com/NickCH-K/vtable/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -94,70 +90,109 @@
 
       
 
-      </header><script src="vtablefunction_files/header-attrs-2.9/header-attrs.js"></script><script src="vtablefunction_files/kePrint-0.0.1/kePrint.js"></script><link href="vtablefunction_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+      </header><script src="vtablefunction_files/kePrint-0.0.1/kePrint.js"></script><link href="vtablefunction_files/lightable-0.0.1/lightable.css" rel="stylesheet">
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Variable Table (vtable)</h1>
-                        <h4 class="author">Nick Huntington-Klein</h4>
+                        <h4 data-toc-skip class="author">Nick
+Huntington-Klein</h4>
             
-            <h4 class="date">2021-07-29</h4>
+            <h4 data-toc-skip class="date">2023-03-01</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/NickCH-K/vtable/blob/master/vignettes/vtablefunction.Rmd"><code>vignettes/vtablefunction.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NickCH-K/vtable/blob/HEAD/vignettes/vtablefunction.Rmd" class="external-link"><code>vignettes/vtablefunction.Rmd</code></a></small>
       <div class="hidden name"><code>vtablefunction.Rmd</code></div>
 
     </div>
 
     
     
-<p>The <code>vtable</code> package serves the purpose of outputting automatic variable documentation that can be easily viewed while continuing to work with data.</p>
-<p><code>vtable</code> contains four main functions: <code><a href="../reference/vtable.html">vtable()</a></code> (or <code><a href="../reference/vtable.html">vt()</a></code>), <code><a href="../reference/sumtable.html">sumtable()</a></code> (or <code><a href="../reference/sumtable.html">st()</a></code>), <code><a href="../reference/labeltable.html">labeltable()</a></code>, and <code><a href="../reference/dftoHTML.html">dftoHTML()</a></code>/<code><a href="../reference/dftoLaTeX.html">dftoLaTeX()</a></code>. This vignette focuses on <code><a href="../reference/vtable.html">vtable()</a></code>.</p>
-<p><code><a href="../reference/vtable.html">vtable()</a></code> takes a dataset and outputs a formatted variable documentation file. This serves several purposes.</p>
-<p>First, it allows for an easy generation of a variable documentation file, without requiring that one has already been created and made accessible through <code><a href="https://rdrr.io/r/utils/data.html">help(data)</a></code>, or dealing with creating and finding R help documentation files.</p>
-<p>Second, it produces a list of variables (and, if provided, their labels) that can be easily viewed while working with the data, preventing repeated calls to <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>, and making it much easier to work with confusingly-named variables.</p>
-<p>Third, the variable documentation file can be opened in a browser (with option <code>out='browser'</code>, saving to file and opening directly, or by opening in the RStudio Viewer pane and clicking ‘Show in New Window’) where it can be easily searched with standard Find-in-Page functions like Ctrl/Cmd-F, allowsing you to search for the variable or variable label you want.</p>
+<p>The <code>vtable</code> package serves the purpose of outputting
+automatic variable documentation that can be easily viewed while
+continuing to work with data.</p>
+<p><code>vtable</code> contains four main functions:
+<code><a href="../reference/vtable.html">vtable()</a></code> (or <code><a href="../reference/vtable.html">vt()</a></code>), <code><a href="../reference/sumtable.html">sumtable()</a></code>
+(or <code><a href="../reference/sumtable.html">st()</a></code>), <code><a href="../reference/labeltable.html">labeltable()</a></code>, and
+<code><a href="../reference/dftoHTML.html">dftoHTML()</a></code>/<code><a href="../reference/dftoLaTeX.html">dftoLaTeX()</a></code>. This vignette focuses
+on <code><a href="../reference/vtable.html">vtable()</a></code>.</p>
+<p><code><a href="../reference/vtable.html">vtable()</a></code> takes a dataset and outputs a formatted
+variable documentation file. This serves several purposes.</p>
+<p>First, it allows for an easy generation of a variable documentation
+file, without requiring that one has already been created and made
+accessible through <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">help(data)</a></code>, or dealing with creating and
+finding R help documentation files.</p>
+<p>Second, it produces a list of variables (and, if provided, their
+labels) that can be easily viewed while working with the data,
+preventing repeated calls to <code><a href="https://rdrr.io/r/utils/head.html" class="external-link">head()</a></code>, and making it much
+easier to work with confusingly-named variables.</p>
+<p>Third, the variable documentation file can be opened in a browser
+(with option <code>out='browser'</code>, saving to file and opening
+directly, or by opening in the RStudio Viewer pane and clicking ‘Show in
+New Window’) where it can be easily searched with standard Find-in-Page
+functions like Ctrl/Cmd-F, allowsing you to search for the variable or
+variable label you want.</p>
 <hr>
-<div id="the-vtable-function" class="section level1">
-<h1 class="hasAnchor">
-<a href="#the-vtable-function" class="anchor"></a>The <code>vtable()</code> function</h1>
-<p><code><a href="../reference/vtable.html">vtable()</a></code> (or <code><a href="../reference/vtable.html">vt()</a></code> for short) syntax follows the following outline:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">data</span>,
-       out<span class="op">=</span><span class="cn">NA</span>,
-       file<span class="op">=</span><span class="cn">NA</span>,
-       labels<span class="op">=</span><span class="cn">NA</span>,
-       class<span class="op">=</span><span class="cn">TRUE</span>,
-       values<span class="op">=</span><span class="cn">TRUE</span>,
-       missing<span class="op">=</span><span class="cn">FALSE</span>,
-       index<span class="op">=</span><span class="cn">FALSE</span>,
-       factor.limit<span class="op">=</span><span class="fl">5</span>,
-       char.values<span class="op">=</span><span class="cn">FALSE</span>,
-       data.title<span class="op">=</span><span class="cn">NA</span>,
-       desc<span class="op">=</span><span class="cn">NA</span>,
-       note<span class="op">=</span><span class="cn">NA</span>,
-       anchor<span class="op">=</span><span class="cn">NA</span>,
-       col.width<span class="op">=</span><span class="cn">NA</span>,
-       col.align<span class="op">=</span><span class="cn">NA</span>,
-       align<span class="op">=</span><span class="cn">NA</span>,
-       note.align<span class="op">=</span><span class="st">'l'</span>,
-       fit.page<span class="op">=</span><span class="cn">NA</span>,
-       summ<span class="op">=</span><span class="cn">NA</span>,
-       lush<span class="op">=</span><span class="cn">FALSE</span>,
-       opts<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>The goal of <code><a href="../reference/vtable.html">vtable()</a></code> is to take a data set <code>data</code> and output a usually-HTML (but <code>data.frame</code>, <code>kable</code>, <code>csv</code>, and <code>latex</code> options are there too) file with documentation concerning each of the variables in <code>data</code>. There are several options as to what will be included in the documentation file, and each of these options are explained below. Throughout, the output will be built as <code>kable</code>s since this is an RMarkdown document. However, generally you can leave <code>out</code> at its default and it will publish an HTML table to Viewer (in RStudio) or the browser (otherwise). This will also include some additional information about your data that can’t be demonstrated in this vignette:</p>
-<div id="data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data" class="anchor"></a><code>data</code>
+<div class="section level2">
+<h2 id="the-vtable-function">The <code>vtable()</code> function<a class="anchor" aria-label="anchor" href="#the-vtable-function"></a>
 </h2>
-<p>The <code>data</code> argument can take any <code>data.frame</code>, <code>data.table</code>, <code>tibble</code>, or <code>matrix</code>, as long as it has a valid set of variable names stored in the <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code> attribute. The goal of <code><a href="../reference/vtable.html">vtable()</a></code> is to produce documentation of each of the variables in this data set and display that documentation, one variable per row on the output <code>vtable</code>.</p>
-<p>If <code>data</code> has embedded variable or value labels, as the data set <code>efc</code> does below, <code><a href="../reference/vtable.html">vtable()</a></code> will extract and use them automatically.</p>
+<p><code><a href="../reference/vtable.html">vtable()</a></code> (or <code><a href="../reference/vtable.html">vt()</a></code> for short) syntax follows
+the following outline:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">data</span>,</span>
+<span>       out<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>       file<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>       labels<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>       class<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>       values<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>       missing<span class="op">=</span><span class="cn">FALSE</span>,</span>
+<span>       index<span class="op">=</span><span class="cn">FALSE</span>,</span>
+<span>       factor.limit<span class="op">=</span><span class="fl">5</span>,</span>
+<span>       char.values<span class="op">=</span><span class="cn">FALSE</span>,</span>
+<span>       data.title<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>       desc<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>       note<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>       anchor<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>       col.width<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>       col.align<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>       align<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>       note.align<span class="op">=</span><span class="st">'l'</span>,</span>
+<span>       fit.page<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>       summ<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>       lush<span class="op">=</span><span class="cn">FALSE</span>,</span>
+<span>       opts<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>The goal of <code><a href="../reference/vtable.html">vtable()</a></code> is to take a data set
+<code>data</code> and output a usually-HTML (but
+<code>data.frame</code>, <code>kable</code>, <code>csv</code>, and
+<code>latex</code> options are there too) file with documentation
+concerning each of the variables in <code>data</code>. There are several
+options as to what will be included in the documentation file, and each
+of these options are explained below. Throughout, the output will be
+built as <code>kable</code>s since this is an RMarkdown document.
+However, generally you can leave <code>out</code> at its default and it
+will publish an HTML table to Viewer (in RStudio) or the browser
+(otherwise). This will also include some additional information about
+your data that can’t be demonstrated in this vignette:</p>
+<div class="section level3">
+<h3 id="data">
+<code>data</code><a class="anchor" aria-label="anchor" href="#data"></a>
+</h3>
+<p>The <code>data</code> argument can take any <code>data.frame</code>,
+<code>data.table</code>, <code>tibble</code>, or <code>matrix</code>, as
+long as it has a valid set of variable names stored in the
+<code><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames()</a></code> attribute. The goal of <code><a href="../reference/vtable.html">vtable()</a></code> is
+to produce documentation of each of the variables in this data set and
+display that documentation, one variable per row on the output
+<code>vtable</code>.</p>
+<p>If <code>data</code> has embedded variable or value labels, as the
+data set <code>efc</code> does below, <code><a href="../reference/vtable.html">vtable()</a></code> will extract
+and use them automatically.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/">vtable</a></span><span class="op">)</span></code></pre></div>
-<pre><code>## Loading required package: kableExtra</code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/" class="external-link">vtable</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: kableExtra</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Example 1, using base data LifeCycleSavings</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>, out<span class="op">=</span><span class="st">'kable'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#Example 1, using base data LifeCycleSavings</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>, out<span class="op">=</span><span class="st">'kable'</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>
 LifeCycleSavings
@@ -232,12 +267,12 @@ Num: 0.22 to 16.71
 </tbody>
 </table>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Example 2, using efc data with embedded variable labels</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
-<span class="co">#Don't forget the handy shortcut vt()!</span>
-<span class="fu"><a href="../reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="co">#Example 2, using efc data with embedded variable labels</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/" class="external-link">sjlabelled</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
+<span><span class="co">#Don't forget the handy shortcut vt()!</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <caption>
 efc
 </caption>
@@ -281,7 +316,8 @@ numeric
 relationship to elder
 </td>
 <td style="text-align:left;">
-‘1: spouse/partner’ ‘2: child’ ‘3: sibling’ ‘4: daughter or son -in-law’ ‘5: ancle/aunt’ and more
+‘1: spouse/partner’ ‘2: child’ ‘3: sibling’ ‘4: daughter or son -in-law’
+‘5: ancle/aunt’ and more
 </td>
 </tr>
 <tr>
@@ -323,7 +359,8 @@ numeric
 elder’s dependency
 </td>
 <td style="text-align:left;">
-‘1: independent’ ‘2: slightly dependent’ ‘3: moderately dependent’ ‘4: severely dependent’
+‘1: independent’ ‘2: slightly dependent’ ‘3: moderately dependent’ ‘4:
+severely dependent’
 </td>
 </tr>
 <tr>
@@ -362,7 +399,8 @@ c84cop3
 numeric
 </td>
 <td style="text-align:left;">
-does caregiving cause difficulties in your relationship with your friends?
+does caregiving cause difficulties in your relationship with your
+friends?
 </td>
 <td style="text-align:left;">
 ‘1: Never’ ‘2: Sometimes’ ‘3: Often’ ‘4: Always’
@@ -390,7 +428,8 @@ c86cop5
 numeric
 </td>
 <td style="text-align:left;">
-does caregiving cause difficulties in your relationship with your family?
+does caregiving cause difficulties in your relationship with your
+family?
 </td>
 <td style="text-align:left;">
 ‘1: Never’ ‘2: Sometimes’ ‘3: Often’ ‘4: Always’
@@ -491,7 +530,8 @@ numeric
 carer’s level of education
 </td>
 <td style="text-align:left;">
-‘1: low level of education’ ‘2: intermediate level of education’ ‘3: high level of education’
+‘1: low level of education’ ‘2: intermediate level of education’ ‘3:
+high level of education’
 </td>
 </tr>
 <tr>
@@ -603,7 +643,8 @@ numeric
 Care level
 </td>
 <td style="text-align:left;">
-‘0: No Care Level’ ‘1: Care Level 1’ ‘2: Care Level 2’ ‘3: Care Level 3’ ‘4: Care Level 3+’
+‘0: No Care Level’ ‘1: Care Level 1’ ‘2: Care Level 2’ ‘3: Care Level 3’
+‘4: Care Level 3+’
 </td>
 </tr>
 <tr>
@@ -623,11 +664,13 @@ Care level
 </tbody>
 </table>
 </div>
-<div id="out" class="section level2">
-<h2 class="hasAnchor">
-<a href="#out" class="anchor"></a><code>out</code>
-</h2>
-<p>The <code>out</code> option determines what will be done with the resulting variable documentation file. There are several options for <code>out</code>:</p>
+<div class="section level3">
+<h3 id="out">
+<code>out</code><a class="anchor" aria-label="anchor" href="#out"></a>
+</h3>
+<p>The <code>out</code> option determines what will be done with the
+resulting variable documentation file. There are several options for
+<code>out</code>:</p>
 <table class="table">
 <colgroup>
 <col width="22%">
@@ -656,11 +699,12 @@ Care level
 </tr>
 <tr class="odd">
 <td>csv</td>
-<td>Returns variable documentatoin in data.frame format and, with a <code>file</code> option, saves that to CSV.</td>
+<td>Returns variable documentatoin in data.frame format and, with a
+<code>file</code> option, saves that to CSV.</td>
 </tr>
 <tr class="even">
 <td>kable</td>
-<td>Returns a <code><a href="https://rdrr.io/pkg/knitr/man/kable.html">knitr::kable()</a></code>
+<td>Returns a <code><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">knitr::kable()</a></code>
 </td>
 </tr>
 <tr class="odd">
@@ -673,48 +717,64 @@ Care level
 </tr>
 </tbody>
 </table>
-<p>By default, <code>vtable</code> will select ‘viewer’ if running in RStudio, and ‘browser’ otherwise. If it’s being built in an RMarkdown document with <code>knitr</code>, it will default to ‘kable’.</p>
+<p>By default, <code>vtable</code> will select ‘viewer’ if running in
+RStudio, and ‘browser’ otherwise. If it’s being built in an RMarkdown
+document with <code>knitr</code>, it will default to ‘kable’. Note that
+an RMarkdown default to ‘kable’ will also include some nice formatting,
+where <code>out = 'kable'</code> directly will give you a more basic
+<code>kable</code> you can format yourself.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,out<span class="op">=</span><span class="st">'browser'</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,out<span class="op">=</span><span class="st">'viewer'</span><span class="op">)</span>
-<span class="va">htmlcode</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,out<span class="op">=</span><span class="st">'htmlreturn'</span><span class="op">)</span>
-<span class="va">vartable</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,out<span class="op">=</span><span class="st">'return'</span><span class="op">)</span>
-
-<span class="co">#I can easily \input this into my LaTeX doc:</span>
-<span class="fu"><a href="../reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,out<span class="op">=</span><span class="st">'latex'</span>,file<span class="op">=</span><span class="st">'mytable1.tex'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,out<span class="op">=</span><span class="st">'browser'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,out<span class="op">=</span><span class="st">'viewer'</span><span class="op">)</span></span>
+<span><span class="va">htmlcode</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,out<span class="op">=</span><span class="st">'htmlreturn'</span><span class="op">)</span></span>
+<span><span class="va">vartable</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,out<span class="op">=</span><span class="st">'return'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#I can easily \input this into my LaTeX doc:</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,out<span class="op">=</span><span class="st">'latex'</span>,file<span class="op">=</span><span class="st">'mytable1.tex'</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="file" class="section level2">
-<h2 class="hasAnchor">
-<a href="#file" class="anchor"></a><code>file</code>
-</h2>
-<p>The <code>file</code> argument will write the variable documentation file to an HTML or LaTeX file and save it. Will automatically append ‘html’ or ‘tex’ filetype if the filename does not include a period.</p>
+<div class="section level3">
+<h3 id="file">
+<code>file</code><a class="anchor" aria-label="anchor" href="#file"></a>
+</h3>
+<p>The <code>file</code> argument will write the variable documentation
+file to an HTML or LaTeX file and save it. Will automatically append
+‘html’ or ‘tex’ filetype if the filename does not include a period.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,file<span class="op">=</span><span class="st">'lifecycle_variabledocumentation'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,file<span class="op">=</span><span class="st">'lifecycle_variabledocumentation'</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="labels" class="section level2">
-<h2 class="hasAnchor">
-<a href="#labels" class="anchor"></a><code>labels</code>
-</h2>
-<p>The <code>labels</code> argument will attach variable labels to the variables in <code>data</code>. If variable labels are embedded in <code>data</code> and those labels are what you want, the <code>labels</code> argument is unnecessary. Set <code>labels='omit'</code> if there are embedded labels but you do not want them in the table.</p>
+<div class="section level3">
+<h3 id="labels">
+<code>labels</code><a class="anchor" aria-label="anchor" href="#labels"></a>
+</h3>
+<p>The <code>labels</code> argument will attach variable labels to the
+variables in <code>data</code>. If variable labels are embedded in
+<code>data</code> and those labels are what you want, the
+<code>labels</code> argument is unnecessary. Set
+<code>labels='omit'</code> if there are embedded labels but you do not
+want them in the table.</p>
 <p><code>labels</code> can be used in any one of three formats.</p>
-<div id="labels-as-a-vector" class="section level3">
-<h3 class="hasAnchor">
-<a href="#labels-as-a-vector" class="anchor"></a><code>labels</code> as a vector</h3>
-<p><code>labels</code> can be set to be a vector of equal length to the number of variables in <code>data</code>, and in the same order. <code>NA</code> values can be used for padding if some variables do not have labels.</p>
+<div class="section level4">
+<h4 id="labels-as-a-vector">
+<code>labels</code> as a vector<a class="anchor" aria-label="anchor" href="#labels-as-a-vector"></a>
+</h4>
+<p><code>labels</code> can be set to be a vector of equal length to the
+number of variables in <code>data</code>, and in the same order.
+<code>NA</code> values can be used for padding if some variables do not
+have labels.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Note that LifeCycleSavings has five variables</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
-<span class="co">#These variable labels are taken from help(LifeCycleSavings)</span>
-<span class="va">labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'numeric aggregate personal savings'</span>,
-    <span class="st">'numeric % of population under 15'</span>,
-    <span class="st">'numeric % of population over 75'</span>,
-    <span class="st">'numeric real per-capita disposable income'</span>,
-    <span class="st">'numeric % growth rate of dpi'</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,labels<span class="op">=</span><span class="va">labs</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="co">#Note that LifeCycleSavings has five variables</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
+<span><span class="co">#These variable labels are taken from help(LifeCycleSavings)</span></span>
+<span><span class="va">labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'numeric aggregate personal savings'</span>,</span>
+<span>    <span class="st">'numeric % of population under 15'</span>,</span>
+<span>    <span class="st">'numeric % of population over 75'</span>,</span>
+<span>    <span class="st">'numeric real per-capita disposable income'</span>,</span>
+<span>    <span class="st">'numeric % growth rate of dpi'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,labels<span class="op">=</span><span class="va">labs</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <caption>
 LifeCycleSavings
 </caption>
@@ -806,9 +866,9 @@ Num: 0.22 to 16.71
 </tbody>
 </table>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'numeric aggregate personal savings'</span>,<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="cn">NA</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,labels<span class="op">=</span><span class="va">labs</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="va">labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'numeric aggregate personal savings'</span>,<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,labels<span class="op">=</span><span class="va">labs</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <caption>
 LifeCycleSavings
 </caption>
@@ -900,22 +960,26 @@ Num: 0.22 to 16.71
 </tbody>
 </table>
 </div>
-<div id="labels-as-a-two-column-data-set" class="section level3">
-<h3 class="hasAnchor">
-<a href="#labels-as-a-two-column-data-set" class="anchor"></a><code>labels</code> as a two-column data set</h3>
-<p><code>labels</code> can be set to a two-column data set (any type will do) where the first column has the variable names, and the second column has the labels. The column names don’t matter.</p>
-<p>This approach does <strong>not</strong> require that every variable name in <code>data</code> has a matching label.</p>
+<div class="section level4">
+<h4 id="labels-as-a-two-column-data-set">
+<code>labels</code> as a two-column data set<a class="anchor" aria-label="anchor" href="#labels-as-a-two-column-data-set"></a>
+</h4>
+<p><code>labels</code> can be set to a two-column data set (any type
+will do) where the first column has the variable names, and the second
+column has the labels. The column names don’t matter.</p>
+<p>This approach does <strong>not</strong> require that every variable
+name in <code>data</code> has a matching label.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Note that LifeCycleSavings has five variables</span>
-<span class="co">#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
-<span class="co">#These variable labels are taken from help(LifeCycleSavings)</span>
-<span class="va">labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>nonsensename1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'sr'</span>, <span class="st">'pop15'</span>, <span class="st">'pop75'</span><span class="op">)</span>,
-nonsensename2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'numeric aggregate personal savings'</span>,
-    <span class="st">'numeric % of population under 15'</span>,
-    <span class="st">'numeric % of population over 75'</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,labels<span class="op">=</span><span class="va">labs</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="co">#Note that LifeCycleSavings has five variables</span></span>
+<span><span class="co">#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
+<span><span class="co">#These variable labels are taken from help(LifeCycleSavings)</span></span>
+<span><span class="va">labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>nonsensename1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'sr'</span>, <span class="st">'pop15'</span>, <span class="st">'pop75'</span><span class="op">)</span>,</span>
+<span>nonsensename2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'numeric aggregate personal savings'</span>,</span>
+<span>    <span class="st">'numeric % of population under 15'</span>,</span>
+<span>    <span class="st">'numeric % of population over 75'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,labels<span class="op">=</span><span class="va">labs</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <caption>
 LifeCycleSavings
 </caption>
@@ -1007,21 +1071,28 @@ Num: 0.22 to 16.71
 </tbody>
 </table>
 </div>
-<div id="labels-as-a-one-row-data-set" class="section level3">
-<h3 class="hasAnchor">
-<a href="#labels-as-a-one-row-data-set" class="anchor"></a><code>labels</code> as a one-row data set</h3>
-<p><code>labels</code> can be set to a one-row data set in which the column names are the variable names in <code>data</code> and the first row is the variable names. The <code>labels</code> argument can take any data type including data frame, data table, tibble, or matrix, as long as it has a valid set of variable names stored in the <code><a href="https://rdrr.io/r/base/colnames.html">colnames()</a></code> attribute.</p>
-<p>This approach does <strong>not</strong> require that every variable name in <code>data</code> has a matching label.</p>
+<div class="section level4">
+<h4 id="labels-as-a-one-row-data-set">
+<code>labels</code> as a one-row data set<a class="anchor" aria-label="anchor" href="#labels-as-a-one-row-data-set"></a>
+</h4>
+<p><code>labels</code> can be set to a one-row data set in which the
+column names are the variable names in <code>data</code> and the first
+row is the variable names. The <code>labels</code> argument can take any
+data type including data frame, data table, tibble, or matrix, as long
+as it has a valid set of variable names stored in the
+<code><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames()</a></code> attribute.</p>
+<p>This approach does <strong>not</strong> require that every variable
+name in <code>data</code> has a matching label.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Note that LifeCycleSavings has five variables</span>
-<span class="co">#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
-<span class="co">#These variable labels are taken from help(LifeCycleSavings)</span>
-<span class="va">labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>sr <span class="op">=</span> <span class="st">'numeric aggregate personal savings'</span>,
-    pop15 <span class="op">=</span> <span class="st">'numeric % of population under 15'</span>,
-    pop75 <span class="op">=</span> <span class="st">'numeric % of population over 75'</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,labels<span class="op">=</span><span class="va">labs</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="co">#Note that LifeCycleSavings has five variables</span></span>
+<span><span class="co">#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
+<span><span class="co">#These variable labels are taken from help(LifeCycleSavings)</span></span>
+<span><span class="va">labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sr <span class="op">=</span> <span class="st">'numeric aggregate personal savings'</span>,</span>
+<span>    pop15 <span class="op">=</span> <span class="st">'numeric % of population under 15'</span>,</span>
+<span>    pop75 <span class="op">=</span> <span class="st">'numeric % of population over 75'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,labels<span class="op">=</span><span class="va">labs</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <caption>
 LifeCycleSavings
 </caption>
@@ -1114,22 +1185,29 @@ Num: 0.22 to 16.71
 </table>
 </div>
 </div>
-<div id="class" class="section level2">
-<h2 class="hasAnchor">
-<a href="#class" class="anchor"></a><code>class</code>
-</h2>
-<p>The <code>class</code> flag will either report or not report the class of each variable in the resulting variable table. By default this is set to <code>TRUE</code>.</p>
+<div class="section level3">
+<h3 id="class">
+<code>class</code><a class="anchor" aria-label="anchor" href="#class"></a>
+</h3>
+<p>The <code>class</code> flag will either report or not report the
+class of each variable in the resulting variable table. By default this
+is set to <code>TRUE</code>.</p>
 </div>
-<div id="values" class="section level2">
-<h2 class="hasAnchor">
-<a href="#values" class="anchor"></a><code>values</code>
-</h2>
-<p>The <code>values</code> flag will either report or not report the values that each variable takes. Numeric variables will report a range, logicals will report ‘TRUE FALSE’, and factor variables will report the first <code>factor.limit</code> (default 5) factors listed.</p>
-<p>If the variable is numeric but has value labels applied by the <code>sjlabelled</code> package, <code><a href="../reference/vtable.html">vtable()</a></code> will find them and report the numeric-label crosswalk.</p>
+<div class="section level3">
+<h3 id="values">
+<code>values</code><a class="anchor" aria-label="anchor" href="#values"></a>
+</h3>
+<p>The <code>values</code> flag will either report or not report the
+values that each variable takes. Numeric variables will report a range,
+logicals will report ‘TRUE FALSE’, and factor variables will report the
+first <code>factor.limit</code> (default 5) factors listed.</p>
+<p>If the variable is numeric but has value labels applied by the
+<code>sjlabelled</code> package, <code><a href="../reference/vtable.html">vtable()</a></code> will find them
+and report the numeric-label crosswalk.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,values<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,values<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <caption>
 LifeCycleSavings
 </caption>
@@ -1185,8 +1263,8 @@ numeric
 </tbody>
 </table>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <caption>
 LifeCycleSavings
 </caption>
@@ -1260,10 +1338,10 @@ Num: 0.22 to 16.71
 </tbody>
 </table>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#CO2 contains factor variables</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">CO2</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">CO2</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="co">#CO2 contains factor variables</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">CO2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">CO2</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <caption>
 CO2
 </caption>
@@ -1337,13 +1415,13 @@ Num: 7.7 to 45.5
 </tbody>
 </table>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#efc contains labeled values</span>
-<span class="co">#Note that the original value labels do not easily tell you what numerical</span>
-<span class="co">#value each label maps to, but vtable() does.</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="co">#efc contains labeled values</span></span>
+<span><span class="co">#Note that the original value labels do not easily tell you what numerical</span></span>
+<span><span class="co">#value each label maps to, but vtable() does.</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/" class="external-link">sjlabelled</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <caption>
 efc
 </caption>
@@ -1387,7 +1465,8 @@ numeric
 relationship to elder
 </td>
 <td style="text-align:left;">
-‘1: spouse/partner’ ‘2: child’ ‘3: sibling’ ‘4: daughter or son -in-law’ ‘5: ancle/aunt’ and more
+‘1: spouse/partner’ ‘2: child’ ‘3: sibling’ ‘4: daughter or son -in-law’
+‘5: ancle/aunt’ and more
 </td>
 </tr>
 <tr>
@@ -1429,7 +1508,8 @@ numeric
 elder’s dependency
 </td>
 <td style="text-align:left;">
-‘1: independent’ ‘2: slightly dependent’ ‘3: moderately dependent’ ‘4: severely dependent’
+‘1: independent’ ‘2: slightly dependent’ ‘3: moderately dependent’ ‘4:
+severely dependent’
 </td>
 </tr>
 <tr>
@@ -1468,7 +1548,8 @@ c84cop3
 numeric
 </td>
 <td style="text-align:left;">
-does caregiving cause difficulties in your relationship with your friends?
+does caregiving cause difficulties in your relationship with your
+friends?
 </td>
 <td style="text-align:left;">
 ‘1: Never’ ‘2: Sometimes’ ‘3: Often’ ‘4: Always’
@@ -1496,7 +1577,8 @@ c86cop5
 numeric
 </td>
 <td style="text-align:left;">
-does caregiving cause difficulties in your relationship with your family?
+does caregiving cause difficulties in your relationship with your
+family?
 </td>
 <td style="text-align:left;">
 ‘1: Never’ ‘2: Sometimes’ ‘3: Often’ ‘4: Always’
@@ -1597,7 +1679,8 @@ numeric
 carer’s level of education
 </td>
 <td style="text-align:left;">
-‘1: low level of education’ ‘2: intermediate level of education’ ‘3: high level of education’
+‘1: low level of education’ ‘2: intermediate level of education’ ‘3:
+high level of education’
 </td>
 </tr>
 <tr>
@@ -1709,7 +1792,8 @@ numeric
 Care level
 </td>
 <td style="text-align:left;">
-‘0: No Care Level’ ‘1: Care Level 1’ ‘2: Care Level 2’ ‘3: Care Level 3’ ‘4: Care Level 3+’
+‘0: No Care Level’ ‘1: Care Level 1’ ‘2: Care Level 2’ ‘3: Care Level 3’
+‘4: Care Level 3+’
 </td>
 </tr>
 <tr>
@@ -1729,114 +1813,184 @@ Care level
 </tbody>
 </table>
 </div>
-<div id="missing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#missing" class="anchor"></a><code>missing</code>
-</h2>
-<p>The <code>missing</code> flag, set to TRUE, will report the number of missing values in each variable. Defaults to FALSE.</p>
+<div class="section level3">
+<h3 id="missing">
+<code>missing</code><a class="anchor" aria-label="anchor" href="#missing"></a>
+</h3>
+<p>The <code>missing</code> flag, set to TRUE, will report the number of
+missing values in each variable. Defaults to FALSE.</p>
 </div>
-<div id="index" class="section level2">
-<h2 class="hasAnchor">
-<a href="#index" class="anchor"></a><code>index</code>
-</h2>
-<p>The <code>index</code> flag will either report or not report the index number of each variable. Defaults to FALSE.</p>
+<div class="section level3">
+<h3 id="index">
+<code>index</code><a class="anchor" aria-label="anchor" href="#index"></a>
+</h3>
+<p>The <code>index</code> flag will either report or not report the
+index number of each variable. Defaults to FALSE.</p>
 </div>
-<div id="factor-limit" class="section level2">
-<h2 class="hasAnchor">
-<a href="#factor-limit" class="anchor"></a><code>factor.limit</code>
-</h2>
-<p>If <code>values</code> is set to <code>TRUE</code>, then <code>factor.limit</code> limits the number of factors displayed on the variable table. <code>factor.limit</code> is by default 5, to cut down on clutter. The table will include the phrase “and more” to indicate that some factors have been cut off.</p>
-<p>Setting <code>factor.limit=0</code> will include all factors. If <code>values=FALSE</code>, <code>factor.limit</code> does nothing.</p>
+<div class="section level3">
+<h3 id="factor-limit">
+<code>factor.limit</code><a class="anchor" aria-label="anchor" href="#factor-limit"></a>
+</h3>
+<p>If <code>values</code> is set to <code>TRUE</code>, then
+<code>factor.limit</code> limits the number of factors displayed on the
+variable table. <code>factor.limit</code> is by default 5, to cut down
+on clutter. The table will include the phrase “and more” to indicate
+that some factors have been cut off.</p>
+<p>Setting <code>factor.limit=0</code> will include all factors. If
+<code>values=FALSE</code>, <code>factor.limit</code> does nothing.</p>
 </div>
-<div id="char-values" class="section level2">
-<h2 class="hasAnchor">
-<a href="#char-values" class="anchor"></a><code>char.values</code>
-</h2>
-<p>If <code>values</code> is set to <code>TRUE</code>, then <code>char.values = TRUE</code> instructs <code>vtable</code> to list the values that character variables take, as though they were factors. If you only want some of the character variables to have their values listed, use a character vector to indicate which variables.</p>
+<div class="section level3">
+<h3 id="char-values">
+<code>char.values</code><a class="anchor" aria-label="anchor" href="#char-values"></a>
+</h3>
+<p>If <code>values</code> is set to <code>TRUE</code>, then
+<code>char.values = TRUE</code> instructs <code>vtable</code> to list
+the values that character variables take, as though they were factors.
+If you only want some of the character variables to have their values
+listed, use a character vector to indicate which variables.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">USJudgeRatings</span><span class="op">)</span>
-<span class="va">USJudgeRatings</span><span class="op">$</span><span class="va">Judge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span><span class="op">(</span><span class="va">USJudgeRatings</span><span class="op">)</span>
-<span class="va">USJudgeRatings</span><span class="op">$</span><span class="va">SecondCharacter</span> <span class="op">&lt;-</span> <span class="st">'Less Interesting'</span>
-<span class="va">USJudgeRatings</span><span class="op">$</span><span class="va">ThirdCharacter</span> <span class="op">&lt;-</span> <span class="st">'Less Interesting Still!'</span>
-
-<span class="co">#Show values for all character variables</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">USJudgeRatings</span>,char.values<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#Or just for a subset</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">USJudgeRatings</span>,char.values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Judge'</span>,<span class="st">'SecondCharacter'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">USJudgeRatings</span><span class="op">)</span></span>
+<span><span class="va">USJudgeRatings</span><span class="op">$</span><span class="va">Judge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/row.names.html" class="external-link">row.names</a></span><span class="op">(</span><span class="va">USJudgeRatings</span><span class="op">)</span></span>
+<span><span class="va">USJudgeRatings</span><span class="op">$</span><span class="va">SecondCharacter</span> <span class="op">&lt;-</span> <span class="st">'Less Interesting'</span></span>
+<span><span class="va">USJudgeRatings</span><span class="op">$</span><span class="va">ThirdCharacter</span> <span class="op">&lt;-</span> <span class="st">'Less Interesting Still!'</span></span>
+<span></span>
+<span><span class="co">#Show values for all character variables</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">USJudgeRatings</span>,char.values<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#Or just for a subset</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">USJudgeRatings</span>,char.values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Judge'</span>,<span class="st">'SecondCharacter'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="data-title-desc-note-and-anchor" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-title-desc-note-and-anchor" class="anchor"></a><code>data.title</code>, <code>desc</code>, <code>note</code>, and <code>anchor</code>
-</h2>
-<p><code>data.title</code> will include a data title in the variable documentation file. If not set manually, this will default to the variable name for <code>data</code>.</p>
-<p><code>desc</code> will include a description of the data set in the variable documentation file. This will by default include information on the number of observations and the number of columns. To remove this, set <code>desc='omit'</code>, or include any description and then include ‘omit’ as the last four characters.</p>
-<p><code>note</code> will add a table note in the last row.</p>
-<p><code>anchor</code> will add an anchor ID (<code>&lt;a name =</code> in HTML or <code>\label{}</code> in LaTeX) to allow other parts of your document to link to it, if you are including your <code>vtable</code> in a larger document.</p>
-<p><code>data.title</code> and <code>desc</code> will only show up in full-page <code>vtable</code>s. That is, you won’t get them with <code>out = 'return'</code>, <code>out = 'csv'</code>, or <code>out = 'latex'</code> (although <code>out = 'latexpage'</code> works). <code>note</code> and <code>anchor</code> will only show up in formats that support multi-column cells and anchoring, so they won’t work with <code>out = 'return'</code> or <code>out = 'csv'</code>.</p>
-<p><code>out = 'kable'</code> is a half-exception in that it will use <code>data.title</code> as the caption for the <code>kable</code>, and will use the <code>note</code> as a footnote, but won’t use <code>desc</code> or <code>anchor</code>.</p>
+<div class="section level3">
+<h3 id="data-title-desc-note-and-anchor">
+<code>data.title</code>, <code>desc</code>, <code>note</code>, and
+<code>anchor</code><a class="anchor" aria-label="anchor" href="#data-title-desc-note-and-anchor"></a>
+</h3>
+<p><code>data.title</code> will include a data title in the variable
+documentation file. If not set manually, this will default to the
+variable name for <code>data</code>.</p>
+<p><code>desc</code> will include a description of the data set in the
+variable documentation file. This will by default include information on
+the number of observations and the number of columns. To remove this,
+set <code>desc='omit'</code>, or include any description and then
+include ‘omit’ as the last four characters.</p>
+<p><code>note</code> will add a table note in the last row.
+<code>note.align</code> determines its left/right/center alignment, but
+is only used with LaTeX (see below).</p>
+<p><code>anchor</code> will add an anchor ID (<code>&lt;a name =</code>
+in HTML or <code>\label{}</code> in LaTeX) to allow other parts of your
+document to link to it, if you are including your <code>vtable</code> in
+a larger document.</p>
+<p><code>data.title</code> and <code>desc</code> will only show up in
+full-page <code>vtable</code>s. That is, you won’t get them with
+<code>out = 'return'</code>, <code>out = 'csv'</code>, or
+<code>out = 'latex'</code> (although <code>out = 'latexpage'</code>
+works). <code>note</code> and <code>anchor</code> will only show up in
+formats that support multi-column cells and anchoring, so they won’t
+work with <code>out = 'return'</code> or <code>out = 'csv'</code>.</p>
+<p><code>out = 'kable'</code> is a half-exception in that it will use
+<code>data.title</code> as the caption for the <code>kable</code>, and
+will use the <code>note</code> as a footnote, but won’t use
+<code>desc</code> or <code>anchor</code>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/">vtable</a></span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,data.title<span class="op">=</span><span class="st">'Intercountry Life-Cycle Savings Data'</span>,
-    desc<span class="op">=</span><span class="st">'omit'</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,data.title<span class="op">=</span><span class="st">'Intercountry Life-Cycle Savings Data'</span>,
-    desc<span class="op">=</span><span class="st">'Data on the savings ratio 1960–1970. omit'</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,data.title<span class="op">=</span><span class="st">'Intercountry Life-Cycle Savings Data'</span>,
-    desc<span class="op">=</span><span class="st">'Data on the savings ratio 1960–1970'</span>,
-    note<span class="op">=</span><span class="st">'Data from Belsley, Kuh, and Welsch (1980)'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/" class="external-link">vtable</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,data.title<span class="op">=</span><span class="st">'Intercountry Life-Cycle Savings Data'</span>,</span>
+<span>    desc<span class="op">=</span><span class="st">'omit'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,data.title<span class="op">=</span><span class="st">'Intercountry Life-Cycle Savings Data'</span>,</span>
+<span>    desc<span class="op">=</span><span class="st">'Data on the savings ratio 1960–1970. omit'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,data.title<span class="op">=</span><span class="st">'Intercountry Life-Cycle Savings Data'</span>,</span>
+<span>    desc<span class="op">=</span><span class="st">'Data on the savings ratio 1960–1970'</span>,</span>
+<span>    note<span class="op">=</span><span class="st">'Data from Belsley, Kuh, and Welsch (1980)'</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="col-width" class="section level2">
-<h2 class="hasAnchor">
-<a href="#col-width" class="anchor"></a><code>col.width</code>
-</h2>
-<p><code><a href="../reference/vtable.html">vtable()</a></code> will select default column widths for the variable table depending on which measures <code>(name, class, label, values, summ)</code> are included. <code>col.width</code>, as a vector of percentage column widths on the 0-100 scale, will override these defaults.</p>
+<div class="section level3">
+<h3 id="col-width">
+<code>col.width</code><a class="anchor" aria-label="anchor" href="#col-width"></a>
+</h3>
+<p><code><a href="../reference/vtable.html">vtable()</a></code> will select default column widths for the
+variable table depending on which measures
+<code>(name, class, label, values, summ)</code> are included.
+<code>col.width</code>, as a vector of percentage column widths on the
+0-100 scale, will override these defaults.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
-<span class="co">#The variable names in this data set are pretty short, and the value labels are</span>
-<span class="co">#a little cramped, so let's move that over.</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span>,col.width<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">40</span>,<span class="fl">40</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/" class="external-link">sjlabelled</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
+<span><span class="co">#The variable names in this data set are pretty short, and the value labels are</span></span>
+<span><span class="co">#a little cramped, so let's move that over.</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span>,col.width<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">40</span>,<span class="fl">40</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="col-align" class="section level2">
-<h2 class="hasAnchor">
-<a href="#col-align" class="anchor"></a><code>col.align</code>
-</h2>
-<p><code>col.align</code> can be used to adjust text alignment in HTML output. Set to ‘left’, ‘right’, or ‘center’ to align all columns, or give a vector of column alignments to do each column separately.</p>
-<p>If you want to get tricky, you can add a semicolon afterwards and keep putting in whatever CSS attributes you want. They will be applied to the whole column.</p>
-<p>This option is only for HTML output and will only work with <code>out</code> values of ‘browser’, ‘viewer’, or ‘htmlreturn’.</p>
+<div class="section level3">
+<h3 id="col-align">
+<code>col.align</code><a class="anchor" aria-label="anchor" href="#col-align"></a>
+</h3>
+<p><code>col.align</code> can be used to adjust text alignment in HTML
+output. Set to ‘left’, ‘right’, or ‘center’ to align all columns, or
+give a vector of column alignments to do each column separately.</p>
+<p>If you want to get tricky, you can add a semicolon afterwards and
+keep putting in whatever CSS attributes you want. They will be applied
+to the whole column.</p>
+<p>This option is only for HTML output and will only work with
+<code>out</code> values of ‘browser’, ‘viewer’, or ‘htmlreturn’.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span>,col.align <span class="op">=</span> <span class="st">'right'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/" class="external-link">sjlabelled</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span>,col.align <span class="op">=</span> <span class="st">'right'</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="align-note-align-and-fit-page" class="section level2">
-<h2 class="hasAnchor">
-<a href="#align-note-align-and-fit-page" class="anchor"></a><code>align</code>, <code>note.align</code>, and <code>fit.page</code>
-</h2>
-<p>These options are used only with LaTeX output (<code>out</code> is ‘latex’ or ‘latexpage’).</p>
-<p><code>align</code> and <code>note.align</code> are single strings used for alignment. <code>align</code> will be used as column alignment in standard LaTeX syntax, for example ‘lccc’ for the left column left-aligned and the other three centered. <code>note.align</code> is an alignment note specifically for any table notes set with <code>note</code> (or significance stars), which enters as part of a <code>\multicolumn</code> argument. These both accept ‘p{}’ and other LaTeX column types.</p>
-<p>Defaults to left-aligned ‘Variable’ columns and right-aligned everything else. If <code>col.widths</code> is specified, <code>align</code> defaults to ‘p{}’ columns, with widths set by <code>col.width</code>.</p>
-<p><code>fit.page</code> can be used to ensure that the table is a certain width, and will be used as an entry to a <code>\resizebox{}</code>. Set to <code>\\textwidth</code> to set the table to text width, or <code>.9\\textwidth</code> for 90% of the page, and so on, or any recognized width value in LaTeX.</p>
-<p>For all of these, be sure to escape special characters, in particular backslashes.</p>
+<div class="section level3">
+<h3 id="align-note-align-and-fit-page">
+<code>align</code>, <code>note.align</code>, and
+<code>fit.page</code><a class="anchor" aria-label="anchor" href="#align-note-align-and-fit-page"></a>
+</h3>
+<p>These options are used only with LaTeX output (<code>out</code> is
+‘latex’ or ‘latexpage’).</p>
+<p><code>align</code> and <code>note.align</code> are single strings
+used for alignment. <code>align</code> will be used as column alignment
+in standard LaTeX syntax, for example ‘lccc’ for the left column
+left-aligned and the other three centered. <code>note.align</code> is an
+alignment note specifically for any table notes set with
+<code>note</code> (or significance stars), which enters as part of a
+<code>\multicolumn</code> argument. These both accept ‘p{}’ and other
+LaTeX column types.</p>
+<p>Defaults to left-aligned ‘Variable’ columns and right-aligned
+everything else. If <code>col.widths</code> is specified,
+<code>align</code> defaults to ‘p{}’ columns, with widths set by
+<code>col.width</code>.</p>
+<p><code>fit.page</code> can be used to ensure that the table is a
+certain width, and will be used as an entry to a
+<code>\resizebox{}</code>. Set to <code>\\textwidth</code> to set the
+table to text width, or <code>.9\\textwidth</code> for 90% of the page,
+and so on, or any recognized width value in LaTeX.</p>
+<p>For all of these, be sure to escape special characters, in particular
+backslashes.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span>,align <span class="op">=</span> <span class="st">'p{.3\\textwidth}cc'</span>, fit.page <span class="op">=</span> <span class="st">'\\textwidth'</span>, out <span class="op">=</span> <span class="st">'latex'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/" class="external-link">sjlabelled</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span>,align <span class="op">=</span> <span class="st">'p{.3\\textwidth}cc'</span>, fit.page <span class="op">=</span> <span class="st">'\\textwidth'</span>, out <span class="op">=</span> <span class="st">'latex'</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="summ" class="section level2">
-<h2 class="hasAnchor">
-<a href="#summ" class="anchor"></a><code>summ</code>
-</h2>
-<p><code>summ</code> will calculate summary statistics for all variables that report valid output on the given summary statistics functions. <code>summ</code> is very flexible. It takes a character vector in which each element is of the form <code>function(x)</code>, where <code>function(x)</code> is any function that takes a vector and returns a single numeric value. For example, <code>summ=c('mean(x)','median(x)','mean(log(x))')</code> would calculate the mean, median, and mean of the log for each variable.</p>
-<p><code>summ</code> treats as special two <code>vtable</code> functions: <code><a href="../reference/propNA.html">propNA(x)</a></code> and <code><a href="../reference/countNA.html">countNA(x)</a></code>, which give the proportion and count of NA values, and the count of non-NA values in the variable, respectively. These two functions are always reported first, and are the only functions that include NA values in their calculations.</p>
+<div class="section level3">
+<h3 id="summ">
+<code>summ</code><a class="anchor" aria-label="anchor" href="#summ"></a>
+</h3>
+<p><code>summ</code> will calculate summary statistics for all variables
+that report valid output on the given summary statistics functions.
+<code>summ</code> is very flexible. It takes a character vector in which
+each element is of the form <code>function(x)</code>, where
+<code>function(x)</code> is any function that takes a vector and returns
+a single numeric value. For example,
+<code>summ=c('mean(x)','median(x)','mean(log(x))')</code> would
+calculate the mean, median, and mean of the log for each variable.</p>
+<p><code>summ</code> treats as special two <code>vtable</code>
+functions: <code>propNA(x)</code> and <code>countNA(x)</code>, which
+give the proportion and count of NA values, and the count of non-NA
+values in the variable, respectively. These two functions are always
+reported first, and are the only functions that include NA values in
+their calculations.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span>,summ<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'mean(x)'</span>,<span class="st">'countNA(x)'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/" class="external-link">sjlabelled</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span>,summ<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'mean(x)'</span>,<span class="st">'countNA(x)'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <caption>
 efc
 </caption>
@@ -1886,7 +2040,8 @@ numeric
 relationship to elder
 </td>
 <td style="text-align:left;">
-‘1: spouse/partner’ ‘2: child’ ‘3: sibling’ ‘4: daughter or son -in-law’ ‘5: ancle/aunt’ and more
+‘1: spouse/partner’ ‘2: child’ ‘3: sibling’ ‘4: daughter or son -in-law’
+‘5: ancle/aunt’ and more
 </td>
 <td style="text-align:left;">
 countNA: 7
@@ -1937,7 +2092,8 @@ numeric
 elder’s dependency
 </td>
 <td style="text-align:left;">
-‘1: independent’ ‘2: slightly dependent’ ‘3: moderately dependent’ ‘4: severely dependent’
+‘1: independent’ ‘2: slightly dependent’ ‘3: moderately dependent’ ‘4:
+severely dependent’
 </td>
 <td style="text-align:left;">
 countNA: 7
@@ -1985,7 +2141,8 @@ c84cop3
 numeric
 </td>
 <td style="text-align:left;">
-does caregiving cause difficulties in your relationship with your friends?
+does caregiving cause difficulties in your relationship with your
+friends?
 </td>
 <td style="text-align:left;">
 ‘1: Never’ ‘2: Sometimes’ ‘3: Often’ ‘4: Always’
@@ -2019,7 +2176,8 @@ c86cop5
 numeric
 </td>
 <td style="text-align:left;">
-does caregiving cause difficulties in your relationship with your family?
+does caregiving cause difficulties in your relationship with your
+family?
 </td>
 <td style="text-align:left;">
 ‘1: Never’ ‘2: Sometimes’ ‘3: Often’ ‘4: Always’
@@ -2141,7 +2299,8 @@ numeric
 carer’s level of education
 </td>
 <td style="text-align:left;">
-‘1: low level of education’ ‘2: intermediate level of education’ ‘3: high level of education’
+‘1: low level of education’ ‘2: intermediate level of education’ ‘3:
+high level of education’
 </td>
 <td style="text-align:left;">
 countNA: 66
@@ -2277,7 +2436,8 @@ numeric
 Care level
 </td>
 <td style="text-align:left;">
-‘0: No Care Level’ ‘1: Care Level 1’ ‘2: Care Level 2’ ‘3: Care Level 3’ ‘4: Care Level 3+’
+‘0: No Care Level’ ‘1: Care Level 1’ ‘2: Care Level 2’ ‘3: Care Level 3’
+‘4: Care Level 3+’
 </td>
 <td style="text-align:left;">
 countNA: 9
@@ -2303,17 +2463,25 @@ countNA: 419
 </tbody>
 </table>
 </div>
-<div id="lush" class="section level2">
-<h2 class="hasAnchor">
-<a href="#lush" class="anchor"></a><code>lush</code>
-</h2>
-<p>The default <code>vtable</code> settings may not be to your liking, and in particular you may prefer more information. Setting <code>lush = TRUE</code> is an easy way to get more information. It will force <code>char.values</code> and <code>missing</code> to <code>TRUE</code>, and will also set a default <code>summ</code> value of <code><a href="https://rdrr.io/r/base/c.html">c('mean(x)', 'sd(x)', 'nuniq(x)')</a></code>.</p>
+<div class="section level3">
+<h3 id="lush">
+<code>lush</code><a class="anchor" aria-label="anchor" href="#lush"></a>
+</h3>
+<p>The default <code>vtable</code> settings may not be to your liking,
+and in particular you may prefer more information. Setting
+<code>lush = TRUE</code> is an easy way to get more information. It will
+force <code>char.values</code> and <code>missing</code> to
+<code>TRUE</code>, and will also set a default <code>summ</code> value
+of <code>c('mean(x)', 'sd(x)', 'nuniq(x)')</code>.</p>
 </div>
-<div id="opts" class="section level2">
-<h2 class="hasAnchor">
-<a href="#opts" class="anchor"></a><code>opts</code>
-</h2>
-<p>You can create a named list where the names are the above options and the values are the settings for those options, and input it into <code>vtable</code> using <code>opts=</code>. This is an easy way to set the same options for many <code>vtable</code>s.</p>
+<div class="section level3">
+<h3 id="opts">
+<code>opts</code><a class="anchor" aria-label="anchor" href="#opts"></a>
+</h3>
+<p>You can create a named list where the names are the above options and
+the values are the settings for those options, and input it into
+<code>vtable</code> using <code>opts=</code>. This is an easy way to set
+the same options for many <code>vtable</code>s.</p>
 </div>
 </div>
   </div>
@@ -2329,11 +2497,13 @@ countNA: 419
 
 
       <footer><div class="copyright">
-  <p>Developed by Nick Huntington-Klein.</p>
+  <p></p>
+<p>Developed by Nick Huntington-Klein.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -2341,6 +2511,8 @@ countNA: 419
 
   
 
+
+  
 
   </body>
 </html>

@@ -31,6 +31,8 @@ Alternately, you can include other variables as well, and `labeltable()` will sh
 labeltable(var,
     ...,
     out=NA,
+    count=FALSE,
+    percent=FALSE,
     file=NA, 
     desc=NA,
     note=NA,
@@ -70,6 +72,16 @@ The `out` option determines what will be done with the resulting label table fil
 | latexpage  | Returns an independently-buildable LaTeX document. |
 
 By default, `vtable` will select 'viewer' if running in RStudio, and 'browser' otherwise. If it's being built in an RMarkdown document with `knitr`, it will default to 'kable'.
+
+## `count` and `percent`
+
+These options allow `labeltable()` to act as a sort of `table()`, where it will also include the counts and/or percentage of the variable that takes each value.
+
+```{r}
+library(vtable)
+data(LifeCycleSavings)
+labeltable(efc$e15relat, count = TRUE, percent = TRUE)
+```
 
 ## `file`
 

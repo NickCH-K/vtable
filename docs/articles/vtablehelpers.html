@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/vtable.html">Get started</a>
 </li>
@@ -50,7 +46,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -79,7 +75,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/NickCH-K/vtable/">
+  <a href="https://github.com/NickCH-K/vtable/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -94,40 +90,59 @@
 
       
 
-      </header><script src="vtablehelpers_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>vtable Bonus Functions</h1>
-                        <h4 class="author">Nick Huntington-Klein</h4>
+                        <h4 data-toc-skip class="author">Nick
+Huntington-Klein</h4>
             
-            <h4 class="date">2021-07-29</h4>
+            <h4 data-toc-skip class="date">2023-03-01</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/NickCH-K/vtable/blob/master/vignettes/vtablehelpers.Rmd"><code>vignettes/vtablehelpers.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NickCH-K/vtable/blob/HEAD/vignettes/vtablehelpers.Rmd" class="external-link"><code>vignettes/vtablehelpers.Rmd</code></a></small>
       <div class="hidden name"><code>vtablehelpers.Rmd</code></div>
 
     </div>
 
     
     
-<p>The <code>vtable</code> package serves the purpose of outputting automatic variable documentation that can be easily viewed while continuing to work with data.</p>
-<p><code>vtable</code> contains four main functions: <code><a href="../reference/vtable.html">vtable()</a></code> (or <code><a href="../reference/vtable.html">vt()</a></code>), <code><a href="../reference/sumtable.html">sumtable()</a></code> (or <code><a href="../reference/sumtable.html">st()</a></code>), <code><a href="../reference/labeltable.html">labeltable()</a></code>, and <code><a href="../reference/dftoHTML.html">dftoHTML()</a></code>/<code><a href="../reference/dftoLaTeX.html">dftoLaTeX()</a></code>.</p>
-<p>This vignette focuses on some bonus helper functions that come with <code>vtable</code> that have been exported because they may be handy to you. This can come in handy for saving a little time, and can help you avoid having to create an unnamed function when you need to call a function.</p>
+<p>The <code>vtable</code> package serves the purpose of outputting
+automatic variable documentation that can be easily viewed while
+continuing to work with data.</p>
+<p><code>vtable</code> contains four main functions:
+<code><a href="../reference/vtable.html">vtable()</a></code> (or <code><a href="../reference/vtable.html">vt()</a></code>), <code><a href="../reference/sumtable.html">sumtable()</a></code>
+(or <code><a href="../reference/sumtable.html">st()</a></code>), <code><a href="../reference/labeltable.html">labeltable()</a></code>, and
+<code><a href="../reference/dftoHTML.html">dftoHTML()</a></code>/<code><a href="../reference/dftoLaTeX.html">dftoLaTeX()</a></code>.</p>
+<p>This vignette focuses on some bonus helper functions that come with
+<code>vtable</code> that have been exported because they may be handy to
+you. This can come in handy for saving a little time, and can help you
+avoid having to create an unnamed function when you need to call a
+function.</p>
 <hr>
-<div id="shortcut-helper-functions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#shortcut-helper-functions" class="anchor"></a>Shortcut Helper Functions</h1>
-<p><code>vtable</code> includes four shortcut functions. These are generally intended for use with the <code>summ</code> option in <code>vtable</code> and <code>sumtable</code> because nested functions don’t look very nice in a <code>vtable</code>, or in a <code>sumtable</code> unless you explicitly set the <code>summ.names</code>.</p>
-<div id="nuniq" class="section level2">
-<h2 class="hasAnchor">
-<a href="#nuniq" class="anchor"></a><code>nuniq</code>
+<div class="section level2">
+<h2 id="shortcut-helper-functions">Shortcut Helper Functions<a class="anchor" aria-label="anchor" href="#shortcut-helper-functions"></a>
 </h2>
-<p><code><a href="../reference/nuniq.html">nuniq(x)</a></code> returns <code><a href="https://rdrr.io/r/base/length.html">length(unique(x))</a></code>, the number of unique values in the vector.</p>
+<p><code>vtable</code> includes four shortcut functions. These are
+generally intended for use with the <code>summ</code> option in
+<code>vtable</code> and <code>sumtable</code> because nested functions
+don’t look very nice in a <code>vtable</code>, or in a
+<code>sumtable</code> unless you explicitly set the
+<code>summ.names</code>.</p>
+<div class="section level3">
+<h3 id="nuniq">
+<code>nuniq</code><a class="anchor" aria-label="anchor" href="#nuniq"></a>
+</h3>
+<p><code>nuniq(x)</code> returns <code>length(unique(x))</code>, the
+number of unique values in the vector.</p>
 </div>
-<div id="countna-propna-and-notna" class="section level2">
-<h2 class="hasAnchor">
-<a href="#countna-propna-and-notna" class="anchor"></a><code>countNA</code>, <code>propNA</code>, and <code>notNA</code>
-</h2>
-<p>These three functions are shortcuts for dealing with missing data. You have probably written out the nested versions of these many times!</p>
+<div class="section level3">
+<h3 id="countna-propna-and-notna">
+<code>countNA</code>, <code>propNA</code>, and
+<code>notNA</code><a class="anchor" aria-label="anchor" href="#countna-propna-and-notna"></a>
+</h3>
+<p>These three functions are shortcuts for dealing with missing data.
+You have probably written out the nested versions of these many
+times!</p>
 <table class="table">
 <thead><tr class="header">
 <th>Function</th>
@@ -136,148 +151,239 @@
 <tbody>
 <tr class="odd">
 <td><code><a href="../reference/countNA.html">countNA()</a></code></td>
-<td><code><a href="https://rdrr.io/r/base/sum.html">sum(is.na())</a></code></td>
+<td><code>sum(is.na())</code></td>
 </tr>
 <tr class="even">
 <td><code><a href="../reference/propNA.html">propNA()</a></code></td>
-<td><code><a href="https://rdrr.io/r/base/mean.html">mean(is.na())</a></code></td>
+<td><code>mean(is.na())</code></td>
 </tr>
 <tr class="odd">
 <td><code><a href="../reference/notNA.html">notNA()</a></code></td>
-<td><code><a href="https://rdrr.io/r/base/sum.html">sum(!is.na())</a></code></td>
+<td><code>sum(!is.na())</code></td>
 </tr>
 </tbody>
 </table>
+<p>Note that <code><a href="../reference/notNA.html">notNA()</a></code> also has some additional formatting
+options, which you would probably ignore if using it iteractively.</p>
 </div>
-<div id="is-round" class="section level2">
-<h2 class="hasAnchor">
-<a href="#is-round" class="anchor"></a><code>is.round</code>
-</h2>
-<p>This function is a shortcut for <code>!any(!(x == round(x,digits)))</code>.</p>
-<p>It takes two arguments: a vector <code>x</code> and a number of <code>digits</code> (0 by default). It checks whether you can round to <code>digits</code> digits without losing any information.</p>
+<div class="section level3">
+<h3 id="is-round">
+<code>is.round</code><a class="anchor" aria-label="anchor" href="#is-round"></a>
+</h3>
+<p>This function is a shortcut for
+<code>!any(!(x == round(x,digits)))</code>.</p>
+<p>It takes two arguments: a vector <code>x</code> and a number of
+<code>digits</code> (0 by default). It checks whether you can round to
+<code>digits</code> digits without losing any information.</p>
 <hr>
 </div>
 </div>
-<div id="other-helper-functions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#other-helper-functions" class="anchor"></a>Other Helper Functions</h1>
-<div id="pctile" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pctile" class="anchor"></a><code>pctile</code>
+<div class="section level2">
+<h2 id="other-helper-functions">Other Helper Functions<a class="anchor" aria-label="anchor" href="#other-helper-functions"></a>
 </h2>
-<p><code><a href="../reference/pctile.html">pctile(x)</a></code> is short for <code><a href="https://rdrr.io/r/stats/quantile.html">quantile(x,1:100/100)</a></code>. So in one sense this is another shortcut function. But this inherently lets you interact with percentiles a bit differently.</p>
-<p>While <code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code> has you specify which percentile you want in the function call, <code><a href="../reference/pctile.html">pctile()</a></code> returns an object with all integer percentiles, and you can pull out which ones you want afterwards. <code>pctile(x)[50]</code> is the 50th percentile, etc.. This can be convenient in several applications, an obvious one being in <code>sumtable</code>.</p>
+<div class="section level3">
+<h3 id="format-func">
+<code>format.func</code><a class="anchor" aria-label="anchor" href="#format-func"></a>
+</h3>
+<p><code><a href="../reference/format.func.html">format.func()</a></code> is a function that returns a function,
+which itself helps format numbers using the <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code>
+function, in the same spirit as the <code>label_</code> functions in the
+scales package. It is largely used for the <code>numformat</code>
+argument of <code><a href="../reference/sumtable.html">sumtable()</a></code>.</p>
+<p><code><a href="../reference/format.func.html">format.func()</a></code> for the most part takes the same arguments
+as <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code>, and so <code><a href="https://rdrr.io/r/base/format.html" class="external-link">help(format)</a></code> can be a
+guide for using it. However, there are some differences.</p>
+<p>Some defaults are changed. By default,
+<code>scientific = FALSE, trim = TRUE</code>.</p>
+<p>There are three new arguments as well. <code>percent = TRUE</code>
+will format the number as a percentage by multiplying it by 100 and
+adding a % at the end. You can instead set <code>percent</code> equal to
+some number, and that number will instead be taken as 100%, instead of
+1. So <code>percent = 100</code>, for example, will just add a % at the
+end without doing any multiplying.</p>
+<p><code>prefix</code> and <code>suffix</code> will, naturally, add
+prefixes or suffixes to the formatted number. So
+<code>prefix = '$', suffix = 'M'</code>, for example, will produce a
+function that will turn <code>3</code> into <code>$3M</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/">vtable</a></span><span class="op">)</span></code></pre></div>
-<pre><code>## Loading required package: kableExtra</code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/" class="external-link">vtable</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: kableExtra</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Some random normal data, and its percentiles</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>
-<span class="va">pc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pctile.html">pctile</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
-
-<span class="co">#25th, 50th, 75th percentile</span>
-<span class="va">pc</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">25</span>,<span class="fl">50</span>,<span class="fl">75</span><span class="op">)</span><span class="op">]</span></code></pre></div>
-<pre><code>##           25%           50%           75% 
-## -0.7299836864  0.0002777814  0.7436079115</code></pre>
+<code class="sourceCode R"><span><span class="va">my_formatter_func</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/format.func.html">format.func</a></span><span class="op">(</span>percent <span class="op">=</span> <span class="cn">TRUE</span>, digits <span class="op">=</span> <span class="fl">3</span>, nsmall <span class="op">=</span> <span class="fl">2</span>, big.mark <span class="op">=</span> <span class="st">','</span><span class="op">)</span></span>
+<span><span class="fu">my_formatter_func</span><span class="op">(</span><span class="fl">523.2355987</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "52,323.56%"</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="pctile">
+<code>pctile</code><a class="anchor" aria-label="anchor" href="#pctile"></a>
+</h3>
+<p><code>pctile(x)</code> is short for
+<code>quantile(x,1:100/100)</code>. So in one sense this is another
+shortcut function. But this inherently lets you interact with
+percentiles a bit differently.</p>
+<p>While <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile()</a></code> has you specify which percentile you
+want in the function call, <code><a href="../reference/pctile.html">pctile()</a></code> returns an object with
+all integer percentiles, and you can pull out which ones you want
+afterwards. <code>pctile(x)[50]</code> is the 50th percentile, etc..
+This can be convenient in several applications, an obvious one being in
+<code>sumtable</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Inverse normal CDF with 100 points of articulation</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pc</span><span class="op">)</span></code></pre></div>
-<p><img src="vtablehelpers_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/" class="external-link">vtable</a></span><span class="op">)</span></span>
+<span><span class="co">#Some random normal data, and its percentiles</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="va">pc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pctile.html">pctile</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#25th, 50th, 75th percentile</span></span>
+<span><span class="va">pc</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>,<span class="fl">50</span>,<span class="fl">75</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">##          25%          50%          75% </span></span>
+<span><span class="co">## -0.711023902 -0.005748483  0.657316757</span></span></code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#Inverse normal CDF with 100 points of articulation</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pc</span><span class="op">)</span></span></code></pre></div>
+<p><img src="vtablehelpers_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
-<div id="weighted-sd" class="section level2">
-<h2 class="hasAnchor">
-<a href="#weighted-sd" class="anchor"></a><code>weighted.sd</code>
-</h2>
-<p><code><a href="../reference/weighted.sd.html">weighted.sd(x, w)</a></code> is a function to calculate a weighted standard deviation of <code>x</code> using <code>w</code> as weights, much like the base <code><a href="https://rdrr.io/r/stats/weighted.mean.html">weighted.mean()</a></code> does for means. It is mostly used as a helper function for <code><a href="../reference/sumtable.html">sumtable()</a></code> when <code>group.weights</code> is specified. However, you can use it on its own if you like. Unlike <code><a href="https://rdrr.io/r/stats/weighted.mean.html">weighted.mean()</a></code>, setting <code>na.rm = TRUE</code> will account for missings both in <code>x</code> and <code>w</code>.</p>
+<div class="section level3">
+<h3 id="weighted-sd">
+<code>weighted.sd</code><a class="anchor" aria-label="anchor" href="#weighted-sd"></a>
+</h3>
+<p><code>weighted.sd(x, w)</code> is a function to calculate a weighted
+standard deviation of <code>x</code> using <code>w</code> as weights,
+much like the base <code><a href="https://rdrr.io/r/stats/weighted.mean.html" class="external-link">weighted.mean()</a></code> does for means. It is
+mostly used as a helper function for <code><a href="../reference/sumtable.html">sumtable()</a></code> when
+<code>group.weights</code> is specified. However, you can use it on its
+own if you like. Unlike <code><a href="https://rdrr.io/r/stats/weighted.mean.html" class="external-link">weighted.mean()</a></code>, setting
+<code>na.rm = TRUE</code> will account for missings both in
+<code>x</code> and <code>w</code>.</p>
 <p>The weighted standard deviation is calculated as</p>
-<p><span class="math display">\[ \frac{\sum_i(w_i*(x_i-\bar{x}_w)^2)}{\frac{N_w-1}{N_w}\sum_iw_i} \]</span></p>
-<p>Where <span class="math inline">\(\bar{x}_w\)</span> is the weighted mean of <span class="math inline">\(x\)</span>, and <span class="math inline">\(N_w\)</span> is the number of observations with a nonzero weight.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>
-<span class="va">w</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/weighted.mean.html">weighted.mean</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">w</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 67</code></pre>
+<p><span class="math display">\[
+\frac{\sum_i(w_i*(x_i-\bar{x}_w)^2)}{\frac{N_w-1}{N_w}\sum_iw_i}
+\]</span></p>
+<p>Where <span class="math inline">\(\bar{x}_w\)</span> is the weighted
+mean of <span class="math inline">\(x\)</span>, and <span class="math inline">\(N_w\)</span> is the number of observations with a
+nonzero weight.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 29.01149</code></pre>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span></span>
+<span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/weighted.mean.html" class="external-link">weighted.mean</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">w</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 67</span></span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/weighted.sd.html">weighted.sd</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">w</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 23.80476</code></pre>
-</div>
-</div>
-<div id="independence-test" class="section level1">
-<h1 class="hasAnchor">
-<a href="#independence-test" class="anchor"></a><code>independence.test</code>
-</h1>
-<p><code>independence.test</code> is a helper function for <code><a href="../reference/sumtable.html">sumtable(group.test=TRUE)</a></code> that tests for independence between a categorical variable <code>x</code> and another variable <code>y</code> that may be categorical or numerical.</p>
-<p>Then, it outputs a <em>formatted string</em> as its output, with significance stars, for printing.</p>
-<p>The function takes the format</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 29.01149</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,w<span class="op">=</span><span class="cn">NA</span>,
-                  factor.test <span class="op">=</span> <span class="cn">NA</span>,
-                  numeric.test <span class="op">=</span> <span class="cn">NA</span>,
-                  star.cutoffs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.01</span>,<span class="fl">.05</span>,<span class="fl">.1</span><span class="op">)</span>,
-                  star.markers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'***'</span>,<span class="st">'**'</span>,<span class="st">'*'</span><span class="op">)</span>,
-                  digits <span class="op">=</span> <span class="fl">3</span>,
-                  fixed.digits <span class="op">=</span> <span class="cn">FALSE</span>,
-                  format <span class="op">=</span> <span class="st">'{name}={stat}{stars}'</span>,
-                  opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div id="factor-test-and-numeric-test" class="section level2">
-<h2 class="hasAnchor">
-<a href="#factor-test-and-numeric-test" class="anchor"></a><code>factor.test</code> and <code>numeric.test</code>
-</h2>
-<p>These are functions that actually perform the independence test. <code>numeric.test</code> is used when <code>y</code> is numeric, and <code>factor.test</code> is used in all other instances.</p>
-<p>Specifically, these functions should take only <code>x</code>, <code>y</code>, and <code>w=NULL</code> as arguments, and should return a list with three elements: the name of the test statistic, the test statistic itself, and the p-value of the test.</p>
-<p>By default, these are the internal functions <code>vtable:::chisq.it</code> for <code>factor.test</code> and <code>vtable:::groupf.it</code> for <code>numeric.test</code>, so you can take a look at those (just put <code>vtable:::chisq.it</code> in the terminal and it will show you the function’s code) if you’d like to make your own test functions.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/weighted.sd.html">weighted.sd</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">w</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 23.80476</span></span></code></pre>
 </div>
-<div id="star-cutoffs-and-star-markers" class="section level2">
-<h2 class="hasAnchor">
-<a href="#star-cutoffs-and-star-markers" class="anchor"></a><code>star.cutoffs</code> and <code>star.markers</code>
-</h2>
-<p>These are numeric and character vectors, respectively, used for p-value cutoffs and to create significance markers.</p>
-<p><code>star.cutoffs</code> indicates the cutoffs, and <code>star.markers</code> indicates the markers to be used with each cutoff, in the same order. So with <code>star.cutoffs = c(.01,.05,.1)</code> and <code>star.markers = c('***','**','*')</code>, each p-value below .01 will get marked with <code>'***'</code>, each from .01 to .05 will get <code>'**'</code>, and each from .05 to .1 will get <code><a href="https://rdrr.io/r/base/Arithmetic.html">*</a></code>.</p>
-<p>Defaults are set to “economics defaults” (.1, .05, .01). But these are of course easy to change.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
-<span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>,
-                  <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span>,
-                  star.cutoffs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.05</span>,<span class="fl">.01</span>,<span class="fl">.001</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "F=119.265*"</code></pre>
 </div>
-<div id="digits-and-fixed-digits" class="section level2">
-<h2 class="hasAnchor">
-<a href="#digits-and-fixed-digits" class="anchor"></a><code>digits</code> and <code>fixed.digits</code>
+<div class="section level2">
+<h2 id="independence-test">
+<code>independence.test</code><a class="anchor" aria-label="anchor" href="#independence-test"></a>
 </h2>
-<p><code>digits</code> indicates how many digits after the decimal place from the test statistics and p-values should be displayed. <code>fixed.digits</code> determines whether trailing zeros are maintained.</p>
+<p><code>independence.test</code> is a helper function for
+<code>sumtable(group.test=TRUE)</code> that tests for independence
+between a categorical variable <code>x</code> and another variable
+<code>y</code> that may be categorical or numerical.</p>
+<p>Then, it outputs a <em>formatted string</em> as its output, with
+significance stars, for printing.</p>
+<p>The function takes the format</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,w<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>                  factor.test <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>                  numeric.test <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>                  star.cutoffs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.01</span>,<span class="fl">.05</span>,<span class="fl">.1</span><span class="op">)</span>,</span>
+<span>                  star.markers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'***'</span>,<span class="st">'**'</span>,<span class="st">'*'</span><span class="op">)</span>,</span>
+<span>                  digits <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                  fixed.digits <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                  format <span class="op">=</span> <span class="st">'{name}={stat}{stars}'</span>,</span>
+<span>                  opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="factor-test-and-numeric-test">
+<code>factor.test</code> and <code>numeric.test</code><a class="anchor" aria-label="anchor" href="#factor-test-and-numeric-test"></a>
+</h3>
+<p>These are functions that actually perform the independence test.
+<code>numeric.test</code> is used when <code>y</code> is numeric, and
+<code>factor.test</code> is used in all other instances.</p>
+<p>Specifically, these functions should take only <code>x</code>,
+<code>y</code>, and <code>w=NULL</code> as arguments, and should return
+a list with three elements: the name of the test statistic, the test
+statistic itself, and the p-value of the test.</p>
+<p>By default, these are the internal functions
+<code>vtable:::chisq.it</code> for <code>factor.test</code> and
+<code>vtable:::groupf.it</code> for <code>numeric.test</code>, so you
+can take a look at those (just put <code>vtable:::chisq.it</code> in the
+terminal and it will show you the function’s code) if you’d like to make
+your own test functions.</p>
+</div>
+<div class="section level3">
+<h3 id="star-cutoffs-and-star-markers">
+<code>star.cutoffs</code> and <code>star.markers</code><a class="anchor" aria-label="anchor" href="#star-cutoffs-and-star-markers"></a>
+</h3>
+<p>These are numeric and character vectors, respectively, used for
+p-value cutoffs and to create significance markers.</p>
+<p><code>star.cutoffs</code> indicates the cutoffs, and
+<code>star.markers</code> indicates the markers to be used with each
+cutoff, in the same order. So with
+<code>star.cutoffs = c(.01,.05,.1)</code> and
+<code>star.markers = c('***','**','*')</code>, each p-value below .01
+will get marked with <code>'***'</code>, each from .01 to .05 will get
+<code>'**'</code>, and each from .05 to .1 will get <code>*</code>.</p>
+<p>Defaults are set to “economics defaults” (.1, .05, .01). But these
+are of course easy to change.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>,
-                  <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span>,
-                  digits<span class="op">=</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "F=49.2***"</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>,</span>
+<span>                  <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span>,</span>
+<span>                  star.cutoffs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.05</span>,<span class="fl">.01</span>,<span class="fl">.001</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "F=119.265*"</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="digits-and-fixed-digits">
+<code>digits</code> and <code>fixed.digits</code><a class="anchor" aria-label="anchor" href="#digits-and-fixed-digits"></a>
+</h3>
+<p><code>digits</code> indicates how many digits after the decimal place
+from the test statistics and p-values should be displayed.
+<code>fixed.digits</code> determines whether trailing zeros are
+maintained.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>,
-                  <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span>,
-                  digits<span class="op">=</span><span class="fl">4</span>,
-                  fixed.digits <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "F=49.1600***"</code></pre>
-</div>
-<div id="format" class="section level2">
-<h2 class="hasAnchor">
-<a href="#format" class="anchor"></a><code>format</code>
-</h2>
-<p>This is the printing format that the output will produce, incorporating the name of the test statistic <code>{name}</code>, the test statistic <code>{stat}</code>, the significance markers <code>{stars}</code>, and the p-value <code>{pval}</code>.</p>
-<p>If your <code>independence.test</code> is heading out to another format besides being printed in the R console, you may want to add additional markup like <code>'{name}$={stat}^{stars}$'}</code> in LaTeX or <code>'{name}={stat}&lt;sup&gt;{stars}&lt;/sup&gt;'</code> in HTML. If you do this, be sure to think carefully about escaping or not escaping characters as appropriate when you print!</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>,</span>
+<span>                  <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span>,</span>
+<span>                  digits<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "F=49.2***"</span></span></code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>,
-                  <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span>,
-                  format <span class="op">=</span> <span class="st">'Pr(&gt;{name}): {pval}{stars}'</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "Pr(&gt;F): &lt;0.001***"</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>,</span>
+<span>                  <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span>,</span>
+<span>                  digits<span class="op">=</span><span class="fl">4</span>,</span>
+<span>                  fixed.digits <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "F=49.1600***"</span></span></code></pre>
 </div>
-<div id="opts" class="section level2">
-<h2 class="hasAnchor">
-<a href="#opts" class="anchor"></a><code>opts</code>
-</h2>
-<p>You can create a named list where the names are the above options and the values are the settings for those options, and input it into <code>independence.test</code> using <code>opts=</code>. This is an easy way to set the same options for many <code>independence.test</code>s.</p>
+<div class="section level3">
+<h3 id="format">
+<code>format</code><a class="anchor" aria-label="anchor" href="#format"></a>
+</h3>
+<p>This is the printing format that the output will produce,
+incorporating the name of the test statistic <a href="https://github.com/christopherkenny/name" class="external-link">name</a>, the
+test statistic <code>{stat}</code>, the significance markers
+<a href="https://r-spatial.github.io/stars/" class="external-link">stars</a>, and the p-value <code>{pval}</code>.</p>
+<p>If your <code>independence.test</code> is heading out to another
+format besides being printed in the R console, you may want to add
+additional markup like <code>'{name}$={stat}^{stars}$'}</code> in LaTeX
+or <code>'{name}={stat}&lt;sup&gt;{stars}&lt;/sup&gt;'</code> in HTML.
+If you do this, be sure to think carefully about escaping or not
+escaping characters as appropriate when you print!</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/independence.test.html">independence.test</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span>,</span>
+<span>                  <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Width</span>,</span>
+<span>                  format <span class="op">=</span> <span class="st">'Pr(&gt;{name}): {pval}{stars}'</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "Pr(&gt;F): &lt;0.001***"</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="opts">
+<code>opts</code><a class="anchor" aria-label="anchor" href="#opts"></a>
+</h3>
+<p>You can create a named list where the names are the above options and
+the values are the settings for those options, and input it into
+<code>independence.test</code> using <code>opts=</code>. This is an easy
+way to set the same options for many
+<code>independence.test</code>s.</p>
 </div>
 </div>
   </div>
@@ -293,11 +399,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Nick Huntington-Klein.</p>
+  <p></p>
+<p>Developed by Nick Huntington-Klein.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -305,6 +413,8 @@
 
   
 
+
+  
 
   </body>
 </html>

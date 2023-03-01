@@ -52,8 +52,10 @@ sumtable(data,
          group.test=FALSE,
          group.weights =NA,
          col.breaks=NA,
-         digits=NA,
+         digits=2,
          fixed.digits=FALSE,
+         numformat = format.func(digits = digits, big.mark = ''),
+         skip.format = c('notNA(x)','propNA(x)','countNA(x)'),
          factor.percent=TRUE,
          factor.counts=TRUE,
          factor.numeric=FALSE,
@@ -69,6 +71,7 @@ sumtable(data,
          note.align='l',
          fit.page=NA,
          simple.kable=FALSE,
+         obs.function=NA)
          opts=list())
 ```
 
@@ -96,13 +99,15 @@ The `out` option determines what will be done with the resulting summary statist
 | browser    | Loads output in web browser. |
 | viewer     | Loads output in Viewer pane (RStudio only). |
 | htmlreturn | Returns HTML code for output file. |
-| return     | Returns summary table in data frame format. Depending on options, the data frame may be entirely character variables. |
-| csv        | Returns summary table in data.frame format and, with a `file` option, saves that to CSV. |
+| return     | Returns summary table in `data.frame` format. Depending on options, the data frame may be entirely character variables. |
+| csv        | Returns summary table in `data.frame` format and, with a `file` option, saves that to CSV. |
 | kable      | Returns a `knitr::kable()` |
 | latex      | Returns a LaTeX table. |
 | latexpage  | Returns an independently-buildable LaTeX document. |
 
-By default, `sumtable` will select 'viewer' if running in RStudio, and 'browser' otherwise. If it's being built in an RMarkdown document with `knitr`, it will default to 'kable'.
+By default, `sumtable` will select 'viewer' if running in RStudio, and 'browser' otherwise. If it's being built in an RMarkdown document with `knitr`, it will default to 'kable'. Note that an RMarkdown default to 'kable' will also include some nice formatting, where `out = 'kable'` directly will give you a more basic `kable` you can format yourself.
+
+Also be aware that some of these formats, like 'return', do not support multi-column cells, and so instead you'll have headers squished into one cell, with blank cells next to them.
 
 ```{r, eval = FALSE}
 data(LifeCycleSavings)
@@ -133,7 +138,7 @@ Factor variables largely ignore `summ` (unless `factor.numeric = TRUE`) and will
 
 `summ` treats as special two `vtable` functions: `propNA(x)` and `countNA(x)`, which give the proportion and count of NA values, and the count of non-NA values in the variable, respectively. These two functions are the only functions that include NA values in their calculations.
 
-By default, `summ` is `c('notNA(x)', 'mean(x)',   'sd(x)', 'min(x)', 'pctile(x)[25]', 'pctile(x)[75]', 'max(x)')` in 'one-column' tables. If there's more than one column either due to the `col.breaks` option or the `group` option, it defaults to `c('notNA(x)', 'mean(x)', 'sd(x)')`. Alternately, if a given column of variables is entirely made up of factor variables, it defaults to `c('sum(x)','mean(x)')`. These precise defaults have corresponding default `summ.names`. If you set your own `summ` but not `summ.names`, it will try to guess the name by taking your function, removing `(x)`, and capitalizing. so 'mean(x)' becomes 'Mean'.
+By default, `summ` is `c('notNA(x)', 'mean(x)',   'sd(x)', 'min(x)', 'pctile(x)[25]', 'pctile(x)[75]', 'max(x)')` in 'one-column' tables. If there's more than one column either due to the `col.breaks` option or the `group` option, it defaults to `c('notNA(x)', 'mean(x)', 'sd(x)')`. Alternately, if a given column of variables is entirely made up of factor variables, it defaults to `c('notNA(x)','mean(x)')`. These precise defaults have corresponding default `summ.names`. If you set your own `summ` but not `summ.names`, it will try to guess the name by taking your function, removing `(x)`, and capitalizing. so 'mean(x)' becomes 'Mean'.
 
 If you want to get complex you can. If there are multiple 'columns' of summary statistics and you want different statistics in each column, make `summ` and `summ.names` into a list, where each entry is a character vector of the calculations/names you want in that column.
 
@@ -206,14 +211,30 @@ sumtable(mtcars, col.breaks = c(4,8))
 
 ## `digits` and `fixed.digits`
 
-`digits` indicates how many digits after the decimal place should be displayed. `fixed.digits` determines whether trailing zeros are maintained.
+`digits` indicates how many digits after the decimal place should be displayed. `fixed.digits` determines whether trailing zeros are maintained. `fixed.digits` only works if `numformat = NA`, and will eventually be deprecated for a `format.func(drop0trailing=TRUE)` setting in `numformat`.
 
 ```{r}
 st(iris, digits = 5)
 ```
 
 ```{r}
-st(iris, digits = 3, fixed.digits = TRUE)
+st(iris, digits = 3, fixed.digits = TRUE, numformat = NA)
+```
+
+## Other Numerical Formatting Options
+
+Should the numbers in the summary table be formatted in some way? By default, "number of nonmissing observations" values are formatted with `notNA()` formatting (but specifically, whatever is specified in `obs.function`), and the rest are not formatted except for having the number of digits set with `digits` or `fixed.digits`.
+
+You can specify `numformat` to set numerical formatting for numeric variables. `numformat` accepts as an argument functions that accept a number and return a formatted string, as generated by `format.func()` or the `label_` functions in the scales package. So, for example, `numformat = format.func(prefix = '$')` would give all your numbers dollar formatting.
+
+You can also use string shorthand as shortcuts for some `format.func()` settings. `'comma'` will set `big.mark = ','`, `'decimal'` will set `big.mark = '.', decimal.mark = ','`, `'percent'` will do percentage formatting (with 1 = 100%), and `'A|B'` will use `'A'` as a prefix and `'B'` as a suffix (specifying suffix optional, so `numformat = '$'` gives `'$3'`). This will also respect your `digits` choice (which `format.func()` directly won't do). These can be combined. `'comma$|M'` will turn `1000` into `$1,000M`. Although if you're getting complex you may as well just set `format.func()` yourself.
+
+You can specify different formatting functions for different variables by either specifying a string vector of those shorthands, or a list of functions. You can either provide an unnamed vector/list with length equal to the number of variables in the data, or you can provide a named vector/list that specifies the formatting for specific variables. You can apply a format to all variables not specifically named by making it an unnamed first entry, for example `numformat = c('dollar','sharevariable' = 'percent')` to make everything dollar-formatted except for 'sharevariable', which becomes percent-formatted. 
+
+Note that any functions that match the ones in the `skip.format` option will not have this formatting applied to them at all. It is not currently possible otherwise to apply two different kinds of formatting to different columns of the `sumtable`.
+
+```{r}
+st(iris, numformat = c('|cm', 'Sepal.Width' = 'percent'))
 ```
 
 ## Factor, Logical, and Character Display Options
