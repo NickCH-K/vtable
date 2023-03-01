@@ -255,6 +255,8 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     if (!is.null(attr(numformat[[1]], 'big.mark'))) {
       obs.function <- paste0('notNA(x, "', attr(numformat[[1]], 'big.mark'), '")')
     }
+    skip.format <- skip.format[!is.na(skip.format)]
+    skip.format <- c(skip.format, obs.function)
   }
   if (!is.logical(factor.percent) | !is.logical(factor.counts)) {
     stop('factor.percent and factor.counts must each be TRUE or FALSE.')
