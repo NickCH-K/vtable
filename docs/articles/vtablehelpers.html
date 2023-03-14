@@ -97,7 +97,7 @@
                         <h4 data-toc-skip class="author">Nick
 Huntington-Klein</h4>
             
-            <h4 data-toc-skip class="date">2023-03-01</h4>
+            <h4 data-toc-skip class="date">2023-03-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/NickCH-K/vtable/blob/HEAD/vignettes/vtablehelpers.Rmd" class="external-link"><code>vignettes/vtablehelpers.Rmd</code></a></small>
       <div class="hidden name"><code>vtablehelpers.Rmd</code></div>
@@ -182,20 +182,20 @@ options, which you would probably ignore if using it iteractively.</p>
 <h2 id="other-helper-functions">Other Helper Functions<a class="anchor" aria-label="anchor" href="#other-helper-functions"></a>
 </h2>
 <div class="section level3">
-<h3 id="format-func">
-<code>format.func</code><a class="anchor" aria-label="anchor" href="#format-func"></a>
+<h3 id="formatfunc">
+<code>formatfunc</code><a class="anchor" aria-label="anchor" href="#formatfunc"></a>
 </h3>
-<p><code><a href="../reference/format.func.html">format.func()</a></code> is a function that returns a function,
+<p><code><a href="../reference/formatfunc.html">formatfunc()</a></code> is a function that returns a function,
 which itself helps format numbers using the <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code>
 function, in the same spirit as the <code>label_</code> functions in the
 scales package. It is largely used for the <code>numformat</code>
 argument of <code><a href="../reference/sumtable.html">sumtable()</a></code>.</p>
-<p><code><a href="../reference/format.func.html">format.func()</a></code> for the most part takes the same arguments
+<p><code><a href="../reference/formatfunc.html">formatfunc()</a></code> for the most part takes the same arguments
 as <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code>, and so <code><a href="https://rdrr.io/r/base/format.html" class="external-link">help(format)</a></code> can be a
 guide for using it. However, there are some differences.</p>
 <p>Some defaults are changed. By default,
 <code>scientific = FALSE, trim = TRUE</code>.</p>
-<p>There are three new arguments as well. <code>percent = TRUE</code>
+<p>There are four new arguments as well. <code>percent = TRUE</code>
 will format the number as a percentage by multiplying it by 100 and
 adding a % at the end. You can instead set <code>percent</code> equal to
 some number, and that number will instead be taken as 100%, instead of
@@ -204,12 +204,16 @@ end without doing any multiplying.</p>
 <p><code>prefix</code> and <code>suffix</code> will, naturally, add
 prefixes or suffixes to the formatted number. So
 <code>prefix = '$', suffix = 'M'</code>, for example, will produce a
-function that will turn <code>3</code> into <code>$3M</code>.</p>
+function that will turn <code>3</code> into <code>$3M</code>.
+<code>scale</code> will multiply the number by <code>scale</code> before
+formatting it. So
+<code>prefix = '$', suffix = 'M', scale = 1/1000000</code> will turn
+<code>3000000</code> into <code>$3M</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/" class="external-link">vtable</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: kableExtra</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_formatter_func</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/format.func.html">format.func</a></span><span class="op">(</span>percent <span class="op">=</span> <span class="cn">TRUE</span>, digits <span class="op">=</span> <span class="fl">3</span>, nsmall <span class="op">=</span> <span class="fl">2</span>, big.mark <span class="op">=</span> <span class="st">','</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">my_formatter_func</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/formatfunc.html">formatfunc</a></span><span class="op">(</span>percent <span class="op">=</span> <span class="cn">TRUE</span>, digits <span class="op">=</span> <span class="fl">3</span>, nsmall <span class="op">=</span> <span class="fl">2</span>, big.mark <span class="op">=</span> <span class="st">','</span><span class="op">)</span></span>
 <span><span class="fu">my_formatter_func</span><span class="op">(</span><span class="fl">523.2355987</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "52,323.56%"</span></span></code></pre>
 </div>
@@ -235,8 +239,8 @@ This can be convenient in several applications, an obvious one being in
 <span></span>
 <span><span class="co">#25th, 50th, 75th percentile</span></span>
 <span><span class="va">pc</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>,<span class="fl">50</span>,<span class="fl">75</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<pre><code><span><span class="co">##        25%        50%        75% </span></span>
-<span><span class="co">## -0.6809749 -0.0108034  0.6706713</span></span></code></pre>
+<pre><code><span><span class="co">##         25%         50%         75% </span></span>
+<span><span class="co">## -0.69475500  0.01284442  0.70253613</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Inverse normal CDF with 100 points of articulation</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pc</span><span class="op">)</span></span></code></pre></div>

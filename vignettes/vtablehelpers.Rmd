@@ -48,21 +48,21 @@ It takes two arguments: a vector `x` and a number of `digits` (0 by default). It
 
 # Other Helper Functions
 
-## `format.func`
+## `formatfunc`
 
-`format.func()` is a function that returns a function, which itself helps format numbers using the `format()` function, in the same spirit as the `label_` functions in the scales package. It is largely used for the `numformat` argument of `sumtable()`.
+`formatfunc()` is a function that returns a function, which itself helps format numbers using the `format()` function, in the same spirit as the `label_` functions in the scales package. It is largely used for the `numformat` argument of `sumtable()`.
 
-`format.func()` for the most part takes the same arguments as `format()`, and so `help(format)` can be a guide for using it. However, there are some differences.
+`formatfunc()` for the most part takes the same arguments as `format()`, and so `help(format)` can be a guide for using it. However, there are some differences.
 
 Some defaults are changed. By default, `scientific = FALSE, trim = TRUE`.
 
-There are three new arguments as well. `percent = TRUE` will format the number as a percentage by multiplying it by 100 and adding a % at the end. You can instead set `percent` equal to some number, and that number will instead be taken as 100%, instead of 1. So `percent = 100`, for example, will just add a % at the end without doing any multiplying.
+There are four new arguments as well. `percent = TRUE` will format the number as a percentage by multiplying it by 100 and adding a % at the end. You can instead set `percent` equal to some number, and that number will instead be taken as 100%, instead of 1. So `percent = 100`, for example, will just add a % at the end without doing any multiplying. 
 
-`prefix` and `suffix` will, naturally, add prefixes or suffixes to the formatted number. So `prefix = '$', suffix = 'M'`, for example, will produce a function that will turn `3` into `$3M`.
+`prefix` and `suffix` will, naturally, add prefixes or suffixes to the formatted number. So `prefix = '$', suffix = 'M'`, for example, will produce a function that will turn `3` into `$3M`. `scale` will multiply the number by `scale` before formatting it. So `prefix = '$', suffix = 'M', scale = 1/1000000` will turn `3000000` into `$3M`.
 
 ```{r}
 library(vtable)
-my_formatter_func <- format.func(percent = TRUE, digits = 3, nsmall = 2, big.mark = ',')
+my_formatter_func <- formatfunc(percent = TRUE, digits = 3, nsmall = 2, big.mark = ',')
 my_formatter_func(523.2355987)
 ```
 

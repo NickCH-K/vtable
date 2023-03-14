@@ -22,6 +22,7 @@ force_all <- function(...) {
 #' @param percent Whether to apply percentage formatting. Set to \code{TRUE} if 1 = 100\%. Or, optionally, set to any other number that represents 100\%. So \code{percent = TRUE} or \code{percent = 1} will interpret \code{.9} as \code{90\%}, or \code{percent = 100} will format \code{90} as \code{90\%}.
 #' @param prefix A prefix to apply to the formatted number. For example, \code{prefix = '$'} would format \code{4} as \code{$4}.
 #' @param suffix A suffix to apply to the formatted number. If specified alongside \code{percent}, the suffix comes after the \%.
+#' @param scale A scalar value to be multiplied by all numbers prior to formatting. \code{scale = 1/1000}, for example, would convert the units into thousands. This is applied before \code{digits}.
 #' @param digits Number of significant digits.
 #' @param nsmall The minimum number of digits to the right of the decimal point.
 #' @param big.mark A character to mark thousands places, for example producing "1,000" instead of "1000".
@@ -30,11 +31,12 @@ force_all <- function(...) {
 #' @param ... Arguments to be passed to \code{format()}. See \code{help(format)}. All other parameters listed above except for \code{percent}, \code{prefix}, or \code{suffix} are also just part of  \code{format}, but may be of particular interest, or have been included to show how defaults have changed.
 #' @examples
 #' x <- c(1, 1000, .000235, 1298.255, NA)
-#' my.formatting.func = format.func(digits = 3, prefix = '$')
+#' my.formatting.func = formatfunc(digits = 3, prefix = '$')
 #' my.formatting.func(x)
 #'
-#' @export format.func
-format.func <- function(percent = FALSE, prefix = '', suffix = '',
+#' @export formatfunc
+formatfunc <- function(percent = FALSE, prefix = '', suffix = '',
+                        scale = 1,
                         digits = NULL, nsmall = 0L, big.mark = '',
                         trim = TRUE, scientific = FALSE, ...) {
   if (!is.null(digits)) {
@@ -51,9 +53,9 @@ format.func <- function(percent = FALSE, prefix = '', suffix = '',
     scalefactor <- scalefactor*100
     suffix <- paste0('%',suffix)
   }
-  force_all(scalefactor, digits, nsmall, big.mark, trim, scientific, prefix, suffix, ...)
+  force_all(scalefactor, digits, nsmall, big.mark, trim, scientific, prefix, suffix, scale, ...)
   the_function <- function(x) {
-    x_fmt <- format(x*scalefactor, digits = digits, nsmall = nsmall, big.mark = big.mark,
+    x_fmt <- format(x*scalefactor*scale, digits = digits, nsmall = nsmall, big.mark = big.mark,
                     trim = trim, scientific = scientific, ...)
     if (prefix != '' & trim == FALSE) {
       # If we need a prefix but we have blank-space padding at the start, add the prefix after
@@ -298,7 +300,7 @@ summary.row <- function(data,var,st,
                 rep('',numcols-2))
     #And now the per-factor stuff
     mat <- as.data.frame(table(va))
-    matlabel <- aggregate(y~x, data.frame(y = 1, x = va), FUN = factor.not.numeric.count, drop = FALSE)
+    matlabel <- stats::aggregate(y~x, data.frame(y = 1, x = va), FUN = factor.not.numeric.count, drop = FALSE)
     matlabel$y[is.na(matlabel$y)] <- 0
     propcalc <- mat$Freq/nonmissnum
     if (!is.null(wts) & grepl('wts',summ[2])) {

@@ -20,7 +20,7 @@ sumtable(
   col.breaks = NA,
   digits = 2,
   fixed.digits = FALSE,
-  numformat = format.func(digits = digits, big.mark = ""),
+  numformat = formatfunc(digits = digits, big.mark = ""),
   skip.format = c("notNA(x)", "propNA(x)", "countNA(x)", obs.function),
   factor.percent = TRUE,
   factor.counts = TRUE,
@@ -56,7 +56,7 @@ st(
   col.breaks = NA,
   digits = 2,
   fixed.digits = FALSE,
-  numformat = format.func(digits = digits, big.mark = ""),
+  numformat = formatfunc(digits = digits, big.mark = ""),
   skip.format = c("notNA(x)", "propNA(x)", "countNA(x)", obs.function),
   factor.percent = TRUE,
   factor.counts = TRUE,
@@ -106,7 +106,7 @@ st(
 
 \item{fixed.digits}{Deprecated; currently only works if \code{numformat = NA}. \code{FALSE} will cut off trailing \code{0}s when rounding. \code{TRUE} retains them. Defaults to \code{FALSE}.}
 
-\item{numformat}{A function that takes a numeric input and produces labeled output, which you might construct using the \code{format.func} function or the \code{label_} functions from the scales package. Provide a single function to apply to all variables, or a list of functions the same length as the number of variables to format each variable differently. The formatting function will skip over \code{notNA, countNA, propNA} calculations by default. Factor percentages will ignore this entirely; you can use \code{NA} to skip them when specifying a list. Alternately, you can specify strings giving the shorthand for the appropriate formatting: the string containing \code{'comma'} will set \code{big.mark = ','}, \code{'decimal'} will set \code{big.mark = '.', decimal.mark = ','}, \code{'percent'} will do percentage formatting (with 1 = 100\%), and \code{'A|B'} will use \code{'A'} as a prefix and \code{'B'} as a suffix (specifying suffix optional, so \code{numformat = '$'} gives \code{'$3'}). Anything more complex than that will require you pass a \code{format.func} or similar function. Specifying a character vector will respect your \code{digits} option if \code{digits} is a single value rather than a vector or list, but will otherwise use the defaults of those functions. You can mix together specifying your own functions and specifying character strings. At the moment there is no way to do different formatting for different columns of the same variable, other than \code{skip.format}. Set to \code{NA} to revert to the old way of formatting.}
+\item{numformat}{A function that takes a numeric input and produces labeled output, which you might construct using the \code{formatfunc} function or the \code{label_} functions from the scales package. Provide a single function to apply to all variables, or a list of functions the same length as the number of variables to format each variable differently. The formatting function will skip over \code{notNA, countNA, propNA} calculations by default. Factor percentages will ignore this entirely; you can use \code{NA} to skip them when specifying a list. Alternately, you can specify strings giving the shorthand for the appropriate formatting: the string containing \code{'comma'} will set \code{big.mark = ','}, \code{'decimal'} will set \code{big.mark = '.', decimal.mark = ','}, \code{'percent'} will do percentage formatting (with 1 = 100\%), and \code{'A|B'} will use \code{'A'} as a prefix and \code{'B'} as a suffix (specifying suffix optional, so \code{numformat = '$'} gives \code{'$3'}). Anything more complex than that will require you pass a \code{formatfunc} or similar function. Specifying a character vector will respect your \code{digits} option if \code{digits} is a single value rather than a vector or list, but will otherwise use the defaults of those functions. You can mix together specifying your own functions and specifying character strings. At the moment there is no way to do different formatting for different columns of the same variable, other than \code{skip.format}. Set to \code{NA} to revert to the old way of formatting.}
 
 \item{skip.format}{Set of functions in \code{summ} that are not subject to \code{format}. Does nothing if \code{format} is not specified.}
 
@@ -140,7 +140,7 @@ st(
 
 \item{simple.kable}{For \code{out = 'kable'}, if you want the \code{kable} printed to console rather than HTML or PDF, then the multi-column headers and table notes won't work. Set \code{simple.kable = TRUE} to skip both.}
 
-\item{obs.function}{The function to use (and, potentially, format) to count the number of observations for the N column. This should take a vector and return a single number or string. Uses the same string formatting as \code{summ}. If not specified, will check if \code{numformat} is specified using \code{format.func} or a string. If not, this will be \code{'notNA(x)'}. If it is, will be \code{'notNA(x)'} with the \code{big.mark} argument set to match the first function listed in \code{numformat}.}
+\item{obs.function}{The function to use (and, potentially, format) to count the number of observations for the N column. This should take a vector and return a single number or string. Uses the same string formatting as \code{summ}. If not specified, will check if \code{numformat} is specified using \code{formatfunc} or a string. If not, this will be \code{'notNA(x)'}. If it is, will be \code{'notNA(x)'} with the \code{big.mark} argument set to match the first function listed in \code{numformat}.}
 
 \item{opts}{The same \code{sumtable} options as above, but in a named list format. Useful for applying the same set of options to multiple \code{sumtable}s.}
 }
@@ -205,7 +205,7 @@ st(irisrep, numformat = 'comma')
 # Dollar formatting for sepal.width, decimal (1.000,00) formatting for the rest
 st(iris, numformat = c('decimal','Sepal.Width' = '$'))
 # Custom formatting throughout, note the big.mark = ',' will also be picked up by N
-st(irisrep, numformat = format.func(digits = 2, nsmall = 2, big.mark = ','))
+st(irisrep, numformat = formatfunc(digits = 2, nsmall = 2, big.mark = ','))
 
 }
 }

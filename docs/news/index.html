@@ -98,13 +98,12 @@
 <h2 class="page-header" data-toc-text="1.4.2" id="vtable-142">vtable 1.4.2<a class="anchor" aria-label="anchor" href="#vtable-142"></a></h2>
 <ul><li>
 <code>format</code> option of <code><a href="../reference/sumtable.html">sumtable()</a></code> changed to <code>numformat</code> to avoid namespace issues.</li>
-<li>Added <code>obs.function</code> option to <code><a href="../reference/sumtable.html">sumtable()</a></code> to make it easier to swap out the function used to count observations (like switching back to <code><a href="../reference/notNA.html">notNA()</a></code>).</li>
+<li>Added <code>obs.function</code> option to <code><a href="../reference/sumtable.html">sumtable()</a></code> to make it easier to swap out the function used to count observations.</li>
 <li>Made it possible to use a named vector/list to change <code>numformat</code> option for only some variables in <code><a href="../reference/sumtable.html">sumtable()</a></code>, instead of having to specify every single variable.</li>
 <li>Updated vignettes.</li>
 <li>Fixed issue where default <code>out</code> option did not work running inside of <code>knitr</code> rendering to Word.</li>
-<li>Fixed issue with escaped characters in kables.</li>
-<li>Added <code><a href="../reference/format.func.html">format.func()</a></code> function to easily customize <code>numformat</code> options.</li>
-<li>Rollout of <code>numformat</code> planned for <code><a href="../reference/vtable.html">vtable()</a></code> in next update in the absence of issues.</li>
+<li>Fixed issue with escaped characters in <code>kable</code>s.</li>
+<li>Added <code><a href="../reference/formatfunc.html">formatfunc()</a></code> function to easily customize <code>numformat</code> options.</li>
 </ul></div>
   </div>
 
