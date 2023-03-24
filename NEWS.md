@@ -29,3 +29,7 @@
 - Fixed issue where default `out` option did not work running inside of `knitr` rendering to Word.
 - Fixed issue with escaped characters in `kable`s.
 - Added `formatfunc()` function to easily customize `numformat` options.
+
+# vtable 1.4.3
+
+- Fixed bug introduced by 1.4.2 relating to grouped sumtables when one group has all-missing values of a variable.

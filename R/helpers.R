@@ -300,11 +300,18 @@ summary.row <- function(data,var,st,
                 rep('',numcols-2))
     #And now the per-factor stuff
     mat <- as.data.frame(table(va))
-    matlabel <- stats::aggregate(y~x, data.frame(y = 1, x = va), FUN = factor.not.numeric.count, drop = FALSE)
-    matlabel$y[is.na(matlabel$y)] <- 0
-    propcalc <- mat$Freq/nonmissnum
-    if (!is.null(wts) & grepl('wts',summ[2])) {
-      propcalc <- sapply(mat$va, function(x) stats::weighted.mean(va == x, w = wts, na.rm = TRUE))
+    #aggregate can't handle all-NAs
+    if (nonmissnum > 0) {
+      matlabel <- stats::aggregate(y~x, data.frame(y = 1, x = va), FUN = factor.not.numeric.count, drop = FALSE)
+      matlabel$y[is.na(matlabel$y)] <- 0
+      propcalc <- mat$Freq/nonmissnum
+      if (!is.null(wts) & grepl('wts',summ[2])) {
+        propcalc <- sapply(mat$va, function(x) stats::weighted.mean(va == x, w = wts, na.rm = TRUE))
+      }
+    } else {
+      matlabel <- stats::aggregate(y~x, data.frame(y = 1, x = factor(levels(va), levels = levels(va))), FUN = factor.not.numeric.count, drop = FALSE)
+      matlabel$y <- 0
+      propcalc <- rep(NA,length(mat$Freq))
     }
     propcalc <- propcalc*(100^factor.percent)
     mat$va <- paste('...',mat$va)
@@ -331,6 +338,9 @@ summary.row <- function(data,var,st,
     }
     if (ncol(mat) < ncol(st)) {
       mat[,(ncol(mat)+1):(ncol(st))] <- ''
+    }
+    if (nonmissnum == 0) {
+      mat$Prop <- ''
     }
     names(mat) <- names(st)
     st <- rbind(st,mat)
