@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.3</span>
       </span>
     </div>
 
@@ -95,7 +95,7 @@
 <li>Other minor fixes.</li>
 </ul></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.4.2" id="vtable-142">vtable 1.4.2<a class="anchor" aria-label="anchor" href="#vtable-142"></a></h2>
+<h2 class="page-header" data-toc-text="1.4.2" id="vtable-142">vtable 1.4.2<small>2023-03-14</small><a class="anchor" aria-label="anchor" href="#vtable-142"></a></h2>
 <ul><li>
 <code>format</code> option of <code><a href="../reference/sumtable.html">sumtable()</a></code> changed to <code>numformat</code> to avoid namespace issues.</li>
 <li>Added <code>obs.function</code> option to <code><a href="../reference/sumtable.html">sumtable()</a></code> to make it easier to swap out the function used to count observations.</li>
@@ -104,6 +104,10 @@
 <li>Fixed issue where default <code>out</code> option did not work running inside of <code>knitr</code> rendering to Word.</li>
 <li>Fixed issue with escaped characters in <code>kable</code>s.</li>
 <li>Added <code><a href="../reference/formatfunc.html">formatfunc()</a></code> function to easily customize <code>numformat</code> options.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.4.3" id="vtable-143">vtable 1.4.3<a class="anchor" aria-label="anchor" href="#vtable-143"></a></h2>
+<ul><li>Fixed bug introduced by 1.4.2 relating to grouped sumtables when one group has all-missing values of a variable.</li>
 </ul></div>
   </div>
 
