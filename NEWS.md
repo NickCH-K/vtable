@@ -33,3 +33,8 @@
 # vtable 1.4.3
 
 - Fixed bug introduced by 1.4.2 relating to grouped sumtables when one group has all-missing values of a variable.
+
+# vtable 1.4.4
+
+- Improved performance of `formatfunc()` with prefixes and negative values combined.
+- Changed factor-level formatting in `vtable()` slightly.

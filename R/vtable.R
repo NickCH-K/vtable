@@ -371,7 +371,8 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
       #if there's a limit on the number of factors requested
       if (factor.limit > 0) {
         #Find out which variables have too many factors
-        toomany <- sapply(factorlevels,function(x) length(x) > factor.limit)
+        numcut <- sapply(factorlevels,function(x) length(x) - factor.limit)
+        toomany <- numcut > 0
 
         #Cut back to the limit
         factorlevels <- lapply(factorlevels,function(x) x[1:min(factor.limit,length(x))])
@@ -383,7 +384,7 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
                             '\'',sep='')
 
       #If some were cut, indicate that
-      factorlevels <- ifelse(toomany,paste(factorlevels,'and more'),factorlevels)
+      factorlevels <- ifelse(toomany,paste(factorlevels,'and', numcut, 'more'),factorlevels)
 
       #And fill in for output table
       vt[sapply(data,is.factor),]$Values <- factorlevels

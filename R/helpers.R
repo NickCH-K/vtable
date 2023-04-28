@@ -55,7 +55,7 @@ formatfunc <- function(percent = FALSE, prefix = '', suffix = '',
   }
   force_all(scalefactor, digits, nsmall, big.mark, trim, scientific, prefix, suffix, scale, ...)
   the_function <- function(x) {
-    x_fmt <- format(x*scalefactor*scale, digits = digits, nsmall = nsmall, big.mark = big.mark,
+    x_fmt <- format(abs(x*scalefactor*scale), digits = digits, nsmall = nsmall, big.mark = big.mark,
                     trim = trim, scientific = scientific, ...)
     if (prefix != '' & trim == FALSE) {
       # If we need a prefix but we have blank-space padding at the start, add the prefix after
@@ -63,11 +63,12 @@ formatfunc <- function(percent = FALSE, prefix = '', suffix = '',
       x_fmt <- sapply(1:length(x_fmt),
                       function(i) paste0(
                         c(rep(' ', first_nonspace[i]-1),
+                          ifelse(x*scalefactor*scale < 0, '-',''),
                           prefix,
                           substr(x_fmt[i],first_nonspace[i],nchar(x_fmt[i]))),
                         suffix, collapse = ''))
     } else {
-      x_fmt <- paste0(prefix, x_fmt, suffix)
+      x_fmt <- paste0(ifelse(x*scalefactor*scale < 0, '-',''), prefix, x_fmt, suffix)
     }
     x_fmt[is.na(x)] <- ''
     return(x_fmt)
