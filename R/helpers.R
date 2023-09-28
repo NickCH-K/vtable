@@ -495,8 +495,24 @@ clean_multicol_kable <- function(df,title,note=NA) {
     }
     kb <- knitr::kable(df, caption = title, row.names = FALSE)
   } else if (fmt == 'html') {
-    kb <- knitr::kable(df, caption = title, row.names = FALSE, format = fmt, escape = TRUE)
+    # escape by hand bc of test column which should not be escaped
+    cols_to_escape <- 1:ncol(df)
+    cols_to_escape <- cols_to_escape[names(df) != 'Test']
+    for (c in cols_to_escape) {
+      df[[c]] <- gsub("&", "&amp;", df[[c]], fixed = TRUE)
+      df[[c]] <- gsub("<", "&lt;", df[[c]], fixed = TRUE)
+      df[[c]] <- gsub(">", "&gt;", df[[c]], fixed = TRUE)
+    }
+    kb <- knitr::kable(df, caption = title, row.names = FALSE, format = fmt, escape = FALSE)
   } else if (fmt == 'latex') {
+    # escape by hand bc of test column which should not be escaped
+    cols_to_escape <- 1:ncol(df)
+    cols_to_escape <- cols_to_escape[names(df) != 'Test']
+    for (c in cols_to_escape) {
+      # do backslash separately so we don't escape the backslashes we write
+      df[[c]] <- gsub("\\\\", "\\\\\\\\", df[[c]])
+      df[[c]] <- gsub("([&%$#_\\{\\}~^])", "\\\\\\1", df[[c]])
+    }
     kb <- knitr::kable(df, caption = title, row.names = FALSE, format = fmt, booktabs = TRUE, escape = FALSE)
   }
 

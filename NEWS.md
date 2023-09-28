@@ -38,3 +38,7 @@
 
 - Improved performance of `formatfunc()` with prefixes and negative values combined.
 - Changed factor-level formatting in `vtable()` slightly.
+
+# vtable 1.4.5
+
+- Fixes an issue in `sumtable` where characters were not being properly escaped when building to Quarto/RMarkdown and `out` is not specified.

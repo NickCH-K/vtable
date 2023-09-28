@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
                         <h4 data-toc-skip class="author">Nick
 Huntington-Klein</h4>
             
-            <h4 data-toc-skip class="date">2023-04-28</h4>
+            <h4 data-toc-skip class="date">2023-09-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/NickCH-K/vtable/blob/HEAD/vignettes/sumtable.Rmd" class="external-link"><code>vignettes/sumtable.Rmd</code></a></small>
       <div class="hidden name"><code>sumtable.Rmd</code></div>
@@ -379,39 +379,39 @@ Species
 </h2>
 <p><code><a href="../reference/sumtable.html">sumtable()</a></code> (or <code><a href="../reference/sumtable.html">st()</a></code> for short) syntax
 follows the following outline:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sumtable</span>(data,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">vars=</span><span class="cn">NA</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">out=</span><span class="cn">NA</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">file=</span><span class="cn">NA</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">summ=</span><span class="cn">NA</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">summ.names=</span><span class="cn">NA</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">add.median=</span><span class="cn">FALSE</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">group=</span><span class="cn">NA</span>,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">group.long=</span><span class="cn">FALSE</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">group.test=</span><span class="cn">FALSE</span>,</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">group.weights =</span><span class="cn">NA</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">col.breaks=</span><span class="cn">NA</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits=</span><span class="dv">2</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">fixed.digits=</span><span class="cn">FALSE</span>,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">numformat =</span> <span class="fu">formatfunc</span>(<span class="at">digits =</span> digits, <span class="at">big.mark =</span> <span class="st">''</span>),</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">skip.format =</span> <span class="fu">c</span>(<span class="st">'notNA(x)'</span>,<span class="st">'propNA(x)'</span>,<span class="st">'countNA(x)'</span>),</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">factor.percent=</span><span class="cn">TRUE</span>,</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">factor.counts=</span><span class="cn">TRUE</span>,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">factor.numeric=</span><span class="cn">FALSE</span>,</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">logical.numeric=</span><span class="cn">FALSE</span>,</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">logical.labels=</span><span class="fu">c</span>(<span class="st">'No'</span>,<span class="st">'Yes'</span>),</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">labels=</span><span class="cn">NA</span>,</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">title=</span><span class="st">'Summary Statistics'</span>,</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">note =</span> <span class="cn">NA</span>, </span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">anchor=</span><span class="cn">NA</span>,</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>         <span class="at">col.width=</span><span class="cn">NA</span>,</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">col.align=</span><span class="cn">NA</span>,</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>         <span class="at">align=</span><span class="cn">NA</span>,</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>         <span class="at">note.align=</span><span class="st">'l'</span>,</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">fit.page=</span><span class="cn">NA</span>,</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">simple.kable=</span><span class="cn">FALSE</span>,</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">obs.function=</span><span class="cn">NA</span>)</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>         opts<span class="ot">=</span><span class="fu">list</span>()<span class="er">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">sumtable</span>(data,</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>         <span class="at">vars=</span><span class="cn">NA</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>         <span class="at">out=</span><span class="cn">NA</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>         <span class="at">file=</span><span class="cn">NA</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>         <span class="at">summ=</span><span class="cn">NA</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>         <span class="at">summ.names=</span><span class="cn">NA</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>         <span class="at">add.median=</span><span class="cn">FALSE</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>         <span class="at">group=</span><span class="cn">NA</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>         <span class="at">group.long=</span><span class="cn">FALSE</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>         <span class="at">group.test=</span><span class="cn">FALSE</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>         <span class="at">group.weights =</span><span class="cn">NA</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>         <span class="at">col.breaks=</span><span class="cn">NA</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>         <span class="at">digits=</span><span class="dv">2</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>         <span class="at">fixed.digits=</span><span class="cn">FALSE</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>         <span class="at">numformat =</span> <span class="fu">formatfunc</span>(<span class="at">digits =</span> digits, <span class="at">big.mark =</span> <span class="st">''</span>),</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>         <span class="at">skip.format =</span> <span class="fu">c</span>(<span class="st">'notNA(x)'</span>,<span class="st">'propNA(x)'</span>,<span class="st">'countNA(x)'</span>),</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>         <span class="at">factor.percent=</span><span class="cn">TRUE</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>         <span class="at">factor.counts=</span><span class="cn">TRUE</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>         <span class="at">factor.numeric=</span><span class="cn">FALSE</span>,</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>         <span class="at">logical.numeric=</span><span class="cn">FALSE</span>,</span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>         <span class="at">logical.labels=</span><span class="fu">c</span>(<span class="st">'No'</span>,<span class="st">'Yes'</span>),</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>         <span class="at">labels=</span><span class="cn">NA</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>         <span class="at">title=</span><span class="st">'Summary Statistics'</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>         <span class="at">note =</span> <span class="cn">NA</span>, </span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>         <span class="at">anchor=</span><span class="cn">NA</span>,</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>         <span class="at">col.width=</span><span class="cn">NA</span>,</span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>         <span class="at">col.align=</span><span class="cn">NA</span>,</span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>         <span class="at">align=</span><span class="cn">NA</span>,</span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>         <span class="at">note.align=</span><span class="st">'l'</span>,</span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>         <span class="at">fit.page=</span><span class="cn">NA</span>,</span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>         <span class="at">simple.kable=</span><span class="cn">FALSE</span>,</span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>         <span class="at">obs.function=</span><span class="cn">NA</span>)</span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>         opts<span class="ot">=</span><span class="fu">list</span>()<span class="er">)</span></span></code></pre></div>
 <p>The goal of <code><a href="../reference/sumtable.html">sumtable()</a></code> is to take a data set
 <code>data</code> and output a usually-HTML (but
 <code>data.frame</code>, <code>kable</code>, <code>csv</code>, and
@@ -1031,7 +1031,7 @@ Sepal.Length
 0.64
 </td>
 <td style="text-align:left;">
-F=119.265&lt;sup&gt;***&lt;/sup&gt;
+F=119.265<sup>***</sup>
 </td>
 </tr>
 <tr>
@@ -1066,7 +1066,7 @@ Sepal.Width
 0.32
 </td>
 <td style="text-align:left;">
-F=49.16&lt;sup&gt;***&lt;/sup&gt;
+F=49.16<sup>***</sup>
 </td>
 </tr>
 <tr>
@@ -1101,7 +1101,7 @@ Petal.Length
 0.55
 </td>
 <td style="text-align:left;">
-F=1180.161&lt;sup&gt;***&lt;/sup&gt;
+F=1180.161<sup>***</sup>
 </td>
 </tr>
 <tr>
@@ -1136,7 +1136,7 @@ Petal.Width
 0.27
 </td>
 <td style="text-align:left;">
-F=960.007&lt;sup&gt;***&lt;/sup&gt;
+F=960.007<sup>***</sup>
 </td>
 </tr>
 </tbody>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.5</span>
       </span>
     </div>
 
@@ -290,7 +290,7 @@
     <p>There are many, many functions in R that will produce a summary statisics table for you. So why use <code>sumtable()</code>? <code>sumtable()</code> serves two main purposes:</p>
 <p>(1) In the same spirit as <code><a href="vtable.html">vtable()</a></code>, it makes it easy to view the summary statistics <em>as you work</em>, either in the Viewer pane or in a browser window.</p>
 <p>(2) <code>sumtable()</code> is designed to <em>have nice defaults</em> and is not really intended for deep customization. It's got lots of options, sure, but they're only intended to go so far. So you can have a summary statistics table without much work.</p>
-<p>Keeping with point (2), <code>sumtable()</code> is designed for use by people who want the kind of table that <code>sumtable()</code> produces, which is itself heavily influenced by the kinds of summary statistics tables you often see in economics papers. In that regard it is most similar to <code><a href="https://rdrr.io/pkg/stargazer/man/stargazer.html" class="external-link">stargazer::stargazer()</a></code> except that it can handle tibbles, factor variables, grouping, and produce multicolumn tables, or <code>summarytools::dfSummary()</code> or <code><a href="https://docs.ropensci.org/skimr/reference/skim.html" class="external-link">skimr::skim()</a></code> except that it is easier to export with nice formatting. If you want a lot of control over your summary statistics table, check out the packages gtsummary, arsenal, qwraps2, or Amisc, and about a million more.</p>
+<p>Keeping with point (2), <code>sumtable()</code> is designed for use by people who want the kind of table that <code>sumtable()</code> produces, which is itself heavily influenced by the kinds of summary statistics tables you often see in economics papers. In that regard it is most similar to <code><a href="https://rdrr.io/pkg/stargazer/man/stargazer.html" class="external-link">stargazer::stargazer()</a></code> except that it can handle tibbles, factor variables, grouping, and produce multicolumn tables, or <code>summarytools::dfSummary()</code> or <code>skimr::skim()</code> except that it is easier to export with nice formatting. If you want a lot of control over your summary statistics table, check out the packages gtsummary, arsenal, qwraps2, or Amisc, and about a million more.</p>
 <p>If you would like to include a <code>sumtable</code> in an RMarkdown document, it should just work! If you leave <code>out</code> blank, it will default to a nicely-formatted <code><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">knitr::kable()</a></code>, although this will drop some formatting elements like multi-column cells (or do <code>out="kable"</code> to get an unformatted <code>kable</code> that you can format yourself). If you prefer the <code>vtable</code> package formatting, then use <code>out="latex"</code> if outputting to LaTeX or <code>out="htmlreturn"</code> for HTML, both with <code>results="asis"</code> in the code chunk. Alternately, in HTML, you can use the <code>file</code> option to write to file and use a <code>&lt;iframe&gt;</code> to include it.</p>
     </div>
 
