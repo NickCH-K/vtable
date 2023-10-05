@@ -8,7 +8,7 @@
 #' @param y A variable to test for independence with \code{x}. This can be a factor or numeric variable. If you want a numeric variable treated as categorical, convert to a factor first.
 #' @param w A vector of weights to pass to the appropriate test.
 #' @param factor.test Used when \code{y} is a factor, a function that takes \code{x} and \code{y} as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a Chi-squared test if there are no weights, or a design-based F statistic (Rao & Scott Aadjustment, see \code{survey::svychisq}) with weights, which requires that the \code{survey} package be installed. WARNING: the Chi-squared test's assumptions fail with small sample sizes. This function will be attempted for all non-numeric \code{y}.
-#' @param numeric.test Used when \code{y} is numeric, a function that takes \code{x} and \code{y} as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a group differences F test.
+#' @param numeric.test Used when \code{y} is numeric, a function that takes \code{x} and \code{y} as its first arguments and returns a list with three arguments: (1) The name of the test for printing, (2) the test statistic, and (3) the p-value. Defaults to a group differences F test. If you only have two groups and would prefer an absolute t-statistic to an F-statistic, pass \code{vtable:::groupt.it}.
 #' @param star.cutoffs A numeric vector indicating the p-value cutoffs to use for reporting significance stars. Defaults to \code{c(.01,.05,.1)}. If you don't want stars, remove them from the \code{format} argument.
 #' @param star.markers A character vector indicating the symbols to use to indicate significance cutoffs associated with \code{star.cuoffs}. Defaults to \code{c('***','**','*')}. If you don't want stars, remove them from the \code{format} argument.
 #' @param digits Number of digits after the decimal to round the test statistic and p-value to.
@@ -90,6 +90,14 @@ independence.test <- function(x,y,w=NA,
   return(printout)
 }
 
+
+groupt.it <- function(x, y, w = NULL) {
+  if (length(unique(x)) > 2) {
+    stop('groupt.it cannot be used with more than two groups.')
+  }
+  return(groupf.it(x=x, y=y, w=w, t = TRUE))
+}
+
 # Internal chi-square and group-F tests that return things in independence.test format
 chisq.it <- function(x,y,w=NULL) {
   if (is.null(w)) {
@@ -117,12 +125,19 @@ chisq.it <- function(x,y,w=NULL) {
     ))
   }
 }
-groupf.it <- function(x,y,w=NULL) {
+groupf.it <- function(x,y,w=NULL, t = FALSE) {
   result <- stats::anova(stats::lm(y~factor(x),weights = w))
+  statname <- 'F'
+  stat <- result$`F value`[1]
+
+  if (t) {
+    statname <- 't'
+    stat <- sqrt(stat)
+  }
 
   return(list(
-    'F',
-    result$`F value`[1],
+    statname,
+    stat,
     result$`Pr(>F)`[1]
   ))
 }
