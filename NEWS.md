@@ -42,3 +42,8 @@
 # vtable 1.4.5
 
 - Fixes an issue in `sumtable` where characters were not being properly escaped when building to Quarto/RMarkdown and `out` is not specified.
+
+
+# vtable 1.4.6
+
+- Fixes an issue in `sumtable` with the combination of `tibble`s and `factor.numeric = TRUE`.

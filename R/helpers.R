@@ -348,8 +348,8 @@ summary.row <- function(data,var,st,
   } else if (cla == 'factor' & factor.numeric) {
     #Header row
     st[1,] <- c(title,rep('',numcols))
-    #Get data
-    va <- data[,var]
+    #Get data. as.data.frame() because tibbles no longer work with this syntax.
+    va <- as.data.frame(data)[,var]
     #Create dummies to treat as numeric
     mat <- stats::model.matrix(~-1+va)
     #And names
