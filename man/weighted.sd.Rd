@@ -4,7 +4,7 @@
 \alias{weighted.sd}
 \title{Weighted standard deviation}
 \usage{
-weighted.sd(x, w, na.rm = TRUE)
+weighted.sd(x, w, na.rm = TRUE, type = "frequency")
 }
 \arguments{
 \item{x}{A numeric vector.}
@@ -12,6 +12,8 @@ weighted.sd(x, w, na.rm = TRUE)
 \item{w}{A vector of weights. Negative weights are not allowed.}
 
 \item{na.rm}{Set to \code{TRUE} to remove indices with missing values in \code{x} or \code{w}.}
+
+\item{type}{The type of weights to use. The default is \code{'frequency'}, which is applied when the weights represent frequencies. Also supports \code{'precision'} which is to be used when the weights represent precision.}
 }
 \description{
 This is a basic weighted standard deviation function, mainly for internal use with \code{sumtable}. For a more fully-fledged weighted SD function, see \code{Hmisc::wtd.var}, although it uses a slightly differend degree-of-freedom correction.

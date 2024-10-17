@@ -47,3 +47,7 @@
 # vtable 1.4.6
 
 - Fixes an issue in `sumtable` with the combination of `tibble`s and `factor.numeric = TRUE`.
+
+# vtable 1.4.7
+
+- Adds second approach to weighted SD calculations to allow for weights that represent reliability/precision.

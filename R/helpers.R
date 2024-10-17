@@ -101,13 +101,14 @@ nuniq <- function(x) {
 #' @param x A numeric vector.
 #' @param w A vector of weights. Negative weights are not allowed.
 #' @param na.rm Set to \code{TRUE} to remove indices with missing values in \code{x} or \code{w}.
+#' @param type The type of weights to use. The default is \code{'frequency'}, which is applied when the weights represent frequencies. Also supports \code{'precision'} which is to be used when the weights represent precision.
 #' @examples
 #' x <- c(1, 1, 2, 3, 4, 4, 4)
 #' w <- c(4, 1, 3, 7, 0, 2, 5)
 #' weighted.sd(x, w)
 #'
 #' @export weighted.sd
-weighted.sd <- function(x, w, na.rm = TRUE) {
+weighted.sd <- function(x, w, na.rm = TRUE, type = 'frequency') {
   if (length(x) != length(w)) {
     stop('Weights and data must be the same length.')
   }
@@ -126,7 +127,15 @@ weighted.sd <- function(x, w, na.rm = TRUE) {
   mean_x <- sum(w*x)/weightsum
   num_nonzero <- sum(w > 0)
 
-  var_x <- sum(w*((x-mean_x)^2))/(weightsum*(num_nonzero-1)/num_nonzero)
+  var_x <- sum(w*((x-mean_x)^2))
+  if (type == 'frequency') {
+    var_x <- var_x/(weightsum*(num_nonzero-1)/num_nonzero)
+  } else if (type == 'precision') {
+    var_x <- var_x/(weightsum-sum(w^2)/weightsum)
+  } else {
+    stop('Invalid weighted.sd type. Must be "frequency" or "precision".')
+  }
+
   sd_x <- sqrt(var_x)
 
   return(sd_x)
