@@ -96,7 +96,7 @@ nuniq <- function(x) {
 
 #' Weighted standard deviation
 #'
-#' This is a basic weighted standard deviation function, mainly for internal use with \code{sumtable}. For a more fully-fledged weighted SD function, see \code{Hmisc::wtd.var}, although it uses a slightly differend degree-of-freedom correction.
+#' This is a basic weighted standard deviation function, mainly for internal use with \code{sumtable}.
 #'
 #' @param x A numeric vector.
 #' @param w A vector of weights. Negative weights are not allowed.
@@ -449,6 +449,9 @@ clean_multicol <- function(df) {
 #For a table that is going to be seen "raw", remove all the multicolumn stuff
 #Except for the top row which can become a multi-column header. Good for groups!
 clean_multicol_kable <- function(df,title,note=NA) {
+  if (is.na(title)) {
+    title = NULL
+  }
   # If the first row is a header, chop it off and save for later
   hasheader <- FALSE
   if (grepl('HEADERROW',df[1,1])) {
@@ -503,6 +506,7 @@ clean_multicol_kable <- function(df,title,note=NA) {
       df = rbind(headerrow, df)
     }
     kb <- knitr::kable(df, caption = title, row.names = FALSE)
+
   } else if (fmt == 'html') {
     # escape by hand bc of test column which should not be escaped
     cols_to_escape <- 1:ncol(df)

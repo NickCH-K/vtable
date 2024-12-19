@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">vtable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.8</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
                         <h4 data-toc-skip class="author">Nick
 Huntington-Klein</h4>
             
-            <h4 data-toc-skip class="date">2024-10-17</h4>
+            <h4 data-toc-skip class="date">2024-12-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/NickCH-K/vtable/blob/HEAD/vignettes/vtablefunction.Rmd" class="external-link"><code>vignettes/vtablefunction.Rmd</code></a></small>
       <div class="hidden name"><code>vtablefunction.Rmd</code></div>
@@ -271,6 +271,8 @@ Num: 0.22 to 16.71
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
 <span><span class="co">#Don't forget the handy shortcut vt()!</span></span>
 <span><span class="fu"><a href="../reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
+<span><span class="co">##   object 'type_sum.accel' not found</span></span></code></pre>
 <table class="table table" style="margin-left: auto; margin-right: auto;">
 <caption>
 efc
@@ -722,7 +724,7 @@ document with <code>knitr</code>, it will default to ‘kable’. Note that
 an RMarkdown default to ‘kable’ will also include some nice formatting,
 where <code>out = 'kable'</code> directly will give you a more basic
 <code>kable</code> you can format yourself.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,out<span class="op">=</span><span class="st">'browser'</span><span class="op">)</span></span>
@@ -740,7 +742,7 @@ where <code>out = 'kable'</code> directly will give you a more basic
 <p>The <code>file</code> argument will write the variable documentation
 file to an HTML or LaTeX file and save it. Will automatically append
 ‘html’ or ‘tex’ filetype if the filename does not include a period.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/vtable.html">vt</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,file<span class="op">=</span><span class="st">'lifecycle_variabledocumentation'</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -763,7 +765,7 @@ want them in the table.</p>
 number of variables in <code>data</code>, and in the same order.
 <code>NA</code> values can be used for padding if some variables do not
 have labels.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Note that LifeCycleSavings has five variables</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
 <span><span class="co">#These variable labels are taken from help(LifeCycleSavings)</span></span>
@@ -864,7 +866,7 @@ Num: 0.22 to 16.71
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'numeric aggregate personal savings'</span>,<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="cn">NA</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,labels<span class="op">=</span><span class="va">labs</span><span class="op">)</span></span></code></pre></div>
 <table class="table table" style="margin-left: auto; margin-right: auto;">
@@ -968,7 +970,7 @@ will do) where the first column has the variable names, and the second
 column has the labels. The column names don’t matter.</p>
 <p>This approach does <strong>not</strong> require that every variable
 name in <code>data</code> has a matching label.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Note that LifeCycleSavings has five variables</span></span>
 <span><span class="co">#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
@@ -1082,7 +1084,7 @@ as it has a valid set of variable names stored in the
 <code><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames()</a></code> attribute.</p>
 <p>This approach does <strong>not</strong> require that every variable
 name in <code>data</code> has a matching label.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Note that LifeCycleSavings has five variables</span></span>
 <span><span class="co">#with names 'sr', 'pop15', 'pop75', 'dpi', and 'ddpi'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
@@ -1203,7 +1205,7 @@ first <code>factor.limit</code> (default 5) factors listed.</p>
 <p>If the variable is numeric but has value labels applied by the
 <code>sjlabelled</code> package, <code><a href="../reference/vtable.html">vtable()</a></code> will find them
 and report the numeric-label crosswalk.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span>,values<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table table" style="margin-left: auto; margin-right: auto;">
@@ -1261,7 +1263,7 @@ numeric
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span></code></pre></div>
 <table class="table table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -1336,7 +1338,7 @@ Num: 0.22 to 16.71
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#CO2 contains factor variables</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">CO2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">CO2</span><span class="op">)</span></span></code></pre></div>
@@ -1413,7 +1415,7 @@ Num: 7.7 to 45.5
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#efc contains labeled values</span></span>
 <span><span class="co">#Note that the original value labels do not easily tell you what numerical</span></span>
 <span><span class="co">#value each label maps to, but vtable() does.</span></span>
@@ -1847,7 +1849,7 @@ that some factors have been cut off.</p>
 the values that character variables take, as though they were factors.
 If you only want some of the character variables to have their values
 listed, use a character vector to indicate which variables.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">USJudgeRatings</span><span class="op">)</span></span>
 <span><span class="va">USJudgeRatings</span><span class="op">$</span><span class="va">Judge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/row.names.html" class="external-link">row.names</a></span><span class="op">(</span><span class="va">USJudgeRatings</span><span class="op">)</span></span>
 <span><span class="va">USJudgeRatings</span><span class="op">$</span><span class="va">SecondCharacter</span> <span class="op">&lt;-</span> <span class="st">'Less Interesting'</span></span>
@@ -1889,7 +1891,7 @@ work with <code>out = 'return'</code> or <code>out = 'csv'</code>.</p>
 <code>data.title</code> as the caption for the <code>kable</code>, and
 will use the <code>note</code> as a footnote, but won’t use
 <code>desc</code> or <code>anchor</code>.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nickch-k.github.io/vtable/" class="external-link">vtable</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">LifeCycleSavings</span><span class="op">)</span></span>
@@ -1911,7 +1913,7 @@ variable table depending on which measures
 <code>(name, class, label, values, summ)</code> are included.
 <code>col.width</code>, as a vector of percentage column widths on the
 0-100 scale, will override these defaults.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/" class="external-link">sjlabelled</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
 <span><span class="co">#The variable names in this data set are pretty short, and the value labels are</span></span>
@@ -1930,7 +1932,7 @@ keep putting in whatever CSS attributes you want. They will be applied
 to the whole column.</p>
 <p>This option is only for HTML output and will only work with
 <code>out</code> values of ‘browser’, ‘viewer’, or ‘htmlreturn’.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/" class="external-link">sjlabelled</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span>,col.align <span class="op">=</span> <span class="st">'right'</span><span class="op">)</span></span></code></pre></div>
@@ -1961,7 +1963,7 @@ table to text width, or <code>.9\\textwidth</code> for 90% of the page,
 and so on, or any recognized width value in LaTeX.</p>
 <p>For all of these, be sure to escape special characters, in particular
 backslashes.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/" class="external-link">sjlabelled</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/vtable.html">vtable</a></span><span class="op">(</span><span class="va">efc</span>,align <span class="op">=</span> <span class="st">'p{.3\\textwidth}cc'</span>, fit.page <span class="op">=</span> <span class="st">'\\textwidth'</span>, out <span class="op">=</span> <span class="st">'latex'</span><span class="op">)</span></span></code></pre></div>
@@ -1984,7 +1986,7 @@ give the proportion and count of NA values, and the count of non-NA
 values in the variable, respectively. These two functions are always
 reported first, and are the only functions that include NA values in
 their calculations.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/sjlabelled/" class="external-link">sjlabelled</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">efc</span><span class="op">)</span></span>
 <span></span>
@@ -2500,7 +2502,7 @@ the same options for many <code>vtable</code>s.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>

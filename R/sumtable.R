@@ -35,7 +35,7 @@
 #' @param logical.numeric By default, logical variables are treated as factors with \code{TRUE = "Yes"} and \code{FALSE = "No"}. Set this to \code{FALSE} to instead treat them as numeric variables rather than factors, with \code{TRUE = 1} and \code{FALSE = 0}.
 #' @param logical.labels When turning logicals into factors, use these labels for \code{FALSE} and \code{TRUE}, respectively, rather than "No" and "Yes".
 #' @param labels Variable labels. labels will accept four formats: (1) A vector of the same length as the number of variables in the data that will be included in the table (tricky to use if many are being dropped, also won't work for your \code{group} variable), in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels, or (4) TRUE to look in the data for variable labels set by the haven package, \code{set_label()} from sjlabelled, or \code{label()} from Hmisc.
-#' @param title Character variable with the title of the table.
+#' @param title Character variable with the title of the table. Set to \code{NA} to omit, which may be useful if trying to use the native Quarto cross-referencing.
 #' @param note Table note to go after the last row of the table. Will follow significance star note if \code{group.test = TRUE}.
 #' @param anchor Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.
 #' @param col.width Vector of page-width percentages, on 0-100 scale, overriding default column widths in an HTML table. Must have a number of elements equal to the number of columns in the resulting table.
@@ -267,7 +267,9 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
     stop('factor.percent and factor.counts must each be TRUE or FALSE.')
   }
   if (!is.character(title)) {
-    stop('title must be a character variable.')
+    if (!is.na(title)) {
+      stop('title must be a character variable.')
+    }
   }
   if (!identical(out,NA) & !(out %in% c('viewer', 'browser','return','htmlreturn','kable','latex','latexpage', 'csv'))) {
     stop('out must be viewer, browser, return, htmlreturn, kable, latex, or latexpage')
@@ -1003,9 +1005,14 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
 
   ####### CONSTRUCTION OF HTML
   #Head of file
+  if (!is.na(title)) {
+    titlepaste = paste0('<title>',title,'</title>')
+  } else {
+    titlepaste = ''
+  }
   out.html <- paste('
                     <html style=\"font-family:Helvetica,Arial,Sans\">
-                    <head><title>Summary Statistics</title>',
+                    <head>',titlepaste,
                     '<style type = \"text/css\">
                     p {
                     font-size:smaller;
@@ -1041,12 +1048,17 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
                     word-break:break-all;
                     }</style></head><body>',sep='')
 
+  if (!is.na(title)) {
+    titlepaste = paste0('<h1>',title,'</h1>')
+  } else {
+    titlepaste = ''
+  }
   #Dataset name and description
   out.html <- paste(out.html,
                     '<table class=\"headtab\">',
                     '<tr><td style=\"text-align:left\">sumtable {vtable}</td>',
                     '<td style=\"text-align:right\">Summary Statistics</td></tr></table>',
-                    '<h1>',title,'</h1>')
+                    titlepaste)
 
   #And bring in the table itself
   out.html <- paste(out.html,dftoHTML(st,out='htmlreturn',col.width=col.width,
@@ -1111,7 +1123,11 @@ sumtable <- function(data,vars=NA,out=NA,file=NA,
       }
       return(st)
     } else {
-      st <- knitr::kable(clean_multicol(st), caption = title)
+      if (is.na(title)) {
+        st <- knitr::kable(clean_multicol(st))
+      } else {
+        st <- knitr::kable(clean_multicol(st), caption = title)
+      }
       return(st)
     }
   } else if (Sys.getenv('RSTUDIO')=='1' & (out == 'viewer' | out == '')) {

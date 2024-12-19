@@ -126,7 +126,7 @@ st(
 
 \item{labels}{Variable labels. labels will accept four formats: (1) A vector of the same length as the number of variables in the data that will be included in the table (tricky to use if many are being dropped, also won't work for your \code{group} variable), in the same order as the variables in the data set, (2) A matrix or data frame with two columns and more than one row, where the first column contains variable names (in any order) and the second contains labels, (3) A matrix or data frame where the column names (in any order) contain variable names and the first row contains labels, or (4) TRUE to look in the data for variable labels set by the haven package, \code{set_label()} from sjlabelled, or \code{label()} from Hmisc.}
 
-\item{title}{Character variable with the title of the table.}
+\item{title}{Character variable with the title of the table. Set to \code{NA} to omit, which may be useful if trying to use the native Quarto cross-referencing.}
 
 \item{note}{Table note to go after the last row of the table. Will follow significance star note if \code{group.test = TRUE}.}
 

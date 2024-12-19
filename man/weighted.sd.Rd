@@ -16,7 +16,7 @@ weighted.sd(x, w, na.rm = TRUE, type = "frequency")
 \item{type}{The type of weights to use. The default is \code{'frequency'}, which is applied when the weights represent frequencies. Also supports \code{'precision'} which is to be used when the weights represent precision.}
 }
 \description{
-This is a basic weighted standard deviation function, mainly for internal use with \code{sumtable}. For a more fully-fledged weighted SD function, see \code{Hmisc::wtd.var}, although it uses a slightly differend degree-of-freedom correction.
+This is a basic weighted standard deviation function, mainly for internal use with \code{sumtable}.
 }
 \examples{
 x <- c(1, 1, 2, 3, 4, 4, 4)

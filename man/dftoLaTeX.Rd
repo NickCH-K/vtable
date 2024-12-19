@@ -27,7 +27,7 @@ dftoLaTeX(
 
 \item{frag}{Set to TRUE to produce only the LaTeX table itself, or FALSE to produce a fully buildable LaTeX. Defaults to TRUE.}
 
-\item{title}{Character variable with the title of the table.}
+\item{title}{Character variable with the title of the table. Set to \code{NA} to omit.}
 
 \item{note}{Table note to go after the last row of the table.}
 

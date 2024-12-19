@@ -18,7 +18,7 @@
 #' @param index Set to \code{TRUE} to include the index number of the column with the variable name. Defaults to \code{FALSE}.
 #' @param factor.limit Sets maximum number of factors that will be included if \code{values = TRUE}. Set to 0 for no limit. Defaults to 5.
 #' @param char.values Set to \code{TRUE} to include values of character variables as though they were factors, if \code{values = TRUE}. Or, set to a character vector of variable names to list values of only those character variables. Defaults to \code{FALSE}. Has no effect if \code{values = FALSE}.
-#' @param data.title Character variable with the title of the dataset.
+#' @param data.title Character variable with the title of the dataset. Defaults to \code{'object'} which uses the object name of the data set. Set to \code{NA} to omit, which may be useful if trying to use the native Quarto cross-referencing.
 #' @param desc Character variable offering a brief description of the dataset itself. This will by default include information on the number of observations and the number of columns. To remove this, set \code{desc='omit'}, or include any description and then include \code{'omit'} as the last four characters.
 #' @param note Table note to go after the last row of the table.
 #' @param anchor Character variable to be used to set an anchor link in HTML tables, or a label tag in LaTeX.
@@ -124,7 +124,7 @@
 #' @export
 vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=FALSE,
                    index=FALSE,factor.limit=5,char.values=FALSE,
-                   data.title=NA,desc=NA,note = NA,note.align = 'l', anchor=NA,col.width=NA,col.align=NA,
+                   data.title='object',desc=NA,note = NA,note.align = 'l', anchor=NA,col.width=NA,col.align=NA,
                    align=NA,fit.page = NA, summ=NA,lush=FALSE,opts=list()) {
   #Bring in opts
   list2env(opts,envir=environment())
@@ -197,8 +197,10 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
   ####### APPLICATION OF DATA.TITLE OPTION
   #If data.title is missing, fill in with name of the data frame read in
-  if (is.na(data.title)) {
-    data.title <- deparse(substitute(data))
+  if (!is.na(data.title)) {
+    if (data.title == 'object') {
+      data.title <- deparse(substitute(data))
+    }
   }
 
   ####### FORM VARIABLE TABLE TO BUILD ON
@@ -578,16 +580,23 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
     #Table only
     if (out == 'latex') {
+      if (!is.na(data.title)) {
+        titlepaste = 'Variable Table'
+      } else {
+        titlepaste = NA
+      }
       return(cat(dftoLaTeX(vt, file = file,
                        align = align, note = note, note.align = note.align,
-                       anchor = anchor, title = 'Variable Table', fit.page = fit.page,
+                       anchor = anchor, title = titlepaste, fit.page = fit.page,
                        no.escape = no.escape)))
     }
 
     #Now for the full page
     out.latex <- '\\documentclass{article}\n\\begin{document}\n\nvtable \\{vtable\\}\n\n'
-    out.latex <- paste(out.latex,
-                       '\\textbf{\\LARGE ', data.title,'}\n\n')
+    if (!is.na(data.title)) {
+      out.latex <- paste(out.latex,
+                         '\\textbf{\\LARGE ', data.title,'}\n\n')
+    }
 
     #Applying description
     #By default, this is number of obs and number of columns, plus whatever is in desc.
@@ -616,9 +625,14 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     }
 
     #And bring in the table itself
+    if (!is.na(data.title)) {
+      titlepaste = 'Variable Table'
+    } else {
+      titlepaste = NA
+    }
     out.latex <- paste(out.latex,dftoLaTeX(vt, align = align,
                                            anchor = anchor, note = note, note.align = note.align,
-                                           title = 'Variable Table', fit.page = fit.page,
+                                           title = titlepaste, fit.page = fit.page,
                                            no.escape = no.escape),'\n\n\\end{document}',sep='')
 
     ####### APPLICATION OF FILE OPTION
@@ -639,9 +653,14 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
 
   ####### CONSTRUCTION OF HTML
   #Head of file
+  if (!is.na(data.title)) {
+    titlepaste = paste('<title>',data.title,'</title>')
+  } else {
+    titlepaste = ''
+  }
   out.html <- paste('
                     <html style=\"font-family:Helvetica,Arial,Sans\">
-                    <head><title>',data.title,'</title>',
+                    <head>', titlepaste,
                     '<style type = \"text/css\">
                     p {
                     font-size:smaller;
@@ -678,11 +697,16 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
                     }</style></head><body>',sep='')
 
   #Dataset name and description
+  if (!is.na(data.title)) {
+    titlepaste = paste('<h1>',data.title,'</h1>')
+  } else {
+    titlepaste = ''
+  }
   out.html <- paste(out.html,
                     '<table class=\"headtab\">',
                     '<tr><td style=\"text-align:left\">vtable {vtable}</td>',
                     '<td style=\"text-align:right\">Variable Documentation</td></tr></table>',
-                    '<h1>',data.title,'</h1>')
+                    titlepaste)
 
   #Applying description
   #By default, this is number of obs and number of columns, plus whatever is in desc.
@@ -779,17 +803,30 @@ vtable <- function(data,out=NA,file=NA,labels=NA,class=TRUE,values=TRUE,missing=
     #I don't know how this would happen but just in case
     vt <- vt[!apply(vt,MARGIN=1,FUN=function(x) propNA(x) == 1),]
     if (knitr::is_latex_output()) {
-      kb <- knitr::kable(vt, caption = data.title, row.names = FALSE, booktabs = TRUE, format = 'latex')
+      if (!is.na(data.title)) {
+        kb <- knitr::kable(vt, caption = data.title, row.names = FALSE, booktabs = TRUE, format = 'latex')
+      } else {
+        kb <- knitr::kable(vt, row.names = FALSE, booktabs = TRUE, format = 'latex')
+      }
+
       if (!is.na(note)) {
         kb <- kableExtra::add_footnote(kb, note, notation = 'none')
       }
     } else if(knitr::is_html_output()) {
-      kb <- knitr::kable(vt, caption = data.title, row.names = FALSE, format = 'html')
+      if (!is.na(data.title)) {
+        kb <- knitr::kable(vt, caption = data.title, row.names = FALSE, format = 'html')
+      } else {
+        kb <- knitr::kable(vt, row.names = FALSE, format = 'html')
+      }
       if (!is.na(note)) {
         kb <- kableExtra::add_footnote(kb, note, notation = 'none')
       }
     } else {
-      kb <- knitr::kable(vt, caption = data.title, row.names = FALSE)
+      if (!is.na(data.title)) {
+        kb <- knitr::kable(vt, caption = data.title, row.names = FALSE)
+      } else {
+        kb <- knitr::kable(vt, row.names = FALSE)
+      }
     }
 
     # If it's just a default RMarkdown kable, style it for HTML because the default is ew

@@ -51,3 +51,7 @@
 # vtable 1.4.7
 
 - Adds second approach to weighted SD calculations to allow for weights that represent reliability/precision.
+
+# vtable 1.4.8
+
+- Allows `title = NA` and `data.title = NA` to omit titles in `sumtable()` and `vtable()`, which will help in using **vtable** in Quarto documents with native cross-referencing.

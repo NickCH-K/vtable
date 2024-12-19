@@ -16,7 +16,7 @@ vtable(
   index = FALSE,
   factor.limit = 5,
   char.values = FALSE,
-  data.title = NA,
+  data.title = "object",
   desc = NA,
   note = NA,
   note.align = "l",
@@ -41,7 +41,7 @@ vt(
   index = FALSE,
   factor.limit = 5,
   char.values = FALSE,
-  data.title = NA,
+  data.title = "object",
   desc = NA,
   note = NA,
   note.align = "l",
@@ -76,7 +76,7 @@ vt(
 
 \item{char.values}{Set to \code{TRUE} to include values of character variables as though they were factors, if \code{values = TRUE}. Or, set to a character vector of variable names to list values of only those character variables. Defaults to \code{FALSE}. Has no effect if \code{values = FALSE}.}
 
-\item{data.title}{Character variable with the title of the dataset.}
+\item{data.title}{Character variable with the title of the dataset. Defaults to \code{'object'} which uses the object name of the data set. Set to \code{NA} to omit, which may be useful if trying to use the native Quarto cross-referencing.}
 
 \item{desc}{Character variable offering a brief description of the dataset itself. This will by default include information on the number of observations and the number of columns. To remove this, set \code{desc='omit'}, or include any description and then include \code{'omit'} as the last four characters.}
 
